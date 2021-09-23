@@ -18,6 +18,22 @@ index b78ad89a9e..43c29cd11d 100644
    </ItemGroup>
  
    <ItemGroup Label=".NET team dependencies (Non-source-build)" Condition="'$(DotNetBuildFromSource)' != 'true'">
+diff --git a/global.json b/global.json
+index ba4aeb2b82..10d75fb079 100644
+--- a/global.json
++++ b/global.json
+@@ -1,9 +1,9 @@
+ {
+   "sdk": {
+-    "version": "6.0.100-rc.1.21415.3"
++    "version": "6.0.100-rc.1.21458.32"
+   },
+   "tools": {
+-    "dotnet": "6.0.100-rc.1.21415.3",
++    "dotnet": "6.0.100-rc.1.21458.32",
+     "runtimes": {
+       "dotnet/x64": [
+         "2.1.27",
 diff --git a/src/Components/Web.JS/src/webpack.config.js b/src/Components/Web.JS/src/webpack.config.js
 index b0651fa75c..210ff6a433 100644
 --- a/src/Components/Web.JS/src/webpack.config.js
@@ -70,6 +86,22 @@ index 712fa8362b..cc1ce962b8 100644
  
      <Description>MSBuild tasks and targets for build-time Swagger and OpenApi document generation</Description>
      <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+diff --git a/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.nuspec b/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.nuspec
+index a85edc2f4a..fd5adaf2f9 100644
+--- a/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.nuspec
++++ b/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.nuspec
+@@ -8,9 +8,9 @@
+     $CommonFileElements$
+     <file src="build\*" target="build" />
+     <file src="buildMultiTargeting\*" target="buildMultiTargeting" />
+-    <file src="$artifactsBinDir$\dotnet-getdocument\$configuration$\netcoreapp2.1\publish\*.*" target="tools" />
++    <file src="$artifactsBinDir$\dotnet-getdocument\$configuration$\net6.0\publish\*.*" target="tools" />
+     <file src="$artifactsBinDir$\GetDocument.Insider\$configuration$\net461\*.*" target="tools\net461" />
+     <file src="$artifactsBinDir$\GetDocument.Insider\x86\$configuration$\net461\*.*" target="tools\net461-x86" />
+-    <file src="$artifactsBinDir$\GetDocument.Insider\$configuration$\netcoreapp2.1\publish\*.*" target="tools\netcoreapp2.1" />
++    <file src="$artifactsBinDir$\GetDocument.Insider\$configuration$\net6.0\*.*" target="tools\netcoreapp2.1" />
+   </files>
+ </package>
 diff --git a/src/Tools/GetDocumentInsider/src/Commands/GetDocumentCommand.cs b/src/Tools/GetDocumentInsider/src/Commands/GetDocumentCommand.cs
 index d115e46c86..646a57ffa3 100644
 --- a/src/Tools/GetDocumentInsider/src/Commands/GetDocumentCommand.cs
@@ -109,20 +141,3 @@ index 7bcdcbcd7a..da2e202231 100644
      <UseAppHost>false</UseAppHost>
      <IsShippingPackage>false</IsShippingPackage>
    </PropertyGroup>
-
-diff --git a/global.json b/global.json
-index ba4aeb2b82..10d75fb079 100644
---- a/global.json
-+++ b/global.json
-@@ -1,9 +1,9 @@
- {
-   "sdk": {
--    "version": "6.0.100-rc.1.21415.3"
-+    "version": "6.0.100-rc.1.21458.32"
-   },
-   "tools": {
--    "dotnet": "6.0.100-rc.1.21415.3",
-+    "dotnet": "6.0.100-rc.1.21458.32",
-     "runtimes": {
-       "dotnet/x64": [
-         "2.1.27",

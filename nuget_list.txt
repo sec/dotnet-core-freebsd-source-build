@@ -1,0 +1,12 @@
+https://github.com/Thefrank/dotnet-freebsd-crossbuild/releases/download/v6.0.0-rc.1.21451.13/runtime.freebsd-x64.Microsoft.NETCore.TestHost.6.0.0-rc.1.21451.13.nupkg
+https://github.com/Thefrank/dotnet-freebsd-crossbuild/releases/download/v6.0.0-rc.1.21451.13/runtime.freebsd-x64.Microsoft.NETCore.ILDAsm.6.0.0-rc.1.21451.13.nupkg
+https://github.com/Thefrank/dotnet-freebsd-crossbuild/releases/download/v6.0.0-rc.1.21451.13/runtime.freebsd-x64.Microsoft.NETCore.ILAsm.6.0.0-rc.1.21451.13.nupkg
+https://github.com/Thefrank/dotnet-freebsd-crossbuild/releases/download/v6.0.0-rc.1.21451.13/runtime.freebsd-x64.Microsoft.NETCore.DotNetHostResolver.6.0.0-rc.1.21451.13.nupkg
+https://github.com/Thefrank/dotnet-freebsd-crossbuild/releases/download/v6.0.0-rc.1.21451.13/runtime.freebsd-x64.Microsoft.NETCore.DotNetHostPolicy.6.0.0-rc.1.21451.13.nupkg
+https://github.com/Thefrank/dotnet-freebsd-crossbuild/releases/download/v6.0.0-rc.1.21451.13/runtime.freebsd-x64.Microsoft.NETCore.DotNetHost.6.0.0-rc.1.21451.13.nupkg
+https://github.com/Thefrank/dotnet-freebsd-crossbuild/releases/download/v6.0.0-rc.1.21451.13/runtime.freebsd-x64.Microsoft.NETCore.DotNetAppHost.6.0.0-rc.1.21451.13.nupkg
+https://github.com/Thefrank/dotnet-freebsd-crossbuild/releases/download/v6.0.0-rc.1.21451.13/Microsoft.NETCore.App.Runtime.freebsd-x64.6.0.0-rc.1.21451.13.nupkg
+https://github.com/Thefrank/dotnet-freebsd-crossbuild/releases/download/v6.0.0-rc.1.21451.13/Microsoft.NETCore.App.Host.freebsd-x64.6.0.0-rc.1.21451.13.nupkg
+https://github.com/Thefrank/dotnet-freebsd-crossbuild/releases/download/v6.0.0-rc.1.21451.13/Microsoft.NETCore.App.Crossgen2.freebsd-x64.6.0.0-rc.1.21451.13.nupkg
+https://github.com/Thefrank/dotnet-freebsd-crossbuild/releases/download/v6.0.0-rc.1.21451.13/Microsoft.NETCore.App.Composite.6.0.0-rc.1.21451.13.nupkg
+https://github.com/Thefrank/dotnet-freebsd-crossbuild/releases/download/v6.0.0-rc.1.21451.13/Microsoft.AspNetCore.App.Runtime.freebsd-x64.6.0.0-rc.1.21452.15.nupkg

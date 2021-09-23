@@ -1,0 +1,42 @@
+diff --git a/src/redist/targets/GenerateBundledVersions.targets b/src/redist/targets/GenerateBundledVersions.targets
+index 21d035d9b..38e46ba5a 100644
+--- a/src/redist/targets/GenerateBundledVersions.targets
++++ b/src/redist/targets/GenerateBundledVersions.targets
+@@ -88,6 +88,7 @@
+           win-arm64;
+           win-x64;
+           win-x86;
++	  freebsd-x64;
+           " />
+ 
+       <NetCore31RuntimePackRids Include="@(NetCore30RuntimePackRids)"/>
+@@ -164,6 +165,7 @@
+         linux-x64;
+         linux-arm;
+         linux-arm64;
++	freebsd-x64;
+         " />
+ 
+       <Net50Crossgen2SupportedRids Include="linux-musl-x64;linux-x64;win-x64" />
+@@ -179,6 +181,7 @@
+           win-arm;
+           win-arm64;
+           win-x86;
++	  freebsd-x64;
+           " />
+ 
+       <Crossgen2SupportedRids Include="@(Net60Crossgen2SupportedRids)" />
+diff --git a/src/redist/targets/SetBuildDefaults.targets b/src/redist/targets/SetBuildDefaults.targets
+index eac457403..f01c618b1 100644
+--- a/src/redist/targets/SetBuildDefaults.targets
++++ b/src/redist/targets/SetBuildDefaults.targets
+@@ -20,9 +20,6 @@
+         AND '$(Rid)' != 'ubuntu.18.04-x64'">true</IncludeSharedFrameworksForBackwardsCompatibilityTests>-->
+       <HighEntropyVA>true</HighEntropyVA>
+ 
+-      <!-- There is no asp.net runtime available for freebsd at the moment. Once there is one, we can remove the line below -->
+-      <IncludeAspNetCoreRuntime Condition=" '$(IncludeAspNetCoreRuntime)' == '' AND $(Rid.StartsWith('freebsd'))">false</IncludeAspNetCoreRuntime>
+-
+       <!-- Only use asset target fallback that we set (not implicit one to net461). -->
+       <!--<DisableImplicitAssetTargetFallback>true</DisableImplicitAssetTargetFallback>-->
+ 

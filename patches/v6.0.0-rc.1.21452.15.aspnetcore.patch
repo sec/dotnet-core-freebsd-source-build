@@ -1,0 +1,128 @@
+diff --git a/eng/Dependencies.props b/eng/Dependencies.props
+index b78ad89a9e..43c29cd11d 100644
+--- a/eng/Dependencies.props
++++ b/eng/Dependencies.props
+@@ -98,6 +98,7 @@ and are generated based on the last package release.
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.linux-musl-x64" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.linux-musl-arm" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.linux-musl-arm64" />
++    <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.freebsd-x64" />
+ 
+     <!-- Crossgen2 compiler -->
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.osx-x64" />
+@@ -106,6 +107,7 @@ and are generated based on the last package release.
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.linux-x64" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.win-x64" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.win-arm64" />
++    <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.freebsd-x64" />
+   </ItemGroup>
+ 
+   <ItemGroup Label=".NET team dependencies (Non-source-build)" Condition="'$(DotNetBuildFromSource)' != 'true'">
+diff --git a/src/Components/Web.JS/src/webpack.config.js b/src/Components/Web.JS/src/webpack.config.js
+index b0651fa75c..210ff6a433 100644
+--- a/src/Components/Web.JS/src/webpack.config.js
++++ b/src/Components/Web.JS/src/webpack.config.js
+@@ -18,7 +18,7 @@ module.exports = (env, args) => ({
+     },
+     output: { path: path.join(__dirname, '/..', '/dist', args.mode == 'development' ? '/Debug' : '/Release'), filename: '[name].js' },
+     performance: {
+-        maxAssetSize: 122880,
++        maxAssetSize: 245760,
+     },
+     optimization: {
+         sideEffects: true,
+diff --git a/src/Razor/perf/Microbenchmarks/Microsoft.AspNetCore.Razor.Microbenchmarks.csproj b/src/Razor/perf/Microbenchmarks/Microsoft.AspNetCore.Razor.Microbenchmarks.csproj
+index 75bf91f96d..3035cf61c3 100644
+--- a/src/Razor/perf/Microbenchmarks/Microsoft.AspNetCore.Razor.Microbenchmarks.csproj
++++ b/src/Razor/perf/Microbenchmarks/Microsoft.AspNetCore.Razor.Microbenchmarks.csproj
+@@ -1,7 +1,7 @@
+ <Project Sdk="Microsoft.NET.Sdk">
+ 
+   <PropertyGroup>
+-    <TargetFramework>netcoreapp2.1</TargetFramework>
++    <TargetFramework>net6.0</TargetFramework>
+     <OutputType>Exe</OutputType>
+     <ServerGarbageCollection>true</ServerGarbageCollection>
+     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+diff --git a/src/Razor/tools/RazorSyntaxGenerator/RazorSyntaxGenerator.csproj b/src/Razor/tools/RazorSyntaxGenerator/RazorSyntaxGenerator.csproj
+index c9ec56f8d8..214a7e37b4 100644
+--- a/src/Razor/tools/RazorSyntaxGenerator/RazorSyntaxGenerator.csproj
++++ b/src/Razor/tools/RazorSyntaxGenerator/RazorSyntaxGenerator.csproj
+@@ -2,7 +2,7 @@
+ 
+   <PropertyGroup>
+     <Description>Generates Razor syntax nodes from xml. For internal use only.</Description>
+-    <TargetFramework>netcoreapp2.1</TargetFramework>
++    <TargetFramework>net6.0</TargetFramework>
+     <AssemblyName>dotnet-razorsyntaxgenerator</AssemblyName>
+     <PackageId>RazorSyntaxGenerator</PackageId>
+     <OutputType>Exe</OutputType>
+diff --git a/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.csproj b/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.csproj
+index 712fa8362b..cc1ce962b8 100644
+--- a/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.csproj
++++ b/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.csproj
+@@ -3,7 +3,7 @@
+ 
+   <PropertyGroup>
+     <!-- Included primarily to ensure dotnet-getdocument and GetDocument.Insider can be referenced. -->
+-    <TargetFrameworks>netcoreapp2.1;$(DefaultNetFxTargetFramework)</TargetFrameworks>
++    <TargetFrameworks>net6.0;$(DefaultNetFxTargetFramework)</TargetFrameworks>
+ 
+     <Description>MSBuild tasks and targets for build-time Swagger and OpenApi document generation</Description>
+     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+diff --git a/src/Tools/GetDocumentInsider/src/Commands/GetDocumentCommand.cs b/src/Tools/GetDocumentInsider/src/Commands/GetDocumentCommand.cs
+index d115e46c86..646a57ffa3 100644
+--- a/src/Tools/GetDocumentInsider/src/Commands/GetDocumentCommand.cs
++++ b/src/Tools/GetDocumentInsider/src/Commands/GetDocumentCommand.cs
+@@ -115,7 +115,7 @@ namespace Microsoft.Extensions.ApiDescription.Tool.Commands
+                 return Assembly.LoadFile(assemblyPath);
+             };
+ #else
+-#error Target frameworks need to be updated.
++
+ #endif
+ 
+             // Now safe to reference the application's code.
+diff --git a/src/Tools/GetDocumentInsider/src/GetDocument.Insider.csproj b/src/Tools/GetDocumentInsider/src/GetDocument.Insider.csproj
+index 323336d985..3a45c56589 100644
+--- a/src/Tools/GetDocumentInsider/src/GetDocument.Insider.csproj
++++ b/src/Tools/GetDocumentInsider/src/GetDocument.Insider.csproj
+@@ -5,7 +5,7 @@
+     <IsPackable>false</IsPackable>
+     <OutputType>Exe</OutputType>
+     <RootNamespace>Microsoft.Extensions.ApiDescription.Tool</RootNamespace>
+-    <TargetFrameworks>netcoreapp2.1;$(DefaultNetFxTargetFramework)</TargetFrameworks>
++    <TargetFrameworks>net6.0;$(DefaultNetFxTargetFramework)</TargetFrameworks>
+     <IsShippingPackage>false</IsShippingPackage>
+   </PropertyGroup>
+ 
+diff --git a/src/Tools/dotnet-getdocument/src/dotnet-getdocument.csproj b/src/Tools/dotnet-getdocument/src/dotnet-getdocument.csproj
+index 7bcdcbcd7a..da2e202231 100644
+--- a/src/Tools/dotnet-getdocument/src/dotnet-getdocument.csproj
++++ b/src/Tools/dotnet-getdocument/src/dotnet-getdocument.csproj
+@@ -5,7 +5,7 @@
+     <IsPackable>false</IsPackable>
+     <OutputType>Exe</OutputType>
+     <RootNamespace>Microsoft.Extensions.ApiDescription.Tool</RootNamespace>
+-    <TargetFramework>netcoreapp2.1</TargetFramework>
++    <TargetFramework>net6.0</TargetFramework>
+     <UseAppHost>false</UseAppHost>
+     <IsShippingPackage>false</IsShippingPackage>
+   </PropertyGroup>
+
+diff --git a/global.json b/global.json
+index ba4aeb2b82..10d75fb079 100644
+--- a/global.json
++++ b/global.json
+@@ -1,9 +1,9 @@
+ {
+   "sdk": {
+-    "version": "6.0.100-rc.1.21415.3"
++    "version": "6.0.100-rc.1.21458.32"
+   },
+   "tools": {
+-    "dotnet": "6.0.100-rc.1.21415.3",
++    "dotnet": "6.0.100-rc.1.21458.32",
+     "runtimes": {
+       "dotnet/x64": [
+         "2.1.27",

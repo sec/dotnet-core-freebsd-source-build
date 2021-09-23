@@ -16,7 +16,7 @@ Just a collection of script and patches put up into one place, to help getting a
 ## Requirments
 
 1. Working SDK for FreeBSD - at the moment it's using binaries from `https://github.com/Thefrank/dotnet-freebsd-crossbuild` created during crosscompile under Linux
-1. Tested under FreeBSD 12.2, should also work under 31
+1. Tested under FreeBSD 12.2, should also work under 13
 1. 8GB+ of RAM recommended (with 4GB I saw some parts crashing)
 
 ## Support

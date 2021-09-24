@@ -14,20 +14,23 @@ INSTALLERTAG="v6.0.100-rc.1.21458.32"
 
 if [ ! -f $SDKZIP ]; then
     echo "Downloading SDK for FreeBSD"
-    wget $SDKBIN --quiet -O $SDKZIP
+    fetch $SDKBIN --quiet -o $SDKZIP
 fi
 
 if [ ! -d nuget ]; then
     mkdir nuget
     cd nuget
-    wget --quiet -i ../nuget_list.txt
+    for x in `cat ../nuget_list.txt`
+    do
+        fetch --quiet $x
+    done
     cd ..
 fi
 
 if [ ! -d runtime ]; then
     git clone https://github.com/dotnet/runtime.git
     git -C runtime checkout $RUNTIMETAG
-    
+
     ./bsd_dotnet_install.sh $SDKZIP runtime
 
     runtime/.dotnet/dotnet nuget add source ../nuget --name local --configfile runtime/NuGet.config
@@ -57,8 +60,8 @@ if [ ! -d sdk ]; then
     git -C sdk checkout $SDKTAG
     cd sdk
     find . -name '*.sh' -type f | xargs sed -i '' 's/\#\!\/bin\/bash/\#\!\/usr\/bin\/env\ bash/'
-    cd ..
-    ./bsd_dotnet_install.sh $SDKZIP sdk
+        cd ..
+            ./bsd_dotnet_install.sh $SDKZIP sdk
 fi
 
 if [ ! -d installer ]; then
@@ -74,5 +77,5 @@ if [ ! -d installer ]; then
 
     cd installer
     find . -name '*.sh' -type f | xargs sed -i '' 's/\#\!\/bin\/bash/\#\!\/usr\/bin\/env\ bash/'
-    cd ..
+        cd ..
 fi

@@ -60,8 +60,8 @@ if [ ! -d sdk ]; then
     git -C sdk checkout $SDKTAG
     cd sdk
     find . -name '*.sh' -type f | xargs sed -i '' 's/\#\!\/bin\/bash/\#\!\/usr\/bin\/env\ bash/'
-        cd ..
-            ./bsd_dotnet_install.sh $SDKZIP sdk
+    cd ..
+    ./bsd_dotnet_install.sh $SDKZIP sdk
 fi
 
 if [ ! -d installer ]; then
@@ -77,5 +77,5 @@ if [ ! -d installer ]; then
 
     cd installer
     find . -name '*.sh' -type f | xargs sed -i '' 's/\#\!\/bin\/bash/\#\!\/usr\/bin\/env\ bash/'
-        cd ..
+    cd ..
 fi

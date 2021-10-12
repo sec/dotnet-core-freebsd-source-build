@@ -3,10 +3,9 @@
 SDKBIN="https://github.com/Thefrank/dotnet-freebsd-crossbuild/releases/download/v6.0.0-rc.1.21451.13/dotnet-sdk-6.0.100-rc.1.21458.32-freebsd-x64.tar.gz"
 SDKZIP="sdk.tgz"
 
-RUNTIMETAG="v6.0.0-rc.1.21451.13"
-ASPNETCORETAG="v6.0.0-rc.1.21452.15"
-SDKTAG="v6.0.100-rc.1.21458.71"
-INSTALLERTAG="v6.0.100-rc.1.21458.32"
+RUNTIMETAG="v6.0.0-rc.2.21480.5"
+ASPNETCORETAG="v6.0.0-rc.2.21480.10"
+INSTALLERTAG="v6.0.100-rc.2.21505.57"
 
 #needed for openjdk
 #mount -t fdescfs fdesc /dev/fd
@@ -53,15 +52,6 @@ if [ ! -d aspnetcore ]; then
     aspnetcore/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local --configfile aspnetcore/NuGet.config
 
     patch -d aspnetcore < patches/v6.0.0-rc.1.21452.15.aspnetcore.patch
-fi
-
-if [ ! -d sdk ]; then
-    git clone https://github.com/dotnet/sdk.git
-    git -C sdk checkout $SDKTAG
-    cd sdk
-    find . -name '*.sh' -type f | xargs sed -i '' 's/\#\!\/bin\/bash/\#\!\/usr\/bin\/env\ bash/'
-    cd ..
-    ./bsd_dotnet_install.sh $SDKZIP sdk
 fi
 
 if [ ! -d installer ]; then

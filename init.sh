@@ -6,6 +6,7 @@ SDKZIP="sdk.tgz"
 RUNTIMETAG="v6.0.0-rc.2.21480.5"
 ASPNETCORETAG="v6.0.0-rc.2.21480.10"
 INSTALLERTAG="v6.0.100-rc.2.21505.57"
+SDKTAG="v6.0.100-rc.2.21505.11"
 
 #needed for openjdk
 #mount -t fdescfs fdesc /dev/fd
@@ -66,6 +67,17 @@ if [ ! -d installer ]; then
     patch -d installer < patches/v6.0.100-rc.1.21458.32.installer.patch
 
     cd installer
+    find . -name '*.sh' -type f | xargs sed -i '' 's/\#\!\/bin\/bash/\#\!\/usr\/bin\/env\ bash/'
+    cd ..
+fi
+
+if [ ! -d sdk ]; then
+    git clone https://github.com/dotnet/sdk
+    git -C sdk checkout $SDKTAG
+
+    ./bsd_dotnet_install.sh $SDKZIP sdk
+
+    cd sdk
     find . -name '*.sh' -type f | xargs sed -i '' 's/\#\!\/bin\/bash/\#\!\/usr\/bin\/env\ bash/'
     cd ..
 fi

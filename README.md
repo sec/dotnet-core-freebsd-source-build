@@ -2,14 +2,16 @@
 
 Just a collection of script and patches put up into one place, to help getting automated builds.
 For `rc-1` check proper tag with that name.
-
-This is work in progress, no clean way to build rc-2 as of date of writing this (12.10.2021) - please check last link from this README for more details :)
+For common errors, look below.
 
 ## Usage
 
 1. Run as root `install_tools.sh`
 1. `init.sh`
 1. `build_runtime.sh`
+1. `build_sdk.sh`
+1. `build_installer_without_aspnet.sh`
+1. run `tar zxfv ../../installer/artifacts/packages/Release/Shipping/dotnet-sdk-6.0.100-rc.2.21505.57-freebsd-x64.tar.gz` inside `aspnetcore/.dotnet` to extract newly created SDK
 1. `build_aspnetcore.sh`
 1. `build_installer.sh`
 1. Get and use `installer/artifacts/packages/Release/Shipping/dotnet-sdk-6.0.100-rc.2.21505.57-freebsd-x64.tar.gz`

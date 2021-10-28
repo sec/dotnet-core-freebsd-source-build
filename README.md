@@ -18,6 +18,16 @@ This is work in progress, no clean way to build rc-2 as of date of writing this 
 
 NB: you can use output SDK as seed (instead of the one that was crosscompiled), move it here and rename to `sdk.tgz`
 
+## Errors
+
+If you get error like `The author primary signature validity period has expired` or `The repository countersignature validity period has expired`, this should fix it (run as root):
+```
+rm /usr/share/certs/blacklisted/VeriSign_Universal_Root_Certification_Authority.pem
+certctl rehash
+```
+
+More info about this [here](https://bugzilla.mozilla.org/show_bug.cgi?id=1686854)
+
 ## Requirments
 
 1. Working SDK for FreeBSD - at the moment it's using binaries from `https://github.com/Thefrank/dotnet-freebsd-crossbuild` created during crosscompile under Linux
@@ -26,4 +36,4 @@ NB: you can use output SDK as seed (instead of the one that was crosscompiled), 
 
 ## Support
 
-Go and read - https://github.com/dotnet/runtime/issues/14537
+Go and [read](https://github.com/dotnet/runtime/issues/14537)

@@ -1,6 +1,7 @@
-runtime/*
-aspnetcore/*
-sdk/*
-installer/*
-nuget/*
+runtime/
+aspnetcore/
+sdk/
+installer/
+nuget/
+output/
 sdk.tgz

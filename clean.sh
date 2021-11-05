@@ -6,3 +6,4 @@ rm -rf sdk/
 rm -rf installer/
 rm -rf nuget/
 rm -rf sdk.tgz
+rm -rf output/

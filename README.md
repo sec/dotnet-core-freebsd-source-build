@@ -1,20 +1,19 @@
-# Build .NET Core 6-rc2 under FreeBSD
+# Build .NET Core 6-RTM under FreeBSD
 
-Just a collection of script and patches put up into one place, to help getting automated builds.
-For `rc-1` check proper tag with that name.
-For common errors, look below.
+- Just a collection of script and patches put up into one place, to help getting automated builds.
+- For `rc-1` and `rc-2` check proper tag with that name.
+- For common errors, look below.
 
 ## Usage
 
 1. Run as root `install_tools.sh`
 1. `init.sh`
 1. `build_runtime.sh`
-1. `build_sdk.sh`
 1. `build_installer_without_aspnet.sh`
-1. run `tar zxfv ../../installer/artifacts/packages/Release/Shipping/dotnet-sdk-6.0.100-rc.2.21505.57-freebsd-x64.tar.gz` inside `aspnetcore/.dotnet` to extract newly created SDK
+1. run `tar zxfv ../../installer/artifacts/packages/Release/Shipping/dotnet-sdk-6.0.100-freebsd-x64.tar.gz` inside `aspnetcore/.dotnet` to extract newly created SDK
 1. `build_aspnetcore.sh`
 1. `build_installer.sh`
-1. Get and use `installer/artifacts/packages/Release/Shipping/dotnet-sdk-6.0.100-rc.2.21505.57-freebsd-x64.tar.gz`
+1. Get and use `installer/artifacts/packages/Release/Shipping/dotnet-sdk-6.0.100-freebsd-x64.tar.gz`
 1. `clean.sh` if you want to save disk space after use
 1. `gather_output.sh` to tar artifacts into one big file, for future use (doesn't make sense to compress this, as it contains compressed files already)
 
@@ -28,7 +27,10 @@ rm /usr/share/certs/blacklisted/VeriSign_Universal_Root_Certification_Authority.
 certctl rehash
 ```
 
+Don't do this on your production machine!
 More info about this [here](https://bugzilla.mozilla.org/show_bug.cgi?id=1686854)
+
+You can also download `https://dotnetcli.blob.core.windows.net/dotnet/Sdk/6.0.100-rtm.21527.8/dotnet-toolset-internal-6.0.100-rtm.21527.8.zip` to `installer/artifacts/obj/redist/Release/downloads/dotnet-toolset-internal-6.0.100-rtm.21527.8.zip` - as this step sometime fail also during build.
 
 ## Requirments
 
@@ -38,5 +40,5 @@ More info about this [here](https://bugzilla.mozilla.org/show_bug.cgi?id=1686854
 
 ## Support
 
-Go and [read](https://github.com/dotnet/runtime/issues/14537)
-List of cherry picked changes needed [listed here](https://github.com/dotnet/runtime/issues/14537#issuecomment-926352045)
+- Go and [read](https://github.com/dotnet/runtime/issues/14537)
+- List of cherry picked changes needed [listed here](https://github.com/dotnet/runtime/issues/14537#issuecomment-926352045)

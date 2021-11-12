@@ -23,7 +23,7 @@ NB: you can use output SDK as seed (instead of the one that was crosscompiled), 
 
 If you get error like `The author primary signature validity period has expired` or `The repository countersignature validity period has expired`, this should fix it (run as root):
 ```
-rm /usr/share/certs/blacklisted/VeriSign_Universal_Root_Certification_Authority.pem
+mv /usr/share/certs/blacklisted/VeriSign_Universal_Root_Certification_Authority.pem /usr/share/certs/trusted
 certctl rehash
 ```
 

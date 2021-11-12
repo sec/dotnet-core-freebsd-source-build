@@ -1,4 +1,4 @@
-# Build .NET Core 6-RTM under FreeBSD
+# Build .NET Core 6 under FreeBSD
 
 - Just a collection of script and patches put up into one place, to help getting automated builds.
 - For `rc-1` and `rc-2` check proper tag with that name.

@@ -5,8 +5,8 @@ SDKZIP="sdk.tgz"
 
 RUNTIMETAG="v6.0.0"
 ASPNETCORETAG="v6.0.0"
-INSTALLERTAG="v6.0.100-rtm.21527.11"
-SDKTAG="v6.0.100-rtm.21527.8"
+INSTALLERTAG="v6.0.100"
+SDKTAG="v6.0.100"
 
 #needed for openjdk
 #mount -t fdescfs fdesc /dev/fd

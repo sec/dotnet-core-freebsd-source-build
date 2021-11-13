@@ -45,6 +45,6 @@ You can also download `https://dotnetcli.blob.core.windows.net/dotnet/Sdk/6.0.10
 
 ## Ready builds, credits, etc
 
-- Check releases (issue me if someting's broken or missing)
+- Check [releases](https://github.com/sec/dotnet-core-freebsd-source-build/releases) (issue me if someting's broken or missing)
 - [Crossbuild](https://github.com/Thefrank/dotnet-freebsd-crossbuild) and [native builds](https://github.com/Thefrank/dotnet-freebsd-native-binaries)
 - [Azure pipeline](https://github.com/Servarr/dotnet-bsd)

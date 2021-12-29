@@ -1,7 +1,7 @@
 # Build .NET Core 6 under FreeBSD
 
 - Just a collection of script and patches put up into one place, to help getting automated builds.
-- For `rc-1` and `rc-2` check proper tag with that name.
+- For `rc-1`, `rc-2`, `6.0.100` check proper tag with that name.
 - For common errors, look below.
 
 ## Usage
@@ -10,10 +10,10 @@
 1. `init.sh`
 1. `build_runtime.sh`
 1. `build_installer_without_aspnet.sh`
-1. run `tar zxfv ../../installer/artifacts/packages/Release/Shipping/dotnet-sdk-6.0.100-freebsd-x64.tar.gz` inside `aspnetcore/.dotnet` to extract newly created SDK
+1. run `tar zxfv ../../installer/artifacts/packages/Release/Shipping/dotnet-sdk-6.0.101-freebsd-x64.tar.gz` inside `aspnetcore/.dotnet` to extract newly created SDK
 1. `build_aspnetcore.sh`
 1. `build_installer.sh`
-1. Get and use `installer/artifacts/packages/Release/Shipping/dotnet-sdk-6.0.100-freebsd-x64.tar.gz`
+1. Get and use `installer/artifacts/packages/Release/Shipping/dotnet-sdk-6.0.101-freebsd-x64.tar.gz`
 1. `clean.sh` if you want to save disk space after use
 1. `gather_output.sh` to tar artifacts into one big file, for future use (doesn't make sense to compress this, as it contains compressed files already)
 

@@ -9,4 +9,4 @@ if [ ! -f installer/artifacts/obj/redist/Release/downloads/dotnet-toolset-intern
         wget https://dotnetcli.blob.core.windows.net/dotnet/Sdk/6.0.101-servicing.21569.16/dotnet-toolset-internal-6.0.101-servicing.21569.16.zip -O installer/artifacts/obj/redist/Release/downloads/dotnet-toolset-internal-6.0.101-servicing.21569.16.zip
 fi
 
-installer/build.sh -c Release -ci -pack --runtime-id freebsd-x64 /p:OSName=freebsd /p:OfficialBuildId=20211229.99 -v d
+installer/build.sh -c Release -ci -pack --runtime-id freebsd-x64 /p:OSName=freebsd /p:OfficialBuildId=20211229.99

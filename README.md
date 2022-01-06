@@ -35,6 +35,7 @@ More info about this [here](https://bugzilla.mozilla.org/show_bug.cgi?id=1686854
 1. Working SDK for FreeBSD - at the moment it's using binaries from `https://github.com/Thefrank/dotnet-freebsd-crossbuild` created during crosscompile under Linux
 1. Tested under FreeBSD 12.2, 12.3 and 13.0-STABLE/RELEASE
 1. 8GB+ of RAM recommended (with 4GB I saw some parts crashing)
+1. To run built SDK `pkg install libunwind icu libinotify` should be enough
 
 ## Support
 

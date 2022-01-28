@@ -41,6 +41,7 @@ if [ ! -d runtime ]; then
     # 3c63559029276fea97633ea6115bcb9acb2cffe2
 
     patch -d runtime < patches/v6.0.0-rc.1.21451.13.runtime.patch
+    patch -d runtime < patches/runtime_disable_lttng.patch
 fi
 
 if [ ! -d aspnetcore ]; then

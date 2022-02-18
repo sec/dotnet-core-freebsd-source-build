@@ -1,7 +1,7 @@
 # Build .NET Core 6 under FreeBSD
 
 - Just a collection of script and patches put up into one place, to help getting automated builds.
-- For `rc-1`, `rc-2`, `6.0.100` check proper tag with that name.
+- For other versions, check proper tag with that name.
 - For common errors, look below.
 
 ## Usage
@@ -27,7 +27,8 @@ mv /usr/share/certs/blacklisted/VeriSign_Universal_Root_Certification_Authority.
 certctl rehash
 ```
 
-Don't do this on your production machine!
+*Don't do this on your production machine!*
+
 More info about this [here](https://bugzilla.mozilla.org/show_bug.cgi?id=1686854)
 
 ## Requirments

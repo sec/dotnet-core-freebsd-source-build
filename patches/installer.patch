@@ -1,8 +1,27 @@
+diff --git a/NuGet.config b/NuGet.config
+index d2a6d621d..8bf6c8b70 100644
+--- a/NuGet.config
++++ b/NuGet.config
+@@ -1,4 +1,4 @@
+-<?xml version="1.0" encoding="utf-8"?>
++<?xml version="1.0" encoding="utf-8"?>
+ <configuration>
+   <solution>
+     <add key="disableSourceControlIntegration" value="true" />
+@@ -19,6 +19,8 @@
+     <add key="dotnet-libraries" value="https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-libraries/nuget/v3/index.json" />
+     <!-- Temporary feed for Xamarin workload manifest -->
+     <add key="xamarin" value="https://pkgs.dev.azure.com/azure-public/vside/_packaging/xamarin-impl/nuget/v3/index.json" />
++    <add key="local1" value="../runtime/artifacts/packages/Release/Shipping/" />
++    <add key="local2" value="../aspnetcore/artifacts/packages/Release/Shipping/" />
+   </packageSources>
+   <disabledPackageSources>
+     <!--Begin: Package sources managed by Dependency Flow automation. Do not edit the sources below.-->
 diff --git a/src/redist/targets/GenerateBundledVersions.targets b/src/redist/targets/GenerateBundledVersions.targets
-index 21d035d9b..38e46ba5a 100644
+index 304e3e258..f811c739e 100644
 --- a/src/redist/targets/GenerateBundledVersions.targets
 +++ b/src/redist/targets/GenerateBundledVersions.targets
-@@ -88,6 +88,7 @@
+@@ -96,6 +96,7 @@
            win-arm64;
            win-x64;
            win-x86;
@@ -10,15 +29,19 @@ index 21d035d9b..38e46ba5a 100644
            " />
  
        <NetCore31RuntimePackRids Include="@(NetCore30RuntimePackRids)"/>
-@@ -164,6 +165,7 @@
+@@ -174,9 +175,10 @@
          linux-x64;
          linux-arm;
          linux-arm64;
 +	freebsd-x64;
          " />
  
-       <Net50Crossgen2SupportedRids Include="linux-musl-x64;linux-x64;win-x64" />
-@@ -179,6 +181,7 @@
+-      <Net50Crossgen2SupportedRids Include="linux-musl-x64;linux-x64;win-x64" />
++      <Net50Crossgen2SupportedRids Include="linux-musl-x64;linux-x64;win-x64;freebsd-x64;" />
+ 
+       <Net60Crossgen2SupportedRids Include="
+           @(Net50Crossgen2SupportedRids);
+@@ -189,6 +191,7 @@
            win-arm;
            win-arm64;
            win-x86;
@@ -39,15 +62,4 @@ index eac457403..f01c618b1 100644
 -
        <!-- Only use asset target fallback that we set (not implicit one to net461). -->
        <!--<DisableImplicitAssetTargetFallback>true</DisableImplicitAssetTargetFallback>-->
-
-diff --git a/build.sh b/build.sh
-index 594a355fa..ae575963a 100755
---- a/build.sh
-+++ b/build.sh
-@@ -55,5 +55,5 @@ if [ ! -z "$BUILD_IN_DOCKER" ]; then
- else
-     # Run under sudo so we can set ulimit
-     # See https://github.com/dotnet/core-eng/issues/14808
--    sudo -E $DIR/run-build.sh $args
-+    $DIR/run-build.sh $args
- fi
+ 

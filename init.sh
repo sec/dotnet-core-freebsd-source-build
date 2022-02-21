@@ -3,10 +3,10 @@
 SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.102/dotnet-sdk-6.0.102-freebsd-x64.tar.gz"
 SDKZIP="sdk.tgz"
 
-RUNTIMETAG="v6.0.2"
-ASPNETCORETAG="v6.0.2"
-INSTALLERTAG="v6.0.200"
-SDKTAG="v6.0.200"
+RUNTIMETAG="v7.0.0-preview.1.22076.8"
+ASPNETCORETAG="v7.0.0-preview.1.22109.13"
+INSTALLERTAG="v7.0.100-preview.1.22110.4"
+SDKTAG="v7.0.100-preview.1.22110.5"
 
 #needed for openjdk
 #mount -t fdescfs fdesc /dev/fd
@@ -35,13 +35,7 @@ if [ ! -d runtime ]; then
 
     runtime/.dotnet/dotnet nuget add source ../nuget --name local --configfile runtime/NuGet.config
 
-    # either cherrypick + extra patch or one patch for all
-    # 3633a7d0930abaca701385c1059b80ca157e98c6
-    # 3e6d492bdf6fbf2d8af3871379f31dcc6e27716b
-    # 3c63559029276fea97633ea6115bcb9acb2cffe2
-
-    patch -d runtime < patches/v6.0.0-rc.1.21451.13.runtime.patch
-    patch -d runtime < patches/runtime_disable_lttng.patch
+    patch -d runtime < patches/runtime_versions.patch
 fi
 
 if [ ! -d aspnetcore ]; then
@@ -53,7 +47,7 @@ if [ ! -d aspnetcore ]; then
 
     aspnetcore/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local --configfile aspnetcore/NuGet.config
 
-    patch -d aspnetcore < patches/v6.0.0-rc.1.21452.15.aspnetcore.patch
+    patch -d aspnetcore < patches/aspnetcore.patch
 fi
 
 if [ ! -d installer ]; then
@@ -65,11 +59,7 @@ if [ ! -d installer ]; then
     installer/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local1 --configfile installer/NuGet.config
     installer/.dotnet/dotnet nuget add source ../aspnetcore/artifacts/packages/Release/Shipping/ --name local2 --configfile installer/NuGet.config
 
-    patch -d installer < patches/v6.0.100-rc.1.21458.32.installer.patch
-
-    cd installer
-    find . -name '*.sh' -type f | xargs sed -i '' 's/\#\!\/bin\/bash/\#\!\/usr\/bin\/env\ bash/'
-    cd ..
+    patch -d installer < patches/installer.patch
 fi
 
 if [ ! -d sdk ]; then
@@ -77,8 +67,4 @@ if [ ! -d sdk ]; then
     git -C sdk checkout $SDKTAG
 
     ./bsd_dotnet_install.sh $SDKZIP sdk
-
-    cd sdk
-    find . -name '*.sh' -type f | xargs sed -i '' 's/\#\!\/bin\/bash/\#\!\/usr\/bin\/env\ bash/'
-    cd ..
 fi

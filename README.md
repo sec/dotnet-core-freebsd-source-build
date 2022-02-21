@@ -10,10 +10,10 @@
 1. `init.sh`
 1. `build_runtime.sh`
 1. (try to skip this and goto `build_aspnetcore.sh`) `build_installer_without_aspnet.sh`
-1. run `tar zxfv ../../installer/artifacts/packages/Release/Shipping/dotnet-sdk-6.0.101-freebsd-x64.tar.gz` inside `aspnetcore/.dotnet` to extract newly created SDK
+1. (try to skip this and goto `build_aspnetcore.sh`) run `tar zxfv ../../installer/artifacts/packages/Release/Shipping/dotnet-sdk-6.0.101-freebsd-x64.tar.gz` inside `aspnetcore/.dotnet` to extract newly created SDK
 1. `build_aspnetcore.sh`
 1. `build_installer.sh`
-1. Get and use `installer/artifacts/packages/Release/Shipping/dotnet-sdk-6.0.101-freebsd-x64.tar.gz`
+1. Get and use `installer/artifacts/packages/Release/Shipping/dotnet-sdk-*-freebsd-x64.tar.gz`
 1. `clean.sh` if you want to save disk space after use
 1. `gather_output.sh` to tar artifacts into one big file, for future use (doesn't make sense to compress this, as it contains compressed files already)
 
@@ -34,7 +34,7 @@ More info about this [here](https://bugzilla.mozilla.org/show_bug.cgi?id=1686854
 ## Requirments
 
 1. Working SDK for FreeBSD - at the moment it's using binaries from `https://github.com/Thefrank/dotnet-freebsd-crossbuild` created during crosscompile under Linux
-1. Tested under FreeBSD 12.2, 12.3 and 13.0-STABLE/RELEASE
+1. Tested under FreeBSD 12.3 and 13.0-STABLE/RELEASE
 1. 8GB+ of RAM recommended (with 4GB I saw some parts crashing)
 1. To run built SDK `pkg install libunwind icu libinotify` should be enough
 

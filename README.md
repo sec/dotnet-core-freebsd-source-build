@@ -1,4 +1,4 @@
-# Build .NET Core 6 under FreeBSD
+# Build .NET Core 7 under FreeBSD
 
 - Just a collection of script and patches put up into one place, to help getting automated builds.
 - For other versions, check proper tag with that name.

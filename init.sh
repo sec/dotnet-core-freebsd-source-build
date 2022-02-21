@@ -46,6 +46,7 @@ if [ ! -d aspnetcore ]; then
     ./bsd_dotnet_install.sh $SDKZIP aspnetcore
 
     aspnetcore/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local --configfile aspnetcore/NuGet.config
+	aspnetcore/.dotnet/dotnet nuget add source ../nuget --name local2 --configfile aspnetcore/NuGet.config
 
     patch -d aspnetcore < patches/aspnetcore.patch
 fi

@@ -8,10 +8,10 @@
 
 1. Run as root `install_tools.sh`
 1. `init.sh`
-1. `build_runtime.sh`
+1. `build_runtime.sh` - add `-v d` inside if it will fail with SEHExceptions...
 1. (try to skip this and goto `build_aspnetcore.sh`) `build_installer_without_aspnet.sh`
 1. (try to skip this and goto `build_aspnetcore.sh`) run `tar zxfv ../../installer/artifacts/packages/Release/Shipping/dotnet-sdk-6.0.101-freebsd-x64.tar.gz` inside `aspnetcore/.dotnet` to extract newly created SDK
-1. `build_aspnetcore.sh`
+1. `build_aspnetcore.sh` - as for now, this one need v7 SDK - grab one and do `./bsd_dotnet_install.sh sdk7.tgz aspnetcore/`
 1. `build_installer.sh`
 1. Get and use `installer/artifacts/packages/Release/Shipping/dotnet-sdk-*-freebsd-x64.tar.gz`
 1. `clean.sh` if you want to save disk space after use

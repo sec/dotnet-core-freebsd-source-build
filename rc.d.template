@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# PROVIDE: service
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+# https://docs.freebsd.org/en/articles/rc-scripting/
+# https://unix.stackexchange.com/questions/503150/rc-scripts-for-multiple-zope-instances-in-freebsd
+# https://redbyte.eu/en/blog/supervised-freebsd-init-script-for-go-deamon/
+
+. /etc/rc.subr
+
+name=service
+
+rcvar="${name}_enable"
+pidfile="/var/run/${name}.pid"
+service_chdir="/usr/local/www/${name}"
+
+command="/usr/sbin/daemon"
+command_args="-t ${name} -S -f -r -P ${pidfile} ./service --urls=http://127.0.0.1:4002"
+
+load_rc_config $name
+run_rc_command "$1"

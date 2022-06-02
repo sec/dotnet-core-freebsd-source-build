@@ -6,13 +6,13 @@
 
 ## Usage
 
-1. Run as root `install_tools.sh`
+1. Run as root `install_tools.sh` - make sure to mount all needed things (add them to /etc/fstab, then mount -a)
 1. `init.sh`
 1. `build_runtime.sh` - add `-v d` inside if it will fail with SEHExceptions...
 1. (try to skip this and goto `build_aspnetcore.sh`) `build_installer_without_aspnet.sh`
 1. (try to skip this and goto `build_aspnetcore.sh`) run `tar zxfv ../../installer/artifacts/packages/Release/Shipping/dotnet-sdk-6.0.101-freebsd-x64.tar.gz` inside `aspnetcore/.dotnet` to extract newly created SDK
 1. `build_aspnetcore.sh` - as for now, this one need v7 SDK - grab one and do `./bsd_dotnet_install.sh sdk7.tgz aspnetcore/`
-1. `build_installer.sh`
+1. `build_installer.sh` - this one also need v7 SDK - do the same as above. Add `-v d` inside build script if it will fail, check the logs (maybe download some zips by hand, as this is common fail)
 1. Get and use `installer/artifacts/packages/Release/Shipping/dotnet-sdk-*-freebsd-x64.tar.gz`
 1. `clean.sh` if you want to save disk space after use
 1. `gather_output.sh` to tar artifacts into one big file, for future use (doesn't make sense to compress this, as it contains compressed files already)

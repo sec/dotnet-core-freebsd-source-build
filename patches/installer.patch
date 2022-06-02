@@ -1,22 +1,3 @@
-diff --git a/NuGet.config b/NuGet.config
-index d2a6d621d..8bf6c8b70 100644
---- a/NuGet.config
-+++ b/NuGet.config
-@@ -1,4 +1,4 @@
--<?xml version="1.0" encoding="utf-8"?>
-+<?xml version="1.0" encoding="utf-8"?>
- <configuration>
-   <solution>
-     <add key="disableSourceControlIntegration" value="true" />
-@@ -19,6 +19,8 @@
-     <add key="dotnet-libraries" value="https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-libraries/nuget/v3/index.json" />
-     <!-- Temporary feed for Xamarin workload manifest -->
-     <add key="xamarin" value="https://pkgs.dev.azure.com/azure-public/vside/_packaging/xamarin-impl/nuget/v3/index.json" />
-+    <add key="local1" value="../runtime/artifacts/packages/Release/Shipping/" />
-+    <add key="local2" value="../aspnetcore/artifacts/packages/Release/Shipping/" />
-   </packageSources>
-   <disabledPackageSources>
-     <!--Begin: Package sources managed by Dependency Flow automation. Do not edit the sources below.-->
 diff --git a/src/redist/targets/GenerateBundledVersions.targets b/src/redist/targets/GenerateBundledVersions.targets
 index 304e3e258..f811c739e 100644
 --- a/src/redist/targets/GenerateBundledVersions.targets

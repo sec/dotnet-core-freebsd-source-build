@@ -1,15 +1,15 @@
 diff --git a/global.json b/global.json
-index 05ed9cd7fa..693c16ecdf 100644
+index 30a17d2cce..6219efb3d5 100644
 --- a/global.json
 +++ b/global.json
 @@ -1,9 +1,9 @@
  {
    "sdk": {
--    "version": "6.0.103"
+-    "version": "6.0.104"
 +    "version": "6.0.201"
    },
    "tools": {
--    "dotnet": "6.0.103",
+-    "dotnet": "6.0.104",
 +    "dotnet": "6.0.201",
      "runtimes": {
        "dotnet/x64": [

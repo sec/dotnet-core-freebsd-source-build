@@ -1,12 +1,14 @@
 #!/bin/sh
 
-SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.202/dotnet-sdk-6.0.202-freebsd-x64.tar.gz"
+SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-preview.4/dotnet-sdk-7.0.100-preview.4.22252.9-freebsd-x64.tar.gz"
 SDKZIP="sdk.tgz"
 
-RUNTIMETAG="v7.0.0-preview.4.22229.4"
-ASPNETCORETAG="v7.0.0-preview.4.22251.1"
-INSTALLERTAG="v7.0.100-preview.4.22252.9"
-SDKTAG="v7.0.100-preview.4.22252.4"
+PKGS="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-preview.4/native-packages-7.0.100.preview.4-freebsd-x64.tar"
+
+RUNTIMETAG="v7.0.0-preview.5.22301.12"
+ASPNETCORETAG="v7.0.0-preview.5.22303.8"
+INSTALLERTAG="v7.0.100-preview.5.22307.18"
+SDKTAG="v7.0.100-preview.5.22307.7"
 
 #needed for openjdk
 #mount -t fdescfs fdesc /dev/fd
@@ -24,6 +26,9 @@ if [ ! -d nuget ]; then
     do
         fetch --quiet $x
     done
+    fetch $PKGS --quiet -o temp.tar
+    tar xf temp.tar
+    rm temp.tar
     cd ..
 fi
 
@@ -36,6 +41,7 @@ if [ ! -d runtime ]; then
     runtime/.dotnet/dotnet nuget add source ../nuget --name local --configfile runtime/NuGet.config
 
     patch -d runtime < patches/runtime_versions.patch
+    patch -d runtime < patches/runtime_crossgen2.patch
 fi
 
 if [ ! -d aspnetcore ]; then
@@ -62,8 +68,6 @@ if [ ! -d installer ]; then
 
     patch -d installer < patches/installer.patch
 fi
-
-exit
 
 if [ ! -d sdk ]; then
     git clone https://github.com/dotnet/sdk

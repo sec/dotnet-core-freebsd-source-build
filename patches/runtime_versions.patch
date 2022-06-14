@@ -1,19 +1,19 @@
 diff --git a/eng/Versions.props b/eng/Versions.props
-index 63a6ef6627f..f4fbc072af1 100644
+index 9453847bc30..ea54dc5d0b3 100644
 --- a/eng/Versions.props
 +++ b/eng/Versions.props
 @@ -73,11 +73,11 @@
      <NuGetBuildTasksPackVersion>6.0.0-preview.1.102</NuGetBuildTasksPackVersion>
      <!-- Installer dependencies -->
-     <MicrosoftNETCoreAppRuntimewinx64Version>7.0.0-preview.4.22208.8</MicrosoftNETCoreAppRuntimewinx64Version>
--    <MicrosoftNETCoreDotNetHostVersion>7.0.0-preview.4.22208.8</MicrosoftNETCoreDotNetHostVersion>
--    <MicrosoftNETCoreDotNetHostPolicyVersion>7.0.0-preview.4.22208.8</MicrosoftNETCoreDotNetHostPolicyVersion>
-+    <MicrosoftNETCoreDotNetHostVersion>6.0.2</MicrosoftNETCoreDotNetHostVersion>
-+    <MicrosoftNETCoreDotNetHostPolicyVersion>6.0.2</MicrosoftNETCoreDotNetHostPolicyVersion>
+     <MicrosoftNETCoreAppRuntimewinx64Version>7.0.0-preview.5.22272.3</MicrosoftNETCoreAppRuntimewinx64Version>
+-    <MicrosoftNETCoreDotNetHostVersion>7.0.0-preview.5.22272.3</MicrosoftNETCoreDotNetHostVersion>
+-    <MicrosoftNETCoreDotNetHostPolicyVersion>7.0.0-preview.5.22272.3</MicrosoftNETCoreDotNetHostPolicyVersion>
++    <MicrosoftNETCoreDotNetHostVersion>7.0.0-preview.4.22229.4</MicrosoftNETCoreDotNetHostVersion>
++    <MicrosoftNETCoreDotNetHostPolicyVersion>7.0.0-preview.4.22229.4</MicrosoftNETCoreDotNetHostPolicyVersion>
      <MicrosoftExtensionsDependencyModelVersion>3.1.0</MicrosoftExtensionsDependencyModelVersion>
      <!-- CoreClr dependencies -->
--    <MicrosoftNETCoreILAsmVersion>7.0.0-preview.4.22208.8</MicrosoftNETCoreILAsmVersion>
-+    <MicrosoftNETCoreILAsmVersion>6.0.2-servicing.22117.99</MicrosoftNETCoreILAsmVersion>
-     <runtimelinuxarm64MicrosoftNETCoreRuntimeObjWriterVersion>1.0.0-alpha.1.22204.1</runtimelinuxarm64MicrosoftNETCoreRuntimeObjWriterVersion>
-     <runtimelinuxx64MicrosoftNETCoreRuntimeObjWriterVersion>1.0.0-alpha.1.22204.1</runtimelinuxx64MicrosoftNETCoreRuntimeObjWriterVersion>
-     <runtimelinuxmuslarm64MicrosoftNETCoreRuntimeObjWriterVersion>1.0.0-alpha.1.22204.1</runtimelinuxmuslarm64MicrosoftNETCoreRuntimeObjWriterVersion>
+-    <MicrosoftNETCoreILAsmVersion>7.0.0-preview.5.22272.3</MicrosoftNETCoreILAsmVersion>
++    <MicrosoftNETCoreILAsmVersion>7.0.0-preview.4.22229.4</MicrosoftNETCoreILAsmVersion>
+     <runtimelinuxarm64MicrosoftNETCoreRuntimeObjWriterVersion>1.0.0-alpha.1.22252.1</runtimelinuxarm64MicrosoftNETCoreRuntimeObjWriterVersion>
+     <runtimelinuxx64MicrosoftNETCoreRuntimeObjWriterVersion>1.0.0-alpha.1.22252.1</runtimelinuxx64MicrosoftNETCoreRuntimeObjWriterVersion>
+     <runtimelinuxmuslarm64MicrosoftNETCoreRuntimeObjWriterVersion>1.0.0-alpha.1.22252.1</runtimelinuxmuslarm64MicrosoftNETCoreRuntimeObjWriterVersion>

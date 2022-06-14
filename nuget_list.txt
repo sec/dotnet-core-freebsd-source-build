@@ -1,7 +1,1 @@
-https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.102/runtime.freebsd-x64.Microsoft.NETCore.ILDAsm.6.0.2-servicing.22117.99.nupkg
-https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.102/runtime.freebsd-x64.Microsoft.NETCore.ILAsm.6.0.2-servicing.22117.99.nupkg
-https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.102/runtime.freebsd-x64.Microsoft.NETCore.DotNetHostResolver.6.0.2.nupkg
-https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.102/runtime.freebsd-x64.Microsoft.NETCore.DotNetHostPolicy.6.0.2.nupkg
-https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.102/runtime.freebsd-x64.Microsoft.NETCore.DotNetHost.6.0.2.nupkg
-https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.102/runtime.freebsd-x64.Microsoft.NETCore.DotNetAppHost.6.0.2.nupkg
-https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.101/Microsoft.NETCore.App.Host.freebsd-x64.6.0.1.nupkg
+https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.202/Microsoft.NETCore.App.Host.freebsd-x64.6.0.4.nupkg

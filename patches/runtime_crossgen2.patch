@@ -1,0 +1,13 @@
+diff --git a/src/installer/pkg/sfx/Microsoft.NETCore.App/Microsoft.NETCore.App.Crossgen2.sfxproj b/src/installer/pkg/sfx/Microsoft.NETCore.App/Microsoft.NETCore.App.Crossgen2.sfxproj
+index 2e0ef08ec34..4c843dd9084 100644
+--- a/src/installer/pkg/sfx/Microsoft.NETCore.App/Microsoft.NETCore.App.Crossgen2.sfxproj
++++ b/src/installer/pkg/sfx/Microsoft.NETCore.App/Microsoft.NETCore.App.Crossgen2.sfxproj
+@@ -4,7 +4,7 @@
+ 
+   <PropertyGroup>
+     <!-- Crossgen is not used for Mono, and does not currently create freebsd packages -->
+-    <SkipBuild Condition="'$(RuntimeFlavor)' == 'Mono' or '$(RuntimeIdentifier)' == 'freebsd-x64'">true</SkipBuild>
++    <SkipBuild Condition="'$(RuntimeFlavor)' == 'Mono' or '$(RuntimeIdentifier)' == 'Xfreebsd-x64'">true</SkipBuild>
+     <PlatformPackageType>ToolPack</PlatformPackageType>
+     <SharedFrameworkName>$(SharedFrameworkName).Crossgen2</SharedFrameworkName>
+     <PgoSuffix Condition="'$(PgoInstrument)' != ''">.PGO</PgoSuffix>

@@ -9,5 +9,6 @@ cp sdk/artifacts/packages/Release/NonShipping/dotnet-toolset-internal-*.zip inst
 # fetch dotnet-toolset-internal-7.0.100-preview.1.22110.5.zip by hand if fail ?
 # 20220329.4 - v7.0.100-preview.3.22179.4
 # 20220502.9 - preview.4
+# 20220607.18 - preview.5
 
-installer/build.sh -c Release -ci -pack --runtime-id freebsd-x64 /p:OSName=freebsd /p:OfficialBuildId=20220502.9 -v d
+installer/build.sh -c Release -ci -pack --runtime-id freebsd-x64 /p:OSName=freebsd /p:OfficialBuildId=20220607.18 -v d

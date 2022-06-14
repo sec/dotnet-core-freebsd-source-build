@@ -55,6 +55,7 @@ if [ ! -d aspnetcore ]; then
     aspnetcore/.dotnet/dotnet nuget add source ../nuget --name local2 --configfile aspnetcore/NuGet.config
 
     patch -d aspnetcore < patches/aspnetcore.patch
+    patch -d aspnetcore < patches/aspnetcore_2.patch
 fi
 
 if [ ! -d installer ]; then

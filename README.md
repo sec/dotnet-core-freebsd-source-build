@@ -31,6 +31,8 @@ certctl rehash
 
 More info about this [here](https://bugzilla.mozilla.org/show_bug.cgi?id=1686854)
 
+- build may fail with SEHException - if you're on VM, try to limit CPU count to 1
+
 ## Requirments
 
 1. Working SDK for FreeBSD - at the moment it's using binaries from `https://github.com/Thefrank/dotnet-freebsd-crossbuild` created during crosscompile under Linux

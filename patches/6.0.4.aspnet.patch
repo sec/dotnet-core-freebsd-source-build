@@ -1,37 +1,16 @@
 diff --git a/global.json b/global.json
-index 30a17d2cce..6219efb3d5 100644
+index 538e11d2fc..f0e6d008a6 100644
 --- a/global.json
 +++ b/global.json
 @@ -1,9 +1,9 @@
  {
    "sdk": {
--    "version": "6.0.104"
+-    "version": "6.0.105"
 +    "version": "6.0.201"
    },
    "tools": {
--    "dotnet": "6.0.104",
+-    "dotnet": "6.0.105",
 +    "dotnet": "6.0.201",
      "runtimes": {
        "dotnet/x64": [
          "2.1.30",
-diff --git a/src/Hosting/Hosting/src/Internal/WebHost.cs b/src/Hosting/Hosting/src/Internal/WebHost.cs
-index ca52bd1f40..97f0e6a5b7 100644
---- a/src/Hosting/Hosting/src/Internal/WebHost.cs
-+++ b/src/Hosting/Hosting/src/Internal/WebHost.cs
-@@ -81,12 +81,12 @@ namespace Microsoft.AspNetCore.Hosting
-             // There's no way to to register multiple service types per definition. See https://github.com/aspnet/DependencyInjection/issues/360
- #pragma warning disable CS8634 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'class' constraint.
-             _applicationServiceCollection.AddSingleton(services
--                => services.GetService<ApplicationLifetime>() as IHostApplicationLifetime);
-+                => services.GetService<ApplicationLifetime>() as IHostApplicationLifetime!);
- #pragma warning disable CS0618 // Type or member is obsolete
-             _applicationServiceCollection.AddSingleton(services
--                => services.GetService<ApplicationLifetime>() as AspNetCore.Hosting.IApplicationLifetime);
-+                => services.GetService<ApplicationLifetime>() as AspNetCore.Hosting.IApplicationLifetime!);
-             _applicationServiceCollection.AddSingleton(services
--                => services.GetService<ApplicationLifetime>() as Extensions.Hosting.IApplicationLifetime);
-+                => services.GetService<ApplicationLifetime>() as Extensions.Hosting.IApplicationLifetime!);
- #pragma warning restore CS0618 // Type or member is obsolete
- #pragma warning restore CS8634 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'class' constraint.
-             _applicationServiceCollection.AddSingleton<HostedServiceExecutor>();
-

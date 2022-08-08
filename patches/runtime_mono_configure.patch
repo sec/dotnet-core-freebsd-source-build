@@ -1,0 +1,13 @@
+diff --git a/src/mono/cmake/configure.cmake b/src/mono/cmake/configure.cmake
+index 51cb315d6dc..f2c7258dadb 100644
+--- a/src/mono/cmake/configure.cmake
++++ b/src/mono/cmake/configure.cmake
+@@ -156,7 +156,7 @@ check_c_source_compiles(
+   #include <sched.h>
+   int main(void)
+   {
+-    CPU_COUNT((void *) 0);
++    CPU_COUNT((cpuset_t *) 0);
+     return 0;
+   }
+   "

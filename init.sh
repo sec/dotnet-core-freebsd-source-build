@@ -1,14 +1,14 @@
 #!/bin/sh
 
-SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-preview.4/dotnet-sdk-7.0.100-preview.4.22252.9-freebsd-x64.tar.gz"
+SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-preview.5/dotnet-sdk-7.0.100-preview.5.22307.18-freebsd-x64.tar.gz"
 SDKZIP="sdk.tgz"
 
 PKGS="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-preview.4/native-packages-7.0.100.preview.4-freebsd-x64.tar"
 
-RUNTIMETAG="v7.0.0-preview.5.22301.12"
-ASPNETCORETAG="v7.0.0-preview.5.22303.8"
-INSTALLERTAG="v7.0.100-preview.5.22307.18"
-SDKTAG="v7.0.100-preview.5.22307.7"
+RUNTIMETAG="v7.0.0-preview.6.22324.4"
+ASPNETCORETAG="v7.0.0-preview.6.22330.3"
+INSTALLERTAG="v7.0.100-preview.6.22352.1"
+SDKTAG="v7.0.100-preview.6.22351.13"
 
 #needed for openjdk
 #mount -t fdescfs fdesc /dev/fd
@@ -42,6 +42,7 @@ if [ ! -d runtime ]; then
 
     patch -d runtime < patches/runtime_versions.patch
     patch -d runtime < patches/runtime_crossgen2.patch
+    patch -d runtime < patches/runtime_mono_configure.patch
 fi
 
 if [ ! -d aspnetcore ]; then

@@ -3,10 +3,10 @@
 SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.201/dotnet-sdk-6.0.201-freebsd-x64.tar.gz"
 SDKZIP="sdk.tgz"
 
-RUNTIMETAG="v6.0.6"
-ASPNETCORETAG="v6.0.6"
-INSTALLERTAG="v6.0.301"
-SDKTAG="v6.0.301"
+RUNTIMETAG="v6.0.7"
+ASPNETCORETAG="v6.0.7"
+INSTALLERTAG="v6.0.302"
+SDKTAG="v6.0.302"
 
 #needed for openjdk
 #mount -t fdescfs fdesc /dev/fd
@@ -44,6 +44,7 @@ if [ ! -d runtime ]; then
 
     patch -d runtime < patches/v6.0.0-rc.1.21451.13.runtime.patch
     patch -d runtime < patches/runtime_disable_lttng.patch
+    patch -d runtime < patches/runtime_mono_configure.patch
 fi
 
 if [ ! -d aspnetcore ]; then

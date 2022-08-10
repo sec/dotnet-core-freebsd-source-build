@@ -5,11 +5,11 @@ index 538e11d2fc..f0e6d008a6 100644
 @@ -1,9 +1,9 @@
  {
    "sdk": {
--    "version": "6.0.106"
+-    "version": "6.0.107"
 +    "version": "6.0.201"
    },
    "tools": {
--    "dotnet": "6.0.106",
+-    "dotnet": "6.0.107",
 +    "dotnet": "6.0.201",
      "runtimes": {
        "dotnet/x64": [

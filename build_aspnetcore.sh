@@ -14,4 +14,4 @@ setenv PROTOBUF_TOOLS_OS linux
 
 service linux onestart
 
-aspnetcore/eng/build.sh -ci --os-name freebsd -pack -c Release --all /p:OfficialBuildId=20220630.3
+aspnetcore/eng/build.sh -ci --os-name freebsd -pack -c Release --all /p:TreatWarningsAsErrors=false /p:OfficialBuildId=20220726.6

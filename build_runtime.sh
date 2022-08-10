@@ -5,4 +5,4 @@
 # 20220429.4 - runtime - preview.4
 # 20220601.12 - preview.5
 
-runtime/build.sh --warnAsError false /p:OfficialBuildId=20220624.4 -ci -c Release
+runtime/build.sh --warnAsError false /p:OfficialBuildId=20220725.6 -ci -c Release

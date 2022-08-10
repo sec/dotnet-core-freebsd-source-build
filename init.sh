@@ -5,10 +5,10 @@ SDKZIP="sdk.tgz"
 
 PKGS="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-preview.4/native-packages-7.0.100.preview.4-freebsd-x64.tar"
 
-RUNTIMETAG="v7.0.0-preview.6.22324.4"
-ASPNETCORETAG="v7.0.0-preview.6.22330.3"
-INSTALLERTAG="v7.0.100-preview.6.22352.1"
-SDKTAG="v7.0.100-preview.6.22351.13"
+RUNTIMETAG="v7.0.0-preview.7.22375.6"
+ASPNETCORETAG="v7.0.0-preview.7.22376.6"
+INSTALLERTAG="v7.0.100-preview.7.22377.5"
+SDKTAG="v7.0.100-preview.7.22377.7"
 
 #needed for openjdk
 #mount -t fdescfs fdesc /dev/fd
@@ -57,6 +57,8 @@ if [ ! -d aspnetcore ]; then
 
     patch -d aspnetcore < patches/aspnetcore.patch
     patch -d aspnetcore < patches/aspnetcore_2.patch
+
+    cp patches/aspnet.editorconfig aspnetcore/src/.editorconfig
 fi
 
 if [ ! -d installer ]; then

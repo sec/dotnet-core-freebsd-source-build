@@ -1,0 +1,2 @@
+root = true
+dotnet_diagnostic.CA1305.severity = none

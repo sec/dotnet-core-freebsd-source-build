@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 
@@ -24,3 +24,5 @@ function calculate_build_id()
     fi
     echo $OFFICIALBUILDID
 }
+
+calculate_build_id $1

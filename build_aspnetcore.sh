@@ -9,6 +9,6 @@ setenv PROTOBUF_TOOLS_OS linux
 
 service linux onestart
 
-TAG=`cat aspnetcore.tag`
+setenv TAG `cat aspnetcore.tag`
 
 aspnetcore/eng/build.sh -ci --os-name freebsd -pack -c Release --all /p:TreatWarningsAsErrors=false /p:OfficialBuildId=`./common.sh $TAG`

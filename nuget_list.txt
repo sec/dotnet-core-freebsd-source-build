@@ -5,3 +5,5 @@ https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.10
 https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.300/Microsoft.NETCore.App.Host.freebsd-x64.6.0.5.nupkg
 https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.302/runtime.freebsd-x64.Microsoft.NETCore.DotNetAppHost.6.0.7.nupkg
 https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.302/Microsoft.NETCore.App.Host.freebsd-x64.6.0.7.nupkg
+https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.301/Microsoft.NETCore.App.Host.freebsd-x64.6.0.6.nupkg
+https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.301/runtime.freebsd-x64.Microsoft.NETCore.DotNetAppHost.6.0.6.nupkg

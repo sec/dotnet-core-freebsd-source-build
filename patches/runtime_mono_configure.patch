@@ -11,13 +11,3 @@ index d27fc520120..e3bb423af75 100644
  )
  try_compile(GLIBC_HAS_CPU_COUNT ${CMAKE_BINARY_DIR}/CMakeTmp SOURCES "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/test.c"
      COMPILE_DEFINITIONS "-D_GNU_SOURCE")
-@@ -191,3 +191,9 @@ if(HOST_SOLARIS)
-   set(HAVE_NETINET_TCP_H 1)
-   set(HAVE_GETADDRINFO 1)
- endif()
-+
-+if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
-+  # FreeBSD fails earlier ac_check_headers for these because <sys/types.h> is needed.
-+  set(HAVE_SYS_SYSCTL_H 1)
-+  set(HAVE_SYS_USER_H 1)
-+endif()

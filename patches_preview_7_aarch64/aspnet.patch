@@ -1,0 +1,62 @@
+diff --git a/NuGet.config b/NuGet.config
+index d27ff9ced1..46a72d024c 100644
+--- a/NuGet.config
++++ b/NuGet.config
+@@ -16,6 +16,7 @@
+     <add key="dotnet31-transport" value="https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet3.1-transport/nuget/v3/index.json" />
+     <!-- Used for the Rich Navigation indexing task -->
+     <add key="richnav" value="https://pkgs.dev.azure.com/azure-public/vside/_packaging/vs-buildservices/nuget/v3/index.json" />
++	<add key="local" value="/home/linux/runtime/artifacts/packages/Release/Shipping" />
+   </packageSources>
+   <disabledPackageSources>
+     <clear />
+diff --git a/eng/Dependencies.props b/eng/Dependencies.props
+index c22eecb7bf..8a36e33681 100644
+--- a/eng/Dependencies.props
++++ b/eng/Dependencies.props
+@@ -105,6 +105,7 @@ and are generated based on the last package release.
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.linux-musl-arm" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.linux-musl-arm64" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.freebsd-x64" />
++    <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.freebsd-arm64" />
+ 
+     <!-- Crossgen2 compiler -->
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.osx-x64" />
+@@ -120,6 +121,7 @@ and are generated based on the last package release.
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.win-arm" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.win-arm64" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.freebsd-x64" />
++    <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.freebsd-arm64" />
+   </ItemGroup>
+ 
+   <ItemGroup Label=".NET team dependencies (Non-source-build)" Condition="'$(DotNetBuildFromSource)' != 'true'">
+diff --git a/src/FileProviders/Embedded/src/CompatibilitySuppressions.xml b/src/FileProviders/Embedded/src/CompatibilitySuppressions.xml
+index fa12ab27fb..497fe4f436 100644
+--- a/src/FileProviders/Embedded/src/CompatibilitySuppressions.xml
++++ b/src/FileProviders/Embedded/src/CompatibilitySuppressions.xml
+@@ -8,4 +8,24 @@
+     <DiagnosticId>CP1002</DiagnosticId>
+     <Target>SMDiagnostics.dll</Target>
+   </Suppression>
++  <Suppression>
++    <DiagnosticId>CP1003</DiagnosticId>
++    <Target>lib/net6.0/Microsoft.Extensions.FileProviders.Embedded.dll</Target>
++  </Suppression>
++  <Suppression>
++    <DiagnosticId>CP1003</DiagnosticId>
++    <Target>lib/net461/Microsoft.Extensions.FileProviders.Embedded.dll</Target>
++  </Suppression>
++  <Suppression>
++    <DiagnosticId>CP0003</DiagnosticId>
++    <Target>Microsoft.Extensions.FileProviders.Embedded, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60</Target>
++    <Left>lib/netstandard2.0/Microsoft.Extensions.FileProviders.Embedded.dll</Left>
++    <Right>lib/net6.0/Microsoft.Extensions.FileProviders.Embedded.dll</Right>
++  </Suppression>
++  <Suppression>
++    <DiagnosticId>CP0003</DiagnosticId>
++    <Target>Microsoft.Extensions.FileProviders.Embedded, Version=6.0.8.0, Culture=neutral, PublicKeyToken=adb9793829ddae60</Target>
++    <Left>lib/netstandard2.0/Microsoft.Extensions.FileProviders.Embedded.dll</Left>
++    <Right>lib/net461/Microsoft.Extensions.FileProviders.Embedded.dll</Right>
++  </Suppression>
+ </Suppressions>
+\ No newline at end of file

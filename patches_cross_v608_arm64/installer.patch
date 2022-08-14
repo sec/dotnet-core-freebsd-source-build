@@ -1,0 +1,68 @@
+diff --git a/NuGet.config b/NuGet.config
+index b7ec3e5c7..7731e787a 100644
+--- a/NuGet.config
++++ b/NuGet.config
+@@ -36,6 +36,8 @@
+     <add key="dotnet-libraries" value="https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-libraries/nuget/v3/index.json" />
+     <!-- Temporary feed for Xamarin workload manifest -->
+     <add key="xamarin" value="https://pkgs.dev.azure.com/azure-public/vside/_packaging/xamarin-impl/nuget/v3/index.json" />
++    <add key="local1" value="/home/linux/runtime/artifacts/packages/Release/Shipping"/>
++    <add key="local2" value="/home/linux/aspnetcore/artifacts/packages/Release/Shipping"/>
+   </packageSources>
+   <disabledPackageSources>
+     <!--Begin: Package sources managed by Dependency Flow automation. Do not edit the sources below.-->
+diff --git a/src/redist/targets/GenerateBundledVersions.targets b/src/redist/targets/GenerateBundledVersions.targets
+index 6fd052fb0..8721299ed 100644
+--- a/src/redist/targets/GenerateBundledVersions.targets
++++ b/src/redist/targets/GenerateBundledVersions.targets
+@@ -88,6 +88,7 @@
+           win-arm64;
+           win-x64;
+           win-x86;
++	  freebsd-arm64;
+           " />
+ 
+       <NetCore31RuntimePackRids Include="@(NetCore30RuntimePackRids)"/>
+@@ -166,6 +167,7 @@
+         linux-x64;
+         linux-arm;
+         linux-arm64;
++	freebsd-arm64;
+         " />
+ 
+       <Net50Crossgen2SupportedRids Include="linux-musl-x64;linux-x64;win-x64" />
+@@ -181,6 +183,7 @@
+           win-arm;
+           win-arm64;
+           win-x86;
++	  freebsd-arm64;
+           " />
+ 
+       <Crossgen2SupportedRids Include="@(Net60Crossgen2SupportedRids)" />
+diff --git a/src/redist/targets/GetRuntimeInformation.targets b/src/redist/targets/GetRuntimeInformation.targets
+index a99a7e9da..2e269cfa0 100644
+--- a/src/redist/targets/GetRuntimeInformation.targets
++++ b/src/redist/targets/GetRuntimeInformation.targets
+@@ -4,7 +4,7 @@
+       <HostRid Condition="'$(HostRid)' == '' and '$(MSBuildRuntimeType)' == 'core'">$([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier)</HostRid>
+       <HostRid Condition="'$(HostRid)' == '' and '$(MSBuildRuntimeType)' != 'core'">win-$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLowerInvariant)</HostRid>
+ 
+-      <IsLinux Condition = " $([MSBuild]::IsOSPlatform('LINUX')) ">True</IsLinux>
++      <IsLinux Condition = " $([MSBuild]::IsOSPlatform('LINUX')) AND ('$(OSName)' == '' OR '$(OSName)' == 'linux') ">True</IsLinux>
+       <HostOSName Condition=" '$(HostOSName)' == '' AND $([MSBuild]::IsOSPlatform('WINDOWS')) ">win</HostOSName>
+       <HostOSName Condition=" '$(HostOSName)' == '' AND $([MSBuild]::IsOSPlatform('OSX')) ">osx</HostOSName>
+       <HostOSName Condition=" '$(HostOSName)' == '' AND $([MSBuild]::IsOSPlatform('FREEBSD')) ">freebsd</HostOSName>
+diff --git a/src/redist/targets/SetBuildDefaults.targets b/src/redist/targets/SetBuildDefaults.targets
+index eac457403..f01c618b1 100644
+--- a/src/redist/targets/SetBuildDefaults.targets
++++ b/src/redist/targets/SetBuildDefaults.targets
+@@ -20,9 +20,6 @@
+         AND '$(Rid)' != 'ubuntu.18.04-x64'">true</IncludeSharedFrameworksForBackwardsCompatibilityTests>-->
+       <HighEntropyVA>true</HighEntropyVA>
+ 
+-      <!-- There is no asp.net runtime available for freebsd at the moment. Once there is one, we can remove the line below -->
+-      <IncludeAspNetCoreRuntime Condition=" '$(IncludeAspNetCoreRuntime)' == '' AND $(Rid.StartsWith('freebsd'))">false</IncludeAspNetCoreRuntime>
+-
+       <!-- Only use asset target fallback that we set (not implicit one to net461). -->
+       <!--<DisableImplicitAssetTargetFallback>true</DisableImplicitAssetTargetFallback>-->
+ 

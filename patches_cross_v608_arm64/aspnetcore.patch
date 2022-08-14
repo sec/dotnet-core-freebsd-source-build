@@ -1,0 +1,32 @@
+diff --git a/NuGet.config b/NuGet.config
+index 0057e5ff39..f245f4336b 100644
+--- a/NuGet.config
++++ b/NuGet.config
+@@ -22,6 +22,7 @@
+     <add key="dotnet31-transport" value="https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet3.1-transport/nuget/v3/index.json" />
+     <!-- Used for the Rich Navigation indexing task -->
+     <add key="richnav" value="https://pkgs.dev.azure.com/azure-public/vside/_packaging/vs-buildservices/nuget/v3/index.json" />
++	<add key="local" value="/home/linux/runtime/artifacts/packages/Release/Shipping" />
+   </packageSources>
+   <disabledPackageSources>
+     <clear />
+diff --git a/eng/Dependencies.props b/eng/Dependencies.props
+index 75c41177ff..731af032d2 100644
+--- a/eng/Dependencies.props
++++ b/eng/Dependencies.props
+@@ -95,6 +95,7 @@ and are generated based on the last package release.
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.linux-musl-x64" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.linux-musl-arm" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.linux-musl-arm64" />
++    <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.freebsd-arm64" />
+ 
+     <!-- Crossgen2 compiler -->
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.osx-x64" />
+@@ -109,6 +110,7 @@ and are generated based on the last package release.
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.win-x86" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.win-arm" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.win-arm64" />
++    <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.freebsd-arm64" />
+   </ItemGroup>
+ 
+   <ItemGroup Label=".NET team dependencies (Non-source-build)" Condition="'$(DotNetBuildFromSource)' != 'true'">

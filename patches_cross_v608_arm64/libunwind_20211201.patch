@@ -1,0 +1,10 @@
+--- src/aarch64/Gis_signal_frame.c.org  2022-08-11 17:31:35.350740000 +0000
++++ src/aarch64/Gis_signal_frame.c      2022-08-11 17:31:24.211242000 +0000
+@@ -59,6 +59,6 @@
+   return 1;
+
+ #else
+-  return -UNW_ENOINFO;
++  return 0;
+ #endif
+ }

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-preview.5/dotnet-sdk-7.0.100-preview.5.22307.18-freebsd-x64.tar.gz"
+SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-preview.7/dotnet-sdk-7.0.100-preview.7.22377.5-freebsd-x64.tar.gz"
 SDKZIP="sdk.tgz"
 
 PKGS="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-preview.4/native-packages-7.0.100.preview.4-freebsd-x64.tar"

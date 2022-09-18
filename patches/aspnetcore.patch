@@ -5,12 +5,12 @@ index c5686c0222..f8c8135511 100644
 @@ -1,9 +1,9 @@
  {
    "sdk": {
--    "version": "7.0.100-preview.5.22263.22"
-+    "version": "7.0.100-preview.4.22252.9"
+-    "version": "7.0.100-rc.1.22375.2"
++    "version": "7.0.100-preview.7.22377.5"
    },
    "tools": {
--    "dotnet": "7.0.100-preview.5.22263.22",
-+    "dotnet": "7.0.100-preview.4.22252.9",
+-    "dotnet": "7.0.100-rc.1.22375.2",
++    "dotnet": "7.0.100-preview.7.22377.5",
      "runtimes": {
        "dotnet/x86": [
          "$(MicrosoftNETCoreBrowserDebugHostTransportVersion)"

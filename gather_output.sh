@@ -8,4 +8,4 @@ cp installer/artifacts/packages/Release/Shipping/* output/
 
 rm output/*.symbols.nupkg
 
-tar --create --file dotnet-sdk-7.0.100.preview.6-freebsd-x64-full.tar -C output .
+tar --create --file dotnet-sdk-7.0.100.rc.1-freebsd-x64-full.tar -C output .

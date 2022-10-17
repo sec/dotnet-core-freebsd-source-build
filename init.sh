@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-preview.7/dotnet-sdk-7.0.100-preview.7.22377.5-freebsd-x64.tar.gz"
+SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-rc.1/dotnet-sdk-7.0.100-rc.1.22431.12-freebsd-x64.tar.gz"
 SDKZIP="sdk.tgz"
 
 PKGS="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-preview.4/native-packages-7.0.100.preview.4-freebsd-x64.tar"
@@ -56,7 +56,6 @@ if [ ! -d aspnetcore ]; then
     aspnetcore/.dotnet/dotnet nuget add source ../nuget --name local2 --configfile aspnetcore/NuGet.config
 
     patch -d aspnetcore < patches/aspnetcore.patch
-    patch -d aspnetcore < patches/aspnetcore_2.patch
 
     cp patches/aspnet.editorconfig aspnetcore/src/.editorconfig
 fi

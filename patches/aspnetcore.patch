@@ -1,37 +1,21 @@
-diff --git a/global.json b/global.json
-index c5686c0222..f8c8135511 100644
---- a/global.json
-+++ b/global.json
-@@ -1,9 +1,9 @@
- {
-   "sdk": {
--    "version": "7.0.100-rc.1.22375.2"
-+    "version": "7.0.100-preview.7.22377.5"
-   },
-   "tools": {
--    "dotnet": "7.0.100-rc.1.22375.2",
-+    "dotnet": "7.0.100-preview.7.22377.5",
-     "runtimes": {
-       "dotnet/x86": [
-         "$(MicrosoftNETCoreBrowserDebugHostTransportVersion)"
 diff --git a/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.csproj b/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.csproj
-index 38a3f2a347..4695630fc7 100644
+index 2db57db253..88306bafd0 100644
 --- a/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.csproj
 +++ b/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.csproj
 @@ -3,7 +3,7 @@
  
    <PropertyGroup>
      <!-- Included primarily to ensure dotnet-getdocument and GetDocument.Insider can be referenced. -->
--    <TargetFrameworks>netcoreapp2.1;$(DefaultNetFxTargetFramework)</TargetFrameworks>
-+    <TargetFrameworks>net6.0;$(DefaultNetFxTargetFramework)</TargetFrameworks>
+-    <TargetFrameworks>netcoreapp2.1;$(DefaultNetCoreTargetFramework);$(DefaultNetFxTargetFramework)</TargetFrameworks>
++    <TargetFrameworks>net6.0;$(DefaultNetCoreTargetFramework);$(DefaultNetFxTargetFramework)</TargetFrameworks>
  
      <Description>MSBuild tasks and targets for build-time Swagger and OpenApi document generation</Description>
      <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
 diff --git a/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.nuspec b/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.nuspec
-index f9c41332cb..59c9ac9a9b 100644
+index ae66fa3765..3dec366579 100644
 --- a/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.nuspec
 +++ b/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.nuspec
-@@ -8,9 +8,9 @@
+@@ -8,10 +8,10 @@
      $CommonFileElements$
      <file src="build\*" target="build" />
      <file src="buildMultiTargeting\*" target="buildMultiTargeting" />
@@ -41,13 +25,14 @@ index f9c41332cb..59c9ac9a9b 100644
      <file src="$artifactsBinDir$\GetDocument.Insider\x86\$configuration$\net462\*.*" target="tools\net462-x86" />
 -    <file src="$artifactsBinDir$\GetDocument.Insider\$configuration$\netcoreapp2.1\publish\*.*" target="tools\netcoreapp2.1" />
 +    <file src="$artifactsBinDir$\GetDocument.Insider\$configuration$\net6.0\*.*" target="tools\netcoreapp2.1" />
+     <file src="$artifactsBinDir$\GetDocument.Insider\$configuration$\net7.0\publish\*.*" target="tools\net7.0" />
    </files>
  </package>
 diff --git a/src/Tools/GetDocumentInsider/src/Commands/GetDocumentCommand.cs b/src/Tools/GetDocumentInsider/src/Commands/GetDocumentCommand.cs
-index e834b3665f..d0eec1f027 100644
+index 26ef4958c3..0c66696065 100644
 --- a/src/Tools/GetDocumentInsider/src/Commands/GetDocumentCommand.cs
 +++ b/src/Tools/GetDocumentInsider/src/Commands/GetDocumentCommand.cs
-@@ -115,7 +115,6 @@ internal class GetDocumentCommand : ProjectCommandBase
+@@ -115,7 +115,6 @@ internal sealed class GetDocumentCommand : ProjectCommandBase
              return Assembly.LoadFile(assemblyPath);
          };
  #else
@@ -56,28 +41,28 @@ index e834b3665f..d0eec1f027 100644
  
          // Now safe to reference the application's code.
 diff --git a/src/Tools/GetDocumentInsider/src/GetDocument.Insider.csproj b/src/Tools/GetDocumentInsider/src/GetDocument.Insider.csproj
-index 323336d985..3a45c56589 100644
+index f16e884f76..dca997aa33 100644
 --- a/src/Tools/GetDocumentInsider/src/GetDocument.Insider.csproj
 +++ b/src/Tools/GetDocumentInsider/src/GetDocument.Insider.csproj
 @@ -5,7 +5,7 @@
      <IsPackable>false</IsPackable>
      <OutputType>Exe</OutputType>
      <RootNamespace>Microsoft.Extensions.ApiDescription.Tool</RootNamespace>
--    <TargetFrameworks>netcoreapp2.1;$(DefaultNetFxTargetFramework)</TargetFrameworks>
-+    <TargetFrameworks>net6.0;$(DefaultNetFxTargetFramework)</TargetFrameworks>
+-    <TargetFrameworks>netcoreapp2.1;$(DefaultNetCoreTargetFramework);$(DefaultNetFxTargetFramework)</TargetFrameworks>
++    <TargetFrameworks>net6.0;$(DefaultNetCoreTargetFramework);$(DefaultNetFxTargetFramework)</TargetFrameworks>
      <IsShippingPackage>false</IsShippingPackage>
-   </PropertyGroup>
- 
+     <Nullable>disable</Nullable>
+     <NoWarn>$(NoWarn);nullable</NoWarn>
 diff --git a/src/Tools/dotnet-getdocument/src/dotnet-getdocument.csproj b/src/Tools/dotnet-getdocument/src/dotnet-getdocument.csproj
-index 7bcdcbcd7a..da2e202231 100644
+index 3b37a5ea78..c2a00a9ece 100644
 --- a/src/Tools/dotnet-getdocument/src/dotnet-getdocument.csproj
 +++ b/src/Tools/dotnet-getdocument/src/dotnet-getdocument.csproj
 @@ -5,7 +5,7 @@
      <IsPackable>false</IsPackable>
      <OutputType>Exe</OutputType>
      <RootNamespace>Microsoft.Extensions.ApiDescription.Tool</RootNamespace>
--    <TargetFramework>netcoreapp2.1</TargetFramework>
-+    <TargetFramework>net6.0</TargetFramework>
+-    <TargetFrameworks>netcoreapp2.1;$(DefaultNetCoreTargetFramework)</TargetFrameworks>
++    <TargetFrameworks>net6.0;$(DefaultNetCoreTargetFramework)</TargetFrameworks>
      <UseAppHost>false</UseAppHost>
      <IsShippingPackage>false</IsShippingPackage>
    </PropertyGroup>

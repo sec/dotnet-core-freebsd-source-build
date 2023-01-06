@@ -1,0 +1,620 @@
+diff --git a/eng/native/configurecompiler.cmake b/eng/native/configurecompiler.cmake
+index d9443ce6ddf..8c0df7d2f6f 100644
+--- a/eng/native/configurecompiler.cmake
++++ b/eng/native/configurecompiler.cmake
+@@ -285,7 +285,13 @@ if (CLR_CMAKE_HOST_UNIX)
+       clr_unknown_arch()
+     endif()
+   elseif(CLR_CMAKE_HOST_FREEBSD)
+-    message("Detected FreeBSD amd64")
++    if(CLR_CMAKE_HOST_UNIX_ARM64)
++      message("Detected FreeBSD aarch64")
++    elseif(CLR_CMAKE_HOST_UNIX_AMD64)
++      message("Detected FreeBSD amd64")
++    else()
++      message(FATAL_ERROR "Unsupported FreeBSD architecture")
++    endif()
+   elseif(CLR_CMAKE_HOST_NETBSD)
+     message("Detected NetBSD amd64")
+   elseif(CLR_CMAKE_HOST_SUNOS)
+diff --git a/eng/native/configureplatform.cmake b/eng/native/configureplatform.cmake
+index c849c592174..bd1e36a0b08 100644
+--- a/eng/native/configureplatform.cmake
++++ b/eng/native/configureplatform.cmake
+@@ -162,7 +162,13 @@ endif(CLR_CMAKE_HOST_OS STREQUAL Android)
+ 
+ if(CLR_CMAKE_HOST_OS STREQUAL FreeBSD)
+     set(CLR_CMAKE_HOST_UNIX 1)
+-    set(CLR_CMAKE_HOST_UNIX_AMD64 1)
++    if (CMAKE_SYSTEM_PROCESSOR STREQUAL amd64 OR CMAKE_SYSTEM_PROCESSOR STREQUAL x86_64)
++        set(CLR_CMAKE_HOST_UNIX_AMD64 1)
++    elseif (CMAKE_SYSTEM_PROCESSOR STREQUAL aarch64 OR CMAKE_SYSTEM_PROCESSOR STREQUAL arm64)
++        set(CLR_CMAKE_HOST_UNIX_ARM64 1)
++    else()
++        clr_unknown_arch()
++    endif()
+     set(CLR_CMAKE_HOST_FREEBSD 1)
+ endif(CLR_CMAKE_HOST_OS STREQUAL FreeBSD)
+ 
+diff --git a/src/coreclr/crossgen-corelib.proj b/src/coreclr/crossgen-corelib.proj
+index 804e8c0c21f..02ff1c2594a 100644
+--- a/src/coreclr/crossgen-corelib.proj
++++ b/src/coreclr/crossgen-corelib.proj
+@@ -84,6 +84,7 @@
+       <CrossGenDllCmd>$(CrossGenDllCmd) -o:$(CoreLibOutputPath)</CrossGenDllCmd>
+       <CrossGenDllCmd>$(CrossGenDllCmd) -r:$([MSBuild]::NormalizePath('$(BinDir)', 'IL', '*.dll'))</CrossGenDllCmd>
+       <CrossGenDllCmd>$(CrossGenDllCmd) --targetarch:$(TargetArchitecture)</CrossGenDllCmd>
++      <CrossGenDllCmd>$(CrossGenDllCmd) --targetos:$(TargetOS)</CrossGenDllCmd>
+       <CrossGenDllCmd Condition="'$(UsingToolIbcOptimization)' != 'true' and '$(EnableNgenOptimization)' == 'true'">$(CrossGenDllCmd) -m:$(MergedMibcPath) --embed-pgo-data</CrossGenDllCmd>
+       <CrossGenDllCmd>$(CrossGenDllCmd) -O</CrossGenDllCmd>
+       <CrossGenDllCmd  Condition="'$(Configuration)' == 'Debug' or '$(Configuration)' == 'Checked'">$(CrossGenDllCmd) --verify-type-and-field-layout</CrossGenDllCmd>
+diff --git a/src/coreclr/inc/crosscomp.h b/src/coreclr/inc/crosscomp.h
+index 4be28673efd..7353e8cc6b7 100644
+--- a/src/coreclr/inc/crosscomp.h
++++ b/src/coreclr/inc/crosscomp.h
+@@ -551,6 +551,8 @@ typedef struct _T_KNONVOLATILE_CONTEXT_POINTERS {
+ #define DAC_CS_NATIVE_DATA_SIZE 12
+ #elif defined(TARGET_FREEBSD) && defined(TARGET_AMD64)
+ #define DAC_CS_NATIVE_DATA_SIZE 24
++#elif defined(TARGET_FREEBSD) && defined(TARGET_ARM64)
++#define DAC_CS_NATIVE_DATA_SIZE 24
+ #elif defined(TARGET_LINUX) && defined(TARGET_ARM)
+ #define DAC_CS_NATIVE_DATA_SIZE 80
+ #elif defined(TARGET_LINUX) && defined(TARGET_ARM64)
+diff --git a/src/coreclr/nativeaot/BuildIntegration/Microsoft.NETCore.Native.targets b/src/coreclr/nativeaot/BuildIntegration/Microsoft.NETCore.Native.targets
+index a44c06a0433..135743c7b6d 100755
+--- a/src/coreclr/nativeaot/BuildIntegration/Microsoft.NETCore.Native.targets
++++ b/src/coreclr/nativeaot/BuildIntegration/Microsoft.NETCore.Native.targets
+@@ -214,6 +214,7 @@ The .NET Foundation licenses this file to you under the MIT license.
+       <IlcArg Include="@(MibcFile->'--mibc:%(Identity)')" />
+       <IlcArg Condition="$(IlcGenerateMetadataLog) == 'true'" Include="--metadatalog:$(NativeIntermediateOutputPath)%(ManagedBinary.Filename).metadata.csv" />
+       <IlcArg Condition="$(TargetArchitecture) != ''" Include="--targetarch:$(TargetArchitecture)" />
++      <IlcArg Condition="$(TargetOS) != ''" Include="--targetos:$(TargetOS)" />
+       <IlcArg Condition="$(IlcMultiModule) == 'true'" Include="--multifile" />
+       <IlcArg Condition="$(IlcMultiModule) != 'true' and '$(IlcDehydrate)' != 'false' and '$(ControlFlowGuard)' != 'Guard'" Include="--dehydrate" />
+       <IlcArg Condition="$(Optimize) == 'true'" Include="-O" />
+diff --git a/src/coreclr/pal/inc/pal.h b/src/coreclr/pal/inc/pal.h
+index e1c48f78f64..6ba4499f844 100644
+--- a/src/coreclr/pal/inc/pal.h
++++ b/src/coreclr/pal/inc/pal.h
+@@ -2619,6 +2619,8 @@ PALIMPORT BOOL PALAPI PAL_GetUnwindInfoSize(SIZE_T baseAddress, ULONG64 ehFrameH
+ #define PAL_CS_NATIVE_DATA_SIZE 12
+ #elif defined(__FreeBSD__) && defined(__x86_64__)
+ #define PAL_CS_NATIVE_DATA_SIZE 24
++#elif defined(__FreeBSD__) && defined(HOST_ARM64)
++#define PAL_CS_NATIVE_DATA_SIZE 24
+ #elif defined(__linux__) && defined(HOST_ARM)
+ #define PAL_CS_NATIVE_DATA_SIZE 80
+ #elif defined(__linux__) && defined(HOST_ARM64)
+diff --git a/src/coreclr/pal/src/configure.cmake b/src/coreclr/pal/src/configure.cmake
+index 4f900a5555e..84d1a9015d9 100644
+--- a/src/coreclr/pal/src/configure.cmake
++++ b/src/coreclr/pal/src/configure.cmake
+@@ -1340,7 +1340,13 @@ elseif(CLR_CMAKE_TARGET_FREEBSD)
+   set(PAL_PT_READ_D PT_READ_D)
+   set(PAL_PT_WRITE_D PT_WRITE_D)
+   set(HAS_FTRUNCATE_LENGTH_ISSUE 0)
+-  set(BSD_REGS_STYLE "((reg).r_##rr)")
++  if (CLR_CMAKE_HOST_ARCH_AMD64)
++    set(BSD_REGS_STYLE "((reg).r_##rr)")
++  elseif(CLR_CMAKE_HOST_ARCH_ARM64)
++    set(BSD_REGS_STYLE "((reg).rr)")
++  else()
++    message(FATAL_ERROR "Unknown FreeBSD architecture")
++  endif()
+   set(HAVE_SCHED_OTHER_ASSIGNABLE 1)
+ elseif(CLR_CMAKE_TARGET_NETBSD)
+   set(DEADLOCK_WHEN_THREAD_IS_SUSPENDED_WHILE_BLOCKED_ON_MUTEX 0)
+diff --git a/src/coreclr/pal/src/exception/seh-unwind.cpp b/src/coreclr/pal/src/exception/seh-unwind.cpp
+index e94922cea04..b3a4ca23726 100644
+--- a/src/coreclr/pal/src/exception/seh-unwind.cpp
++++ b/src/coreclr/pal/src/exception/seh-unwind.cpp
+@@ -198,6 +198,42 @@ enum
+     ASSIGN_REG(R29)        \
+     ASSIGN_REG(R30)        \
+     ASSIGN_REG(R31)
++#elif (defined(HOST_ARM64) && defined(TARGET_FREEBSD))
++#define ASSIGN_UNWIND_REGS \
++    ASSIGN_REG(X0) \
++    ASSIGN_REG(X1) \
++    ASSIGN_REG(X2) \
++    ASSIGN_REG(X3) \
++    ASSIGN_REG(X4) \
++    ASSIGN_REG(X5) \
++    ASSIGN_REG(X6) \
++    ASSIGN_REG(X7) \
++    ASSIGN_REG(X8) \
++    ASSIGN_REG(X9) \
++    ASSIGN_REG(X10) \
++    ASSIGN_REG(X11) \
++    ASSIGN_REG(X12) \
++    ASSIGN_REG(X13) \
++    ASSIGN_REG(X14) \
++    ASSIGN_REG(X15) \
++    ASSIGN_REG(X16) \
++    ASSIGN_REG(X17) \
++    ASSIGN_REG(X18) \
++    ASSIGN_REG(X19) \
++    ASSIGN_REG(X20) \
++    ASSIGN_REG(X21) \
++    ASSIGN_REG(X22) \
++    ASSIGN_REG(X23) \
++    ASSIGN_REG(X24) \
++    ASSIGN_REG(X25) \
++    ASSIGN_REG(X26) \
++    ASSIGN_REG(X27) \
++    ASSIGN_REG(X28) \
++    ASSIGN_REG(Lr) \
++    ASSIGN_REG(Sp) \
++    ASSIGN_REG(Pc) \
++    ASSIGN_REG(Fp) \
++    ASSIGN_REG(Cpsr)
+ #else
+ #error unsupported architecture
+ #endif
+diff --git a/src/coreclr/pal/src/include/pal/context.h b/src/coreclr/pal/src/include/pal/context.h
+index 8f9f99ea2cf..c702ae272a7 100644
+--- a/src/coreclr/pal/src/include/pal/context.h
++++ b/src/coreclr/pal/src/include/pal/context.h
+@@ -448,7 +448,57 @@ inline void *FPREG_Xstate_Ymmh(const ucontext_t *uc)
+ 
+ #if defined(HOST_ARM64)
+ 
+-#ifndef TARGET_OSX
++#if defined(TARGET_FREEBSD)
++
++#define MCREG_X0(mc)  (mc.mc_gpregs.gp_x[0])
++#define MCREG_X1(mc)  (mc.mc_gpregs.gp_x[1])
++#define MCREG_X2(mc)  (mc.mc_gpregs.gp_x[2])
++#define MCREG_X3(mc)  (mc.mc_gpregs.gp_x[3])
++#define MCREG_X4(mc)  (mc.mc_gpregs.gp_x[4])
++#define MCREG_X5(mc)  (mc.mc_gpregs.gp_x[5])
++#define MCREG_X6(mc)  (mc.mc_gpregs.gp_x[6])
++#define MCREG_X7(mc)  (mc.mc_gpregs.gp_x[7])
++#define MCREG_X8(mc)  (mc.mc_gpregs.gp_x[8])
++#define MCREG_X9(mc)  (mc.mc_gpregs.gp_x[9])
++#define MCREG_X10(mc) (mc.mc_gpregs.gp_x[10])
++#define MCREG_X11(mc) (mc.mc_gpregs.gp_x[11])
++#define MCREG_X12(mc) (mc.mc_gpregs.gp_x[12])
++#define MCREG_X13(mc) (mc.mc_gpregs.gp_x[13])
++#define MCREG_X14(mc) (mc.mc_gpregs.gp_x[14])
++#define MCREG_X15(mc) (mc.mc_gpregs.gp_x[15])
++#define MCREG_X16(mc) (mc.mc_gpregs.gp_x[16])
++#define MCREG_X17(mc) (mc.mc_gpregs.gp_x[17])
++#define MCREG_X18(mc) (mc.mc_gpregs.gp_x[18])
++#define MCREG_X19(mc) (mc.mc_gpregs.gp_x[19])
++#define MCREG_X20(mc) (mc.mc_gpregs.gp_x[20])
++#define MCREG_X21(mc) (mc.mc_gpregs.gp_x[21])
++#define MCREG_X22(mc) (mc.mc_gpregs.gp_x[22])
++#define MCREG_X23(mc) (mc.mc_gpregs.gp_x[23])
++#define MCREG_X24(mc) (mc.mc_gpregs.gp_x[24])
++#define MCREG_X25(mc) (mc.mc_gpregs.gp_x[25])
++#define MCREG_X26(mc) (mc.mc_gpregs.gp_x[26])
++#define MCREG_X27(mc) (mc.mc_gpregs.gp_x[27])
++#define MCREG_X28(mc) (mc.mc_gpregs.gp_x[28])
++
++#define MCREG_Cpsr(mc) (mc.mc_gpregs.gp_spsr)
++#define MCREG_Lr(mc)   (mc.mc_gpregs.gp_lr)
++#define MCREG_Sp(mc)   (mc.mc_gpregs.gp_sp)
++#define MCREG_Pc(mc)   (mc.mc_gpregs.gp_elr)
++#define MCREG_Fp(mc)   (mc.mc_gpregs.gp_x[29])
++
++inline
++struct fpregs* GetNativeSigSimdContext(native_context_t *mc)
++{
++    return &(mc->uc_mcontext.mc_fpregs);
++}
++
++inline
++const struct fpregs* GetConstNativeSigSimdContext(const native_context_t *mc)
++{
++    return GetNativeSigSimdContext(const_cast<native_context_t*>(mc));
++}
++
++#elif !defined(TARGET_OSX) // TARGET_FREEBSD
+ 
+ #define MCREG_X0(mc)      ((mc).regs[0])
+ #define MCREG_X1(mc)      ((mc).regs[1])
+@@ -957,6 +1007,8 @@ const VfpSigFrame* GetConstNativeSigSimdContext(const native_context_t *mc)
+ 
+ #ifdef HOST_64BIT
+ 
++#ifdef HOST_AMD64
++
+ #define BSDREG_Rbx(reg)     BSD_REGS_STYLE(reg,RBX,rbx)
+ #define BSDREG_Rcx(reg)     BSD_REGS_STYLE(reg,RCX,rcx)
+ #define BSDREG_Rdx(reg)     BSD_REGS_STYLE(reg,RDX,rdx)
+@@ -978,6 +1030,45 @@ const VfpSigFrame* GetConstNativeSigSimdContext(const native_context_t *mc)
+ #define BSDREG_R15(reg)     BSD_REGS_STYLE(reg,R15,r15)
+ #define BSDREG_EFlags(reg)  BSD_REGS_STYLE(reg,RFLAGS,rflags)
+ 
++#elif defined(HOST_ARM64)
++
++#define BSDREG_X0(reg) BSD_REGS_STYLE(reg,X[0],x[0])
++#define BSDREG_X1(reg) BSD_REGS_STYLE(reg,X[1],x[1])
++#define BSDREG_X2(reg) BSD_REGS_STYLE(reg,X[2],x[2])
++#define BSDREG_X3(reg) BSD_REGS_STYLE(reg,X[3],x[3])
++#define BSDREG_X4(reg) BSD_REGS_STYLE(reg,X[4],x[4])
++#define BSDREG_X5(reg) BSD_REGS_STYLE(reg,X[5],x[5])
++#define BSDREG_X6(reg) BSD_REGS_STYLE(reg,X[6],x[6])
++#define BSDREG_X7(reg) BSD_REGS_STYLE(reg,X[7],x[7])
++#define BSDREG_X8(reg) BSD_REGS_STYLE(reg,X[8],x[8])
++#define BSDREG_X9(reg) BSD_REGS_STYLE(reg,X[9],x[9])
++#define BSDREG_X10(reg) BSD_REGS_STYLE(reg,X[10],x[10])
++#define BSDREG_X11(reg) BSD_REGS_STYLE(reg,X[11],x[11])
++#define BSDREG_X12(reg) BSD_REGS_STYLE(reg,X[12],x[12])
++#define BSDREG_X13(reg) BSD_REGS_STYLE(reg,X[13],x[13])
++#define BSDREG_X14(reg) BSD_REGS_STYLE(reg,X[14],x[14])
++#define BSDREG_X15(reg) BSD_REGS_STYLE(reg,X[15],x[15])
++#define BSDREG_X16(reg) BSD_REGS_STYLE(reg,X[16],x[16])
++#define BSDREG_X17(reg) BSD_REGS_STYLE(reg,X[17],x[17])
++#define BSDREG_X18(reg) BSD_REGS_STYLE(reg,X[18],x[18])
++#define BSDREG_X19(reg) BSD_REGS_STYLE(reg,X[19],x[19])
++#define BSDREG_X20(reg) BSD_REGS_STYLE(reg,X[20],x[20])
++#define BSDREG_X21(reg) BSD_REGS_STYLE(reg,X[21],x[21])
++#define BSDREG_X22(reg) BSD_REGS_STYLE(reg,X[22],x[22])
++#define BSDREG_X23(reg) BSD_REGS_STYLE(reg,X[23],x[23])
++#define BSDREG_X24(reg) BSD_REGS_STYLE(reg,X[24],x[24])
++#define BSDREG_X25(reg) BSD_REGS_STYLE(reg,X[25],x[25])
++#define BSDREG_X26(reg) BSD_REGS_STYLE(reg,X[26],x[26])
++#define BSDREG_X27(reg) BSD_REGS_STYLE(reg,X[27],x[27])
++#define BSDREG_X28(reg) BSD_REGS_STYLE(reg,X[28],x[28])
++#define BSDREG_Pc(reg) BSD_REGS_STYLE(reg,Elr,elr)
++#define BSDREG_Fp(reg) BSD_REGS_STYLE(reg,X[29],x[29])
++#define BSDREG_Sp(reg) BSD_REGS_STYLE(reg,Sp,sp)
++#define BSDREG_Lr(reg) BSD_REGS_STYLE(reg,Lr,lr)
++#define BSDREG_Cpsr(reg) BSD_REGS_STYLE(reg,Spsr,spsr)
++
++#endif // HOST_ARM64
++
+ #else // HOST_64BIT
+ 
+ #define BSDREG_Ebx(reg)     BSD_REGS_STYLE(reg,EBX,ebx)
+diff --git a/src/coreclr/pal/src/thread/context.cpp b/src/coreclr/pal/src/thread/context.cpp
+index 3b40d75eb26..a17c6c077da 100644
+--- a/src/coreclr/pal/src/thread/context.cpp
++++ b/src/coreclr/pal/src/thread/context.cpp
+@@ -626,6 +626,17 @@ void CONTEXTToNativeContext(CONST CONTEXT *lpContext, native_context_t *native)
+         {
+             *(NEON128*) &fp->__v[i] = lpContext->V[i];
+         }
++#elif defined(TARGET_FREEBSD)
++        struct fpregs* fp = GetNativeSigSimdContext(native);
++        if (fp)
++        {
++            fp->fp_sr = lpContext->Fpsr;
++            fp->fp_cr = lpContext->Fpcr;
++            for (int i = 0; i < 32; i++)
++            {
++                *(NEON128*) &fp->fp_q[i] = lpContext->V[i];
++            }
++        }
+ #else // TARGET_OSX
+         fpsimd_context* fp = GetNativeSigSimdContext(native);
+         if (fp)
+@@ -777,6 +788,17 @@ void CONTEXTFromNativeContext(const native_context_t *native, LPCONTEXT lpContex
+         {
+             lpContext->V[i] = *(NEON128*) &fp->__v[i];
+         }
++#elif defined(TARGET_FREEBSD)
++        const struct fpregs* fp = GetConstNativeSigSimdContext(native);
++        if (fp)
++        {
++            lpContext->Fpsr = fp->fp_sr;
++            lpContext->Fpcr = fp->fp_cr;
++            for (int i = 0; i < 32; i++)
++            {
++                lpContext->V[i] = *(NEON128*) &fp->fp_q[i];
++            }
++        }
+ #else // TARGET_OSX
+         const fpsimd_context* fp = GetConstNativeSigSimdContext(native);
+         if (fp)
+diff --git a/src/coreclr/pal/tools/gen-dactable-rva.sh b/src/coreclr/pal/tools/gen-dactable-rva.sh
+index 0f3ce0a0866..4f2828b2f40 100755
+--- a/src/coreclr/pal/tools/gen-dactable-rva.sh
++++ b/src/coreclr/pal/tools/gen-dactable-rva.sh
+@@ -10,12 +10,11 @@ fi
+ while read -r line; do
+   if [[ "$line" =~ g_dacTable ]]; then
+ 
+-    # Parse line for DAC relative address, if length of value is:
+-    # * shorter than 16, zero pad.
+-    # * longer than 16, capture last 16 characters.
++    # Parse line for DAC relative address. If length of value is longer than 16,
++    # capture the last 16 characters.
+     #
+     array=($line)
+-    value="$(printf "%016s\n" ${array[2]:(${#array[2]} > 16 ? -16 : 0)})"
++    value="$(printf "%s\n" ${array[2]:(${#array[2]} > 16 ? -16 : 0)})"
+ 
+     # Write line to file and exit
+     printf "#define DAC_TABLE_RVA 0x%s\n" "$value" > "$2"
+diff --git a/src/coreclr/tools/Common/CommandLineHelpers.cs b/src/coreclr/tools/Common/CommandLineHelpers.cs
+index 03b20597bb3..0dd98b220c2 100644
+--- a/src/coreclr/tools/Common/CommandLineHelpers.cs
++++ b/src/coreclr/tools/Common/CommandLineHelpers.cs
+@@ -76,6 +76,8 @@ public static TargetOS GetTargetOS(string token)
+                 return TargetOS.Linux;
+             else if (token.Equals("osx", StringComparison.OrdinalIgnoreCase))
+                 return TargetOS.OSX;
++            else if (token.Equals("freebsd", StringComparison.OrdinalIgnoreCase))
++                return TargetOS.FreeBSD;
+ 
+             throw new CommandLineException($"Target OS '{token}' is not supported");
+         }
+diff --git a/src/coreclr/tools/aot/crossgen2/crossgen2.csproj b/src/coreclr/tools/aot/crossgen2/crossgen2.csproj
+index 8fd6160484e..a75fab86c93 100644
+--- a/src/coreclr/tools/aot/crossgen2/crossgen2.csproj
++++ b/src/coreclr/tools/aot/crossgen2/crossgen2.csproj
+@@ -8,7 +8,7 @@
+     <NativeAotSupported Condition="'$(DotNetBuildFromSource)' == 'true'">false</NativeAotSupported>
+     <!-- Trimming is not currently working, but set the appropriate feature flags for NativeAOT -->
+     <PublishTrimmed Condition="'$(NativeAotSupported)' == 'true'">true</PublishTrimmed>
+-    <RuntimeIdentifiers Condition="'$(_IsPublishing)' != 'true' and '$(DotNetBuildFromSource)' != 'true'">linux-x64;linux-musl-x64;linux-arm;linux-musl-arm;linux-arm64;linux-musl-arm64;freebsd-x64;osx-x64;osx-arm64;win-x64;win-x86;win-arm64;win-arm</RuntimeIdentifiers>
++    <RuntimeIdentifiers Condition="'$(_IsPublishing)' != 'true' and '$(DotNetBuildFromSource)' != 'true'">linux-x64;linux-musl-x64;linux-arm;linux-musl-arm;linux-arm64;linux-musl-arm64;freebsd-x64;freebsd-arm64;osx-x64;osx-arm64;win-x64;win-x86;win-arm64;win-arm</RuntimeIdentifiers>
+     <RuntimeIdentifiers Condition="'$(DotNetBuildFromSource)' == 'true'">$(PackageRID)</RuntimeIdentifiers>
+     <SelfContained>false</SelfContained>
+     <SelfContained Condition="'$(_IsPublishing)' == 'true'">true</SelfContained>
+diff --git a/src/installer/pkg/projects/netcoreappRIDs.props b/src/installer/pkg/projects/netcoreappRIDs.props
+index 318e97e9b2a..fbc6e4dc4c1 100644
+--- a/src/installer/pkg/projects/netcoreappRIDs.props
++++ b/src/installer/pkg/projects/netcoreappRIDs.props
+@@ -10,7 +10,6 @@
+       <Platform>arm64</Platform>
+     </OfficialBuildRID>
+     <!-- Not currently built by CoreFX. -->
+-    <!-- <OfficialBuildRID Include="freebsd-x64" /> -->
+     <!-- <OfficialBuildRID Include="netbsd-x64" /> -->
+     <!-- <OfficialBuildRID Include="illumos-x64" /> -->
+     <!-- <OfficialBuildRID Include="solaris-x64" /> -->
+@@ -53,6 +52,7 @@
+          built during official builds, however we wish to include them
+          in our runtime.json to enable others to provide them.  -->
+     <UnofficialBuildRID Include="freebsd-x64" />
++    <UnofficialBuildRID Include="freebsd-arm64" />
+     <UnofficialBuildRID Include="tizen.4.0.0-armel">
+       <Platform>armel</Platform>
+     </UnofficialBuildRID>
+diff --git a/src/installer/pkg/sfx/Microsoft.NETCore.App/Microsoft.NETCore.App.Crossgen2.sfxproj b/src/installer/pkg/sfx/Microsoft.NETCore.App/Microsoft.NETCore.App.Crossgen2.sfxproj
+index fe32e81ec46..7ea5e438f02 100644
+--- a/src/installer/pkg/sfx/Microsoft.NETCore.App/Microsoft.NETCore.App.Crossgen2.sfxproj
++++ b/src/installer/pkg/sfx/Microsoft.NETCore.App/Microsoft.NETCore.App.Crossgen2.sfxproj
+@@ -3,8 +3,8 @@
+   <Import Project="Sdk.props" Sdk="Microsoft.DotNet.SharedFramework.Sdk" />
+ 
+   <PropertyGroup>
+-    <!-- Crossgen is not used for Mono, and does not currently create freebsd packages -->
+-    <SkipBuild Condition="'$(RuntimeFlavor)' == 'Mono' or '$(RuntimeIdentifier)' == 'freebsd-x64'">true</SkipBuild>
++    <!-- Crossgen is not used for Mono -->
++    <SkipBuild Condition="'$(RuntimeFlavor)' == 'Mono'">true</SkipBuild>
+     <PlatformPackageType>ToolPack</PlatformPackageType>
+     <SharedFrameworkName>$(SharedFrameworkName).Crossgen2</SharedFrameworkName>
+     <PgoSuffix Condition="'$(PgoInstrument)' != ''">.PGO</PgoSuffix>
+@@ -12,7 +12,7 @@
+     <ArchiveName>dotnet-crossgen2</ArchiveName>
+     <SharedFrameworkHostFileNameOverride>crossgen2</SharedFrameworkHostFileNameOverride>
+     <!-- Build this pack for any RID if building from source. Otherwise, only build select RIDs. -->
+-    <RuntimeIdentifiers Condition="'$(DotNetBuildFromSource)' != 'true'">linux-x64;linux-musl-x64;linux-arm;linux-musl-arm;linux-arm64;linux-musl-arm64;freebsd-x64;osx-x64;osx-arm64;win-x64;win-x86;win-arm64;win-arm</RuntimeIdentifiers>
++    <RuntimeIdentifiers Condition="'$(DotNetBuildFromSource)' != 'true'">linux-x64;linux-musl-x64;linux-arm;linux-musl-arm;linux-arm64;linux-musl-arm64;freebsd-x64;freebsd-arm64;osx-x64;osx-arm64;win-x64;win-x86;win-arm64;win-arm</RuntimeIdentifiers>
+     <GenerateInstallers>false</GenerateInstallers>
+     <HostJsonTargetPath>tools/</HostJsonTargetPath>
+     <PermitDllAndExeFilesLackingFileVersion>true</PermitDllAndExeFilesLackingFileVersion>
+diff --git a/src/installer/pkg/sfx/Microsoft.NETCore.App/ReadyToRun.targets b/src/installer/pkg/sfx/Microsoft.NETCore.App/ReadyToRun.targets
+index 4e3f684dedc..0175f7d4c6d 100644
+--- a/src/installer/pkg/sfx/Microsoft.NETCore.App/ReadyToRun.targets
++++ b/src/installer/pkg/sfx/Microsoft.NETCore.App/ReadyToRun.targets
+@@ -6,6 +6,7 @@
+ 
+     <ItemGroup>
+       <PublishReadyToRunCrossgen2ExtraArgsList Include="--targetarch:$(TargetArchitecture)"/>
++      <PublishReadyToRunCrossgen2ExtraArgsList Include="--targetos:$(TargetOS)"/>
+ 
+       <!-- Only use mibc files if UsingToolIbcOptimization is false. Allows enabling/disabling using ibc instead of mibc data -->
+       <PublishReadyToRunCrossgen2ExtraArgsList Condition="'$(UsingToolIbcOptimization)' != 'true' and '$(EnableNgenOptimization)' == 'true'" Include="@(OptimizationMibcFiles->'-m:%(Identity)')"/>
+diff --git a/src/libraries/Microsoft.NETCore.Platforms/src/runtime.compatibility.json b/src/libraries/Microsoft.NETCore.Platforms/src/runtime.compatibility.json
+index a1b755d470d..926d6540223 100644
+--- a/src/libraries/Microsoft.NETCore.Platforms/src/runtime.compatibility.json
++++ b/src/libraries/Microsoft.NETCore.Platforms/src/runtime.compatibility.json
+@@ -4887,6 +4887,14 @@
+     "any",
+     "base"
+   ],
++  "freebsd-arm64": [
++    "freebsd-arm64",
++    "freebsd",
++    "unix-arm64",
++    "unix",
++    "any",
++    "base"
++  ],
+   "freebsd.12": [
+     "freebsd.12",
+     "freebsd",
+@@ -4904,6 +4912,16 @@
+     "any",
+     "base"
+   ],
++  "freebsd.12-arm64": [
++    "freebsd.12-arm64",
++    "freebsd.12",
++    "freebsd-arm64",
++    "freebsd",
++    "unix-arm64",
++    "unix",
++    "any",
++    "base"
++  ],
+   "freebsd.13": [
+     "freebsd.13",
+     "freebsd.12",
+@@ -4924,6 +4942,18 @@
+     "any",
+     "base"
+   ],
++  "freebsd.13-arm64": [
++    "freebsd.13-arm64",
++    "freebsd.13",
++    "freebsd.12-arm64",
++    "freebsd.12",
++    "freebsd-arm64",
++    "freebsd",
++    "unix-arm64",
++    "unix",
++    "any",
++    "base"
++  ],
+   "gentoo": [
+     "gentoo",
+     "linux",
+diff --git a/src/libraries/Microsoft.NETCore.Platforms/src/runtime.json b/src/libraries/Microsoft.NETCore.Platforms/src/runtime.json
+index 92849857001..eb865ee6422 100644
+--- a/src/libraries/Microsoft.NETCore.Platforms/src/runtime.json
++++ b/src/libraries/Microsoft.NETCore.Platforms/src/runtime.json
+@@ -1588,6 +1588,12 @@
+         "unix-x64"
+       ]
+     },
++    "freebsd-arm64": {
++      "#import": [
++        "freebsd",
++        "unix-arm64"
++      ]
++    },
+     "freebsd.12": {
+       "#import": [
+         "freebsd"
+@@ -1599,6 +1605,12 @@
+         "freebsd-x64"
+       ]
+     },
++    "freebsd.12-arm64": {
++      "#import": [
++        "freebsd.12",
++        "freebsd-arm64"
++      ]
++    },
+     "freebsd.13": {
+       "#import": [
+         "freebsd.12"
+@@ -1610,6 +1622,12 @@
+         "freebsd.12-x64"
+       ]
+     },
++    "freebsd.13-arm64": {
++      "#import": [
++        "freebsd.13",
++        "freebsd.12-arm64"
++      ]
++    },
+     "gentoo": {
+       "#import": [
+         "linux"
+diff --git a/src/libraries/Microsoft.NETCore.Platforms/src/runtimeGroups.props b/src/libraries/Microsoft.NETCore.Platforms/src/runtimeGroups.props
+index 912fe7693c4..08327c9c112 100644
+--- a/src/libraries/Microsoft.NETCore.Platforms/src/runtimeGroups.props
++++ b/src/libraries/Microsoft.NETCore.Platforms/src/runtimeGroups.props
+@@ -183,7 +183,7 @@
+ 
+     <RuntimeGroup Include="freebsd">
+       <Parent>unix</Parent>
+-      <Architectures>x64</Architectures>
++      <Architectures>x64;arm64</Architectures>
+       <Versions>12;13</Versions>
+     </RuntimeGroup>
+ 
+diff --git a/src/mono/cmake/configure.cmake b/src/mono/cmake/configure.cmake
+index ae55fd112b3..56c99cb9d7e 100644
+--- a/src/mono/cmake/configure.cmake
++++ b/src/mono/cmake/configure.cmake
+@@ -143,6 +143,8 @@ if (HOST_LINUX)
+   set(CMAKE_REQUIRED_DEFINITIONS -D_GNU_SOURCE)
+ endif()
+ 
++check_symbol_exists(CPU_COUNT "sched.h" HAVE_GNU_CPU_COUNT)
++
+ check_c_source_compiles(
+   "
+   #include <string.h>
+@@ -155,17 +157,6 @@ check_c_source_compiles(
+   "
+   HAVE_GNU_STRERROR_R)
+ 
+-check_c_source_compiles(
+-  "
+-  #include <sched.h>
+-  int main(void)
+-  {
+-    CPU_COUNT((void *) 0);
+-    return 0;
+-  }
+-  "
+-  HAVE_GNU_CPU_COUNT)
+-
+ if (HOST_LINUX OR HOST_ANDROID)
+   set(CMAKE_REQUIRED_DEFINITIONS)
+ endif()
+diff --git a/src/mono/mono.proj b/src/mono/mono.proj
+index 37d96487b49..99ecf3d178b 100644
+--- a/src/mono/mono.proj
++++ b/src/mono/mono.proj
+@@ -282,11 +282,18 @@
+     </ItemGroup>
+ 
+     <!-- x64 FreeBSD cross build options -->
+-    <ItemGroup Condition="'$(TargetsFreeBSD)' == 'true' and '$(MonoCrossDir)' != ''">
++    <ItemGroup Condition="'$(TargetsFreeBSD)' == 'true' and '$(MonoCrossDir)' != '' and '$(TargetArchitecture)' == 'x64'">
+       <_MonoCMakeArgs Include="-DCMAKE_TOOLCHAIN_FILE=$(CrossToolchainFile)" />
+       <_MonoBuildEnv Include="TARGET_BUILD_ARCH=x64" />
+     </ItemGroup>
+ 
++    <!-- ARM64 FreeBSD cross build options -->
++    <ItemGroup Condition="'$(TargetsFreeBSD)' == 'true' and '$(MonoCrossDir)' != '' and '$(TargetArchitecture)' == 'arm64'">
++      <_MonoCMakeArgs Include="-DCMAKE_TOOLCHAIN_FILE=$(CrossToolchainFile)" />
++      <_MonoBuildEnv Include="TARGET_BUILD_ARCH=arm64" />
++      <_MonoBuildEnv Include="PKG_CONFIG_PATH=$(MonoCrossDir)usr/local/libdata/pkgconfig" />
++    </ItemGroup>
++
+     <!-- Windows specific options -->
+     <ItemGroup Condition="'$(TargetsWindows)' == 'true'">
+       <_MonoCPPFLAGS Include="-DWIN32" />
+diff --git a/src/tests/Common/CLRTest.CrossGen.targets b/src/tests/Common/CLRTest.CrossGen.targets
+index 88906521cc9..80469828566 100644
+--- a/src/tests/Common/CLRTest.CrossGen.targets
++++ b/src/tests/Common/CLRTest.CrossGen.targets
+@@ -111,6 +111,7 @@ if [ ! -z ${RunCrossGen2+x} ]%3B then
+             echo --embed-pgo-data>>$__ResponseFile
+         fi
+         echo --targetarch:$(TargetArchitecture)>>$__ResponseFile
++        echo --targetos:$(TargetOS)>>$__ResponseFile
+         echo -O>>$__ResponseFile
+ 
+         echo "Response file: $__ResponseFile"
+@@ -251,6 +252,7 @@ if defined RunCrossGen2 (
+     echo !__InputFile!>>!__ResponseFile!
+     echo -o:!__OutputFile!>>!__ResponseFile!
+     echo --targetarch:$(TargetArchitecture)>>!__ResponseFile!
++    echo --targetos:$(TargetOS)>>!__ResponseFile!
+     echo --verify-type-and-field-layout>>!__ResponseFile!
+     echo --method-layout:random>>!__ResponseFile!
+     if defined CrossGen2SynthesizePgo (
+diff --git a/src/tests/readytorun/multifolder/multifolder.csproj b/src/tests/readytorun/multifolder/multifolder.csproj
+index d621dbd8d17..8a2be6fc1ea 100644
+--- a/src/tests/readytorun/multifolder/multifolder.csproj
++++ b/src/tests/readytorun/multifolder/multifolder.csproj
+@@ -35,6 +35,7 @@ $(CLRTestBatchPreCommands)
+     echo -o:%scriptPath%\multifolder-composite.dll>>%__ResponseFile%
+     echo --crp:%scriptPath%\..>>%__ResponseFile%
+     echo --targetarch:$(TargetArchitecture)>>%__ResponseFile%
++    echo --targetos:$(TargetOS)>>%__ResponseFile%
+     echo %scriptPath%\multifolder.dll>>%__ResponseFile%
+     echo %scriptPath%\..\FolderA\FolderA\FolderA.dll>>%__ResponseFile%
+     echo %scriptPath%\..\FolderB\FolderB\FolderB.dll>>%__ResponseFile%
+@@ -87,6 +88,7 @@ $(CLRTestBashPreCommands)
+     echo -o:$__OutputDir/multifolder-composite.dll>>$__ResponseFile
+     echo --crp:$__OutputDir/..>>$__ResponseFile
+     echo --targetarch:$(TargetArchitecture)>>$__ResponseFile
++    echo --targetos:$(TargetOS)>>$__ResponseFile
+     echo $__OutputDir/multifolder.dll>>$__ResponseFile
+     echo $__OutputDir/../FolderA/FolderA/FolderA.dll>>$__ResponseFile
+     echo $__OutputDir/../FolderB/FolderB/FolderB.dll>>$__ResponseFile

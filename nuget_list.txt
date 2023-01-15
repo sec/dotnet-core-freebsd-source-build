@@ -19,3 +19,6 @@ https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.10
 https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-rc.1/Microsoft.NETCore.App.Runtime.freebsd-x64.7.0.0-rc.1.22426.10.nupkg
 https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-rc.1/runtime.freebsd-x64.Microsoft.NETCore.DotNetAppHost.7.0.0-rc.1.22426.10.nupkg
 https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-rc.1/Microsoft.NETCore.App.Crossgen2.freebsd-x64.7.0.0-rc.1.22426.10.nupkg
+https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-rtm-x64-native/Microsoft.AspNetCore.App.Runtime.freebsd-x64.7.0.0.nupkg
+https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-rtm-x64-native/Microsoft.NETCore.App.Crossgen2.freebsd-x64.7.0.0.nupkg
+https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-rtm-x64-native/Microsoft.NETCore.App.Runtime.freebsd-x64.7.0.0.nupkg

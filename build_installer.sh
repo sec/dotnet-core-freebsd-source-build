@@ -14,4 +14,4 @@ if [ ! -f installer/artifacts/obj/redist/Release/downloads/dotnet-toolset-intern
     wget $TOOLSET -O installer/artifacts/obj/redist/Release/downloads/dotnet-toolset-internal-$TAG.zip
 fi
 
-installer/build.sh -c Release -ci -pack --runtime-id freebsd-x64 /p:OSName=freebsd /p:OfficialBuildId=`date +%Y%m%d`.99 /p:IncludeAspNetCoreRuntime=$ASPNET -v d
+installer/build.sh -c Release -ci -pack --runtime-id freebsd-x64 /p:OSName=freebsd /p:OfficialBuildId=`date +%Y%m%d`.99 /p:IncludeAspNetCoreRuntime=$ASPNET

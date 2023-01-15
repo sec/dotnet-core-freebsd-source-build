@@ -1,12 +1,12 @@
 #!/bin/sh
 
-SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.201/dotnet-sdk-6.0.201-freebsd-x64.tar.gz"
+SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.402/dotnet-sdk-6.0.402-freebsd-x64.tar.gz"
 SDKZIP="sdk.tgz"
 
-RUNTIMETAG="v6.0.10"
-ASPNETCORETAG="v6.0.10"
-INSTALLERTAG="v6.0.402"
-SDKTAG="v6.0.402"
+RUNTIMETAG="v6.0.11"
+ASPNETCORETAG="v6.0.11"
+INSTALLERTAG="v6.0.403"
+SDKTAG="v6.0.403"
 
 #needed for openjdk
 #mount -t fdescfs fdesc /dev/fd

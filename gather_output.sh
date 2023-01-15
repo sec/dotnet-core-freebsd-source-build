@@ -7,4 +7,4 @@ find aspnetcore/artifacts/packages/Release -name '*.nupkg' -exec cp '{}' output/
 cp installer/artifacts/packages/Release/Shipping/* output/
 rm output/*.symbols.nupkg
 
-tar --create --file dotnet-sdk-6.0.402-freebsd-x64-full.tar -C output .
+tar --create --file dotnet-sdk-6.0.403-freebsd-x64-full.tar -C output .

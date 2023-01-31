@@ -3,6 +3,10 @@
 SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-rtm-x64-native/dotnet-sdk-7.0.100-freebsd-x64.tar.gz"
 SDKZIP="sdk.tgz"
 
+if [ `uname -m` = 'arm64' ]; then
+    SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-rtm-aarch64-cross/dotnet-sdk-7.0.100-freebsd-arm64.tar.gz"
+fi
+
 PKGS="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.100-preview.4/native-packages-7.0.100.preview.4-freebsd-x64.tar"
 
 RUNTIMETAG=`cat runtime.tag`

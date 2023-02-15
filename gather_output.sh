@@ -1,4 +1,11 @@
-#!/bin/sh
+#!/bin/csh
+
+if (`uname -m` == "arm64") then
+    setenv ARCH arm64
+else
+    setenv ARCH x64
+endif
+
 
 rm -rf output
 mkdir output
@@ -8,4 +15,4 @@ cp installer/artifacts/packages/Release/Shipping/* output/
 
 rm output/*.symbols.nupkg
 
-tar --create --file dotnet-sdk-7.0.102.freebsd-x64-full.tar -C output .
+tar --create --file dotnet-sdk-`cat sdk.tag|cut -c 2-`.freebsd-$ARCH-full.tar -C output .

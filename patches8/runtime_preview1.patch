@@ -1,0 +1,138 @@
+diff --git a/eng/Versions.props b/eng/Versions.props
+index 2abb1a3788e..a045e560e71 100644
+--- a/eng/Versions.props
++++ b/eng/Versions.props
+@@ -113,6 +113,7 @@
+     <runtimewinx64MicrosoftNETCoreRuntimeObjWriterVersion>1.0.0-alpha.1.23073.1</runtimewinx64MicrosoftNETCoreRuntimeObjWriterVersion>
+     <runtimeosx110arm64MicrosoftNETCoreRuntimeObjWriterVersion>1.0.0-alpha.1.23073.1</runtimeosx110arm64MicrosoftNETCoreRuntimeObjWriterVersion>
+     <runtimeosx1012x64MicrosoftNETCoreRuntimeObjWriterVersion>1.0.0-alpha.1.23073.1</runtimeosx1012x64MicrosoftNETCoreRuntimeObjWriterVersion>
++    <runtimefreebsdarm64MicrosoftNETCoreRuntimeObjWriterVersion>1.0.0-alpha.1.23073.1</runtimefreebsdarm64MicrosoftNETCoreRuntimeObjWriterVersion>
+     <!-- Libraries dependencies -->
+     <MicrosoftBclAsyncInterfacesVersion>6.0.0</MicrosoftBclAsyncInterfacesVersion>
+     <MicrosoftBclHashCodeVersion>1.1.1</MicrosoftBclHashCodeVersion>
+diff --git a/eng/restore/docs.targets b/eng/restore/docs.targets
+index 764bc5bbefb..de02f7d4a7b 100644
+--- a/eng/restore/docs.targets
++++ b/eng/restore/docs.targets
+@@ -39,8 +39,7 @@
+     <Copy SourceFiles="@(DocFile)"
+           DestinationFiles="$(XmlDocDir)\%(SubFolder)%(FileName)%(Extension)"
+           SkipUnchangedFiles="true"
+-          UseHardlinksIfPossible="true" />
+-
++          UseHardlinksIfPossible="false" />
+   </Target>
+ 
+ </Project>
+diff --git a/eng/restore/optimizationData.targets b/eng/restore/optimizationData.targets
+index 207992d2e89..230b552915d 100644
+--- a/eng/restore/optimizationData.targets
++++ b/eng/restore/optimizationData.targets
+@@ -43,7 +43,7 @@
+     <Copy SourceFiles="@(_optimizationMibcFile)"
+           DestinationFiles="@(_optimizationMibcFile->'$(MibcOptimizationDataDir)%(SubdirectoryName)/%(RecursiveDir)%(Filename)%(Extension)')"
+           SkipUnchangedFiles="true"
+-          UseHardlinksIfPossible="true" />
++          UseHardlinksIfPossible="false" />
+ 
+   </Target>
+ </Project>
+diff --git a/src/coreclr/nativeaot/BuildIntegration/Microsoft.NETCore.Native.Unix.targets b/src/coreclr/nativeaot/BuildIntegration/Microsoft.NETCore.Native.Unix.targets
+index eb9f33319f0..74d2fc1c4d1 100644
+--- a/src/coreclr/nativeaot/BuildIntegration/Microsoft.NETCore.Native.Unix.targets
++++ b/src/coreclr/nativeaot/BuildIntegration/Microsoft.NETCore.Native.Unix.targets
+@@ -21,6 +21,7 @@ The .NET Foundation licenses this file to you under the MIT license.
+     <CppLibCreator>ar</CppLibCreator>
+     <DsymUtilOptions Condition="'$(TargetOS)' == 'osx'">--flat</DsymUtilOptions>
+     <_SymbolPrefix Condition="'$(TargetOS)' == 'osx'">_</_SymbolPrefix>
++    <UseLLVMLinker Condition="'$(UseLLVMLinker)' == '' and '$(TargetOS)' == 'freebsd'">true</UseLLVMLinker>
+   </PropertyGroup>
+ 
+   <Target Name="SetupOSSpecificProps" DependsOnTargets="$(IlcDynamicBuildPropertyDependencies)">
+diff --git a/src/coreclr/nativeaot/Runtime/unix/UnixContext.cpp b/src/coreclr/nativeaot/Runtime/unix/UnixContext.cpp
+index d18b2edad59..47d03673efa 100644
+--- a/src/coreclr/nativeaot/Runtime/unix/UnixContext.cpp
++++ b/src/coreclr/nativeaot/Runtime/unix/UnixContext.cpp
+@@ -183,7 +183,43 @@ int unw_get_save_loc(unw_cursor_t*, int, unw_save_loc_t*)
+ 
+ #ifdef HOST_64BIT
+ 
+-#if defined(HOST_ARM64)
++#if defined(HOST_ARM64) && defined(TARGET_FREEBSD)
++
++#define MCREG_X0(mc)   (mc.mc_gpregs.gp_x[0])
++#define MCREG_X1(mc)   (mc.mc_gpregs.gp_x[1])
++#define MCREG_X2(mc)   (mc.mc_gpregs.gp_x[2])
++#define MCREG_X3(mc)   (mc.mc_gpregs.gp_x[3])
++#define MCREG_X4(mc)   (mc.mc_gpregs.gp_x[4])
++#define MCREG_X5(mc)   (mc.mc_gpregs.gp_x[5])
++#define MCREG_X6(mc)   (mc.mc_gpregs.gp_x[6])
++#define MCREG_X7(mc)   (mc.mc_gpregs.gp_x[7])
++#define MCREG_X8(mc)   (mc.mc_gpregs.gp_x[8])
++#define MCREG_X9(mc)   (mc.mc_gpregs.gp_x[9])
++#define MCREG_X10(mc)  (mc.mc_gpregs.gp_x[10])
++#define MCREG_X11(mc)  (mc.mc_gpregs.gp_x[11])
++#define MCREG_X12(mc)  (mc.mc_gpregs.gp_x[12])
++#define MCREG_X13(mc)  (mc.mc_gpregs.gp_x[13])
++#define MCREG_X14(mc)  (mc.mc_gpregs.gp_x[14])
++#define MCREG_X15(mc)  (mc.mc_gpregs.gp_x[15])
++#define MCREG_X16(mc)  (mc.mc_gpregs.gp_x[16])
++#define MCREG_X17(mc)  (mc.mc_gpregs.gp_x[17])
++#define MCREG_X18(mc)  (mc.mc_gpregs.gp_x[18])
++#define MCREG_X19(mc)  (mc.mc_gpregs.gp_x[19])
++#define MCREG_X20(mc)  (mc.mc_gpregs.gp_x[20])
++#define MCREG_X21(mc)  (mc.mc_gpregs.gp_x[21])
++#define MCREG_X22(mc)  (mc.mc_gpregs.gp_x[22])
++#define MCREG_X23(mc)  (mc.mc_gpregs.gp_x[23])
++#define MCREG_X24(mc)  (mc.mc_gpregs.gp_x[24])
++#define MCREG_X25(mc)  (mc.mc_gpregs.gp_x[25])
++#define MCREG_X26(mc)  (mc.mc_gpregs.gp_x[26])
++#define MCREG_X27(mc)  (mc.mc_gpregs.gp_x[27])
++#define MCREG_X28(mc)  (mc.mc_gpregs.gp_x[28])
++#define MCREG_Lr(mc)   (mc.mc_gpregs.gp_lr)
++#define MCREG_Sp(mc)   (mc.mc_gpregs.gp_sp)
++#define MCREG_Pc(mc)   (mc.mc_gpregs.gp_elr)
++#define MCREG_Fp(mc)   (mc.mc_gpregs.gp_x[29])
++
++#elif defined(HOST_ARM64)
+ 
+ #define MCREG_X0(mc)      ((mc).regs[0])
+ #define MCREG_X1(mc)      ((mc).regs[1])
+diff --git a/src/coreclr/tools/aot/ILCompiler/ILCompiler.props b/src/coreclr/tools/aot/ILCompiler/ILCompiler.props
+index 347ead37e8b..da209483089 100644
+--- a/src/coreclr/tools/aot/ILCompiler/ILCompiler.props
++++ b/src/coreclr/tools/aot/ILCompiler/ILCompiler.props
+@@ -46,6 +46,7 @@
+     <ObjWriterVersion Condition="'$(ObjWriterVersion)' == '' and '$(ObjWriterRid)' == 'osx.11.0-arm64'">$(runtimeosx110arm64MicrosoftNETCoreRuntimeObjWriterVersion)</ObjWriterVersion>
+     <ObjWriterVersion Condition="'$(ObjWriterVersion)' == '' and '$(ObjWriterRid)' == 'osx.10.12-x64'">$(runtimeosx1012x64MicrosoftNETCoreRuntimeObjWriterVersion)</ObjWriterVersion>
+     <ObjWriterVersion Condition="'$(ObjWriterVersion)' == '' and '$(ObjWriterRid)' == 'freebsd-x64'">$(runtimefreebsdx64MicrosoftNETCoreRuntimeObjWriterVersion)</ObjWriterVersion>
++    <ObjWriterVersion Condition="'$(ObjWriterVersion)' == '' and '$(ObjWriterRid)' == 'freebsd-arm64'">$(runtimefreebsdarm64MicrosoftNETCoreRuntimeObjWriterVersion)</ObjWriterVersion>
+ 
+     <!-- CoreDisTools are used in debugging visualizers. -->
+     <IncludeCoreDisTools Condition="'$(Configuration)' != 'Release' and '$(CrossHostArch)' == ''">true</IncludeCoreDisTools>
+diff --git a/src/coreclr/tools/aot/ILCompiler/repro/repro.csproj b/src/coreclr/tools/aot/ILCompiler/repro/repro.csproj
+index f2d7f5c109a..3ca226d94ea 100644
+--- a/src/coreclr/tools/aot/ILCompiler/repro/repro.csproj
++++ b/src/coreclr/tools/aot/ILCompiler/repro/repro.csproj
+@@ -6,7 +6,7 @@
+     <PlatformTarget>AnyCPU</PlatformTarget>
+     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+-    <RuntimeIdentifiers>linux-x64;win-x64;osx-x64;freebsd-x64</RuntimeIdentifiers>
++    <RuntimeIdentifiers>linux-x64;win-x64;osx-x64;freebsd-x64;freebsd-arm64</RuntimeIdentifiers>
+     <Configurations>Debug;Release;Checked</Configurations>
+     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+diff --git a/src/installer/pkg/projects/Microsoft.DotNet.ILCompiler/ILCompilerRIDs.props b/src/installer/pkg/projects/Microsoft.DotNet.ILCompiler/ILCompilerRIDs.props
+index 8cd82c085c1..bab4b4c356b 100644
+--- a/src/installer/pkg/projects/Microsoft.DotNet.ILCompiler/ILCompilerRIDs.props
++++ b/src/installer/pkg/projects/Microsoft.DotNet.ILCompiler/ILCompilerRIDs.props
+@@ -9,6 +9,7 @@
+     <OfficialBuildRID Include="osx-x64" Platform="x64" />
+     <OfficialBuildRID Include="win-arm64" Platform="arm64" />
+     <OfficialBuildRID Include="win-x64" Platform="x64" />
+-    <OfficialBUildRID Include="freebsd-x64" Platform="x64" />
++    <OfficialBuildRID Include="freebsd-x64" Platform="x64" />
++    <OfficialBuildRID Include="freebsd-arm64" Platform="arm64" />
+   </ItemGroup>
+ </Project>

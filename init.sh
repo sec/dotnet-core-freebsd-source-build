@@ -29,9 +29,13 @@ if [ ! -d runtime ]; then
 
     runtime/.dotnet/dotnet nuget add source 'https://sec.github.io/dotnet-freebsd-nuget-feed/v3/index.json' --name ghsec --configfile runtime/NuGet.config
 
-    patch -d runtime < patches/runtime_versions.patch
-    patch -d runtime < patches/runtime_crossgen2.patch
-    patch -d runtime < patches/runtime_mono_configure.patch
+    if [ `uname -m` = 'arm64' ]; then
+        #git -C runtime cherry-pick -n 8582762f5d19d88ee12ef9d61e3a3af3e1a44185
+        #git -C runtime cherry-pick -n e2a706e206ba620bffa94cc1c4959cfb82cb3638
+        #git -C runtime cherry-pick -n b02f85fae696d3205277640c50b3c71257dcc951
+    fi
+    
+    patch -d runtime < patches8/runtime_preview1.patch
 fi
 
 if [ ! -d aspnetcore ]; then
@@ -44,7 +48,7 @@ if [ ! -d aspnetcore ]; then
     aspnetcore/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local --configfile aspnetcore/NuGet.config
     runtime/.dotnet/dotnet nuget add source 'https://sec.github.io/dotnet-freebsd-nuget-feed/v3/index.json' --name ghsec --configfile aspnetcore/NuGet.config
     
-    patch -d aspnetcore < patches/aspnetcore.patch
+    patch -d aspnetcore < patches8/aspnetcore_preview1.patch
 
     cp patches/aspnet.editorconfig aspnetcore/src/.editorconfig
 fi
@@ -58,8 +62,11 @@ if [ ! -d installer ]; then
     installer/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local1 --configfile installer/NuGet.config
     installer/.dotnet/dotnet nuget add source ../aspnetcore/artifacts/packages/Release/Shipping/ --name local2 --configfile installer/NuGet.config
 
-    patch -d installer < patches/installer.patch
+    patch -d installer < patches8/installer_preview1.patch
 fi
+
+# let MS build SDK :)
+exit 0
 
 if [ ! -d sdk ]; then
     git clone https://github.com/dotnet/sdk

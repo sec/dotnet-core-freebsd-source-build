@@ -1,0 +1,45 @@
+diff --git a/src/redist/targets/GenerateBundledVersions.targets b/src/redist/targets/GenerateBundledVersions.targets
+index 8836f85c9..dba2db932 100644
+--- a/src/redist/targets/GenerateBundledVersions.targets
++++ b/src/redist/targets/GenerateBundledVersions.targets
+@@ -147,6 +147,7 @@
+           win-arm64;
+           win-x64;
+           win-x86;
++	      freebsd-arm64;
+           " />
+ 
+       <NetCore31RuntimePackRids Include="@(NetCore30RuntimePackRids)"/>
+@@ -248,9 +249,10 @@
+         linux-x64;
+         linux-arm;
+         linux-arm64;
++	    freebsd-arm64;
+         " />
+ 
+-      <Net50Crossgen2SupportedRids Include="linux-musl-x64;linux-x64;win-x64" />
++      <Net50Crossgen2SupportedRids Include="linux-musl-x64;linux-x64;win-x64;freebsd-arm64;" />
+ 
+       <Net60Crossgen2SupportedRids Include="
+           @(Net50Crossgen2SupportedRids);
+@@ -263,6 +265,7 @@
+           win-arm;
+           win-arm64;
+           win-x86;
++	      freebsd-arm64;
+           " />
+ 
+       <Crossgen2SupportedRids Include="@(Net60Crossgen2SupportedRids)" />
+diff --git a/src/redist/targets/GetRuntimeInformation.targets b/src/redist/targets/GetRuntimeInformation.targets
+index 6d216ff20..e4494395b 100644
+--- a/src/redist/targets/GetRuntimeInformation.targets
++++ b/src/redist/targets/GetRuntimeInformation.targets
+@@ -4,7 +4,7 @@
+       <HostRid Condition="'$(HostRid)' == '' and '$(MSBuildRuntimeType)' == 'core'">$([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier)</HostRid>
+       <HostRid Condition="'$(HostRid)' == '' and '$(MSBuildRuntimeType)' != 'core'">win-$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLowerInvariant)</HostRid>
+ 
+-      <IsLinux Condition = " $([MSBuild]::IsOSPlatform('LINUX')) ">True</IsLinux>
++      <IsLinux Condition = " $([MSBuild]::IsOSPlatform('LINUX')) AND ('$(OSName)' == '' OR '$(OSName)' == 'linux') ">True</IsLinux>
+       <HostOSName Condition=" '$(HostOSName)' == '' AND $([MSBuild]::IsOSPlatform('WINDOWS')) ">win</HostOSName>
+       <HostOSName Condition=" '$(HostOSName)' == '' AND $([MSBuild]::IsOSPlatform('OSX')) ">osx</HostOSName>
+       <HostOSName Condition=" '$(HostOSName)' == '' AND $([MSBuild]::IsOSPlatform('FREEBSD')) ">freebsd</HostOSName>

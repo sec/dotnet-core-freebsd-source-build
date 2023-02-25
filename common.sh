@@ -5,7 +5,7 @@ set -e
 function calculate_build_id()
 {
     local TAG=$1
-    local REGEX='-(preview|rc|rtm)\.[0-9]\.([0-9]{5})\.([0-9]{1,2})'
+    local REGEX='-(alpha|preview|rc|rtm)\.[0-9]\.([0-9]{5})\.([0-9]{1,2})'
 
     if [[ $TAG =~ $REGEX ]]
     then

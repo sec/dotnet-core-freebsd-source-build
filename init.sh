@@ -62,15 +62,22 @@ if [ ! -d installer ]; then
     installer/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local1 --configfile installer/NuGet.config
     installer/.dotnet/dotnet nuget add source ../aspnetcore/artifacts/packages/Release/Shipping/ --name local2 --configfile installer/NuGet.config
 
-    patch -d installer < patches8/installer_preview1.patch
-fi
+    # ugly hack
+    if [ `uname -m` = 'amd64' ]; then
+        sed -i '' "s/arm64/x64/" patches8/installer_preview1.patch
+    fi
 
-# let MS build SDK :)
-exit 0
+    patch -d installer < patches8/installer_preview1.patch
+    git checkout patches8/installer_preview1.patch
+fi
 
 if [ ! -d sdk ]; then
     git clone https://github.com/dotnet/sdk
     git -C sdk checkout $SDKTAG
 
     ./bsd_dotnet_install.sh $SDKZIP sdk
+
+    patch -d sdk < patches8/sdk_preview1.patch
+
+    sdk/.dotnet/dotnet nuget add source 'https://sec.github.io/dotnet-freebsd-nuget-feed/v3/index.json' --name ghsec --configfile sdk/NuGet.config
 fi

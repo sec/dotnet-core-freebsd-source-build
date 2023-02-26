@@ -1,0 +1,67 @@
+diff --git a/src/Tasks/Microsoft.NET.Build.Extensions.Tasks/Microsoft.NET.Build.Extensions.Tasks.csproj b/src/Tasks/Microsoft.NET.Build.Extensions.Tasks/Microsoft.NET.Build.Extensions.Tasks.csproj
+index 280fbdc83e..a87a3c0c9b 100644
+--- a/src/Tasks/Microsoft.NET.Build.Extensions.Tasks/Microsoft.NET.Build.Extensions.Tasks.csproj
++++ b/src/Tasks/Microsoft.NET.Build.Extensions.Tasks/Microsoft.NET.Build.Extensions.Tasks.csproj
+@@ -15,7 +15,7 @@
+     <Description>The MSBuild targets and tasks which extend MSBuild's common targets.</Description>
+     <OutputType>Library</OutputType>
+     <RootNamespace>Microsoft.NET.Build.Tasks</RootNamespace>
+-    <TargetFrameworks>$(SdkTargetFramework);net472</TargetFrameworks>
++    <TargetFrameworks>$(SdkTargetFramework);</TargetFrameworks>
+   </PropertyGroup>
+ 
+   <PropertyGroup>
+diff --git a/src/Tasks/Microsoft.NET.Build.Tasks/Microsoft.NET.Build.Tasks.csproj b/src/Tasks/Microsoft.NET.Build.Tasks/Microsoft.NET.Build.Tasks.csproj
+index be7b9fa3a5..9469401972 100644
+--- a/src/Tasks/Microsoft.NET.Build.Tasks/Microsoft.NET.Build.Tasks.csproj
++++ b/src/Tasks/Microsoft.NET.Build.Tasks/Microsoft.NET.Build.Tasks.csproj
+@@ -12,7 +12,7 @@
+   <PropertyGroup>
+     <Description>The MSBuild targets and properties for building .NET Core projects.</Description>
+     <OutputType>Library</OutputType>
+-    <TargetFrameworks>$(SdkTargetFramework);net472</TargetFrameworks>
++    <TargetFrameworks>$(SdkTargetFramework);</TargetFrameworks>
+     <Nullable>annotations</Nullable>
+   </PropertyGroup>
+ 
+diff --git a/src/Tasks/Microsoft.NET.Build.Tasks/ResolveReadyToRunCompilers.cs b/src/Tasks/Microsoft.NET.Build.Tasks/ResolveReadyToRunCompilers.cs
+index 5d21bc96e8..8ac58fcc77 100644
+--- a/src/Tasks/Microsoft.NET.Build.Tasks/ResolveReadyToRunCompilers.cs
++++ b/src/Tasks/Microsoft.NET.Build.Tasks/ResolveReadyToRunCompilers.cs
+@@ -191,7 +191,7 @@ private bool GetCrossgen2TargetOS(out string targetOS)
+             string portablePlatform = NuGetUtils.GetBestMatchingRid(
+                     runtimeGraph,
+                     _targetPlatform,
+-                    new[] { "linux", "linux-musl", "osx", "win" },
++                    new[] { "linux", "linux-musl", "osx", "win", "freebsd" },
+                     out _);
+ 
+             // For source-build, allow the bootstrap SDK rid to be unknown to the runtime repo graph.
+@@ -209,6 +209,10 @@ private bool GetCrossgen2TargetOS(out string targetOS)
+                 {
+                     portablePlatform = "osx";
+                 }
++                else if (RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
++                {
++                    portablePlatform = "freebsd";
++                }
+             }
+ 
+             targetOS = portablePlatform switch
+@@ -217,6 +221,7 @@ private bool GetCrossgen2TargetOS(out string targetOS)
+                 "linux-musl" => "linux",
+                 "osx" => "osx",
+                 "win" => "windows",
++                "freebsd" => "freebsd",
+                 _ => null
+             };
+ 
+@@ -332,7 +337,7 @@ private bool GetCrossgenComponentsPaths()
+                     }
+                 }
+             }
+-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
++            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
+             {
+                 if (_targetArchitecture == Architecture.Arm || _targetArchitecture == Architecture.Arm64)
+                 {

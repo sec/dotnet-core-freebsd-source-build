@@ -4,7 +4,7 @@ SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/downloa
 SDKZIP="sdk.tgz"
 
 if [ `uname -m` = 'arm64' ]; then
-    SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.102-arm64-native/dotnet-sdk-7.0.102-freebsd-arm64.tar.gz"
+    SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/8.0.100-preview.1-arm64-native/dotnet-sdk-8.0.100-preview.1.23115.2-freebsd-arm64.tar.gz"
 fi
 
 RUNTIMETAG=`cat runtime.tag`

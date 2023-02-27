@@ -25,7 +25,7 @@ index be7b9fa3a5..9469401972 100644
    </PropertyGroup>
  
 diff --git a/src/Tasks/Microsoft.NET.Build.Tasks/ResolveReadyToRunCompilers.cs b/src/Tasks/Microsoft.NET.Build.Tasks/ResolveReadyToRunCompilers.cs
-index 5d21bc96e8..8ac58fcc77 100644
+index 5d21bc96e8..a5811c7ade 100644
 --- a/src/Tasks/Microsoft.NET.Build.Tasks/ResolveReadyToRunCompilers.cs
 +++ b/src/Tasks/Microsoft.NET.Build.Tasks/ResolveReadyToRunCompilers.cs
 @@ -191,7 +191,7 @@ private bool GetCrossgen2TargetOS(out string targetOS)
@@ -65,3 +65,12 @@ index 5d21bc96e8..8ac58fcc77 100644
              {
                  if (_targetArchitecture == Architecture.Arm || _targetArchitecture == Architecture.Arm64)
                  {
+@@ -387,7 +392,7 @@ private bool GetCrossgen2ComponentsPaths(bool version5)
+                 toolFileName = "crossgen2.exe";
+                 v5_clrJitFileNamePattern = "clrjit-{0}.dll";
+             }
+-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
++            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
+             {
+                 toolFileName = "crossgen2";
+                 v5_clrJitFileNamePattern = "libclrjit-{0}.so";

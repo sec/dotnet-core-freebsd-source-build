@@ -62,11 +62,7 @@ if [ ! -d installer ]; then
     installer/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local1 --configfile installer/NuGet.config
     installer/.dotnet/dotnet nuget add source ../aspnetcore/artifacts/packages/Release/Shipping/ --name local2 --configfile installer/NuGet.config
 
-    if [ `uname -m` = 'amd64' ]; then
-        patch -d installer < patches8/installer_x64_preview1.patch
-    else
-        patch -d installer < patches8/installer_preview1.patch
-    fi
+    patch -d installer < patches8/installer_preview1.patch
 fi
 
 if [ ! -d sdk ]; then

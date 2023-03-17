@@ -15,7 +15,7 @@ cp runtime/artifacts/packages/Release/Shipping/dotnet-runtime-*-freebsd-$ARCH.ta
 setenv PROTOBUF_PROTOC /usr/local/bin/protoc
 setenv PROTOBUF_TOOLS_CPU x64
 setenv PROTOBUF_TOOLS_OS linux
-setenv GRPC_PROTOC_PLUGIN /usr/local/bin
+setenv GRPC_PROTOC_PLUGIN /usr/local/bin/grpc_csharp_plugin
 
 service linux onestart
 

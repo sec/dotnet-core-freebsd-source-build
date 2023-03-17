@@ -1,35 +1,51 @@
 diff --git a/src/redist/targets/GenerateBundledVersions.targets b/src/redist/targets/GenerateBundledVersions.targets
-index 304e3e258..f811c739e 100644
+index fc64d3a14..2ea8a32e9 100644
 --- a/src/redist/targets/GenerateBundledVersions.targets
 +++ b/src/redist/targets/GenerateBundledVersions.targets
-@@ -96,6 +96,7 @@
+@@ -131,6 +131,8 @@
            win-arm64;
            win-x64;
            win-x86;
 +	  freebsd-x64;
++      freebsd-arm64;
            " />
  
        <NetCore31RuntimePackRids Include="@(NetCore30RuntimePackRids)"/>
-@@ -174,9 +175,10 @@
+@@ -232,9 +234,11 @@
          linux-x64;
          linux-arm;
          linux-arm64;
 +	freebsd-x64;
++    freebsd-arm64;
          " />
  
 -      <Net50Crossgen2SupportedRids Include="linux-musl-x64;linux-x64;win-x64" />
-+      <Net50Crossgen2SupportedRids Include="linux-musl-x64;linux-x64;win-x64;freebsd-x64;" />
++      <Net50Crossgen2SupportedRids Include="linux-musl-x64;linux-x64;win-x64;freebsd-x64;freebsd-arm64;" />
  
        <Net60Crossgen2SupportedRids Include="
            @(Net50Crossgen2SupportedRids);
-@@ -189,6 +191,7 @@
+@@ -247,6 +251,8 @@
            win-arm;
            win-arm64;
            win-x86;
 +	  freebsd-x64;
++      freebsd-arm64;
            " />
  
        <Crossgen2SupportedRids Include="@(Net60Crossgen2SupportedRids)" />
+diff --git a/src/redist/targets/GetRuntimeInformation.targets b/src/redist/targets/GetRuntimeInformation.targets
+index 6d216ff20..e4494395b 100644
+--- a/src/redist/targets/GetRuntimeInformation.targets
++++ b/src/redist/targets/GetRuntimeInformation.targets
+@@ -4,7 +4,7 @@
+       <HostRid Condition="'$(HostRid)' == '' and '$(MSBuildRuntimeType)' == 'core'">$([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier)</HostRid>
+       <HostRid Condition="'$(HostRid)' == '' and '$(MSBuildRuntimeType)' != 'core'">win-$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLowerInvariant)</HostRid>
+ 
+-      <IsLinux Condition = " $([MSBuild]::IsOSPlatform('LINUX')) ">True</IsLinux>
++      <IsLinux Condition = " $([MSBuild]::IsOSPlatform('LINUX')) AND ('$(OSName)' == '' OR '$(OSName)' == 'linux') ">True</IsLinux>
+       <HostOSName Condition=" '$(HostOSName)' == '' AND $([MSBuild]::IsOSPlatform('WINDOWS')) ">win</HostOSName>
+       <HostOSName Condition=" '$(HostOSName)' == '' AND $([MSBuild]::IsOSPlatform('OSX')) ">osx</HostOSName>
+       <HostOSName Condition=" '$(HostOSName)' == '' AND $([MSBuild]::IsOSPlatform('FREEBSD')) ">freebsd</HostOSName>
 diff --git a/src/redist/targets/SetBuildDefaults.targets b/src/redist/targets/SetBuildDefaults.targets
 index eac457403..f01c618b1 100644
 --- a/src/redist/targets/SetBuildDefaults.targets

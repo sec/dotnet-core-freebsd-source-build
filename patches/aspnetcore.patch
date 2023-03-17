@@ -1,3 +1,23 @@
+diff --git a/eng/Dependencies.props b/eng/Dependencies.props
+index 0d47cc0a11..69cbdacbe1 100644
+--- a/eng/Dependencies.props
++++ b/eng/Dependencies.props
+@@ -106,6 +106,7 @@ and are generated based on the last package release.
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.linux-musl-arm" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.linux-musl-arm64" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.freebsd-x64" />
++    <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.freebsd-arm64" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.$(TargetRuntimeIdentifier)" Condition=" '$(PortableBuild)' == 'false' " />
+ 
+     <!-- Crossgen2 compiler -->
+@@ -122,6 +123,7 @@ and are generated based on the last package release.
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.win-arm" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.win-arm64" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.freebsd-x64" />
++    <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.freebsd-arm64" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.$(TargetRuntimeIdentifier)" Condition=" '$(PortableBuild)' == 'false' " />
+   </ItemGroup>
+ 
 diff --git a/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.csproj b/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.csproj
 index 2db57db253..88306bafd0 100644
 --- a/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.csproj

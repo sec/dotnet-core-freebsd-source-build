@@ -29,9 +29,7 @@ if [ ! -d runtime ]; then
 
     runtime/.dotnet/dotnet nuget add source 'https://sec.github.io/dotnet-freebsd-nuget-feed/v3/index.json' --name ghsec --configfile runtime/NuGet.config
 
-    patch -d runtime < patches/runtime_versions.patch
-    patch -d runtime < patches/runtime_crossgen2.patch
-    patch -d runtime < patches/runtime_mono_configure.patch
+    patch -d runtime < patches/runtime.patch
 fi
 
 if [ ! -d aspnetcore ]; then

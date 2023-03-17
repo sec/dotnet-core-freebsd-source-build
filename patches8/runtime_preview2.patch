@@ -1,0 +1,40 @@
+diff --git a/eng/Versions.props b/eng/Versions.props
+index 8da4fae40db..2eada972c59 100644
+--- a/eng/Versions.props
++++ b/eng/Versions.props
+@@ -119,6 +119,8 @@
+     <runtimewinx64MicrosoftNETCoreRuntimeObjWriterVersion>14.0.0-alpha.1.23122.2</runtimewinx64MicrosoftNETCoreRuntimeObjWriterVersion>
+     <runtimeosx110arm64MicrosoftNETCoreRuntimeObjWriterVersion>1.0.0-alpha.1.23106.1</runtimeosx110arm64MicrosoftNETCoreRuntimeObjWriterVersion>
+     <runtimeosx1012x64MicrosoftNETCoreRuntimeObjWriterVersion>1.0.0-alpha.1.23106.1</runtimeosx1012x64MicrosoftNETCoreRuntimeObjWriterVersion>
++    <runtimefreebsdarm64MicrosoftNETCoreRuntimeObjWriterVersion>1.0.0-alpha.1.23073.1</runtimefreebsdarm64MicrosoftNETCoreRuntimeObjWriterVersion>
++    <runtimefreebsdx64MicrosoftNETCoreRuntimeObjWriterVersion>1.0.0-alpha.1.23073.1</runtimefreebsdx64MicrosoftNETCoreRuntimeObjWriterVersion>
+     <!-- Libraries dependencies -->
+     <MicrosoftBclAsyncInterfacesVersion>6.0.0</MicrosoftBclAsyncInterfacesVersion>
+     <MicrosoftBclHashCodeVersion>1.1.1</MicrosoftBclHashCodeVersion>
+diff --git a/eng/restore/optimizationData.targets b/eng/restore/optimizationData.targets
+index 207992d2e89..230b552915d 100644
+--- a/eng/restore/optimizationData.targets
++++ b/eng/restore/optimizationData.targets
+@@ -43,7 +43,7 @@
+     <Copy SourceFiles="@(_optimizationMibcFile)"
+           DestinationFiles="@(_optimizationMibcFile->'$(MibcOptimizationDataDir)%(SubdirectoryName)/%(RecursiveDir)%(Filename)%(Extension)')"
+           SkipUnchangedFiles="true"
+-          UseHardlinksIfPossible="true" />
++          UseHardlinksIfPossible="false" />
+ 
+   </Target>
+ </Project>
+diff --git a/src/coreclr/tools/aot/ILCompiler/ILCompiler.csproj b/src/coreclr/tools/aot/ILCompiler/ILCompiler.csproj
+index fb49fd1a3f2..f8cc76ce426 100644
+--- a/src/coreclr/tools/aot/ILCompiler/ILCompiler.csproj
++++ b/src/coreclr/tools/aot/ILCompiler/ILCompiler.csproj
+@@ -11,8 +11,7 @@
+   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)' != 'true'">
+     <PublishDir>$(RuntimeBinDir)ilc-published/</PublishDir>
+     <PublishTrimmed>true</PublishTrimmed>
+-    <!-- Don't R2R on ARM64 machines because ARM64 crossgen2 that comes with .NET SDK <= 7.0 Preview 7 crashes.-->
+-    <PublishReadyToRun Condition="'$(BuildArchitecture)' != 'arm64'">true</PublishReadyToRun>
++    <PublishReadyToRun>true</PublishReadyToRun>
+     <PublishSingleFile>true</PublishSingleFile>
+   </PropertyGroup>
+ 

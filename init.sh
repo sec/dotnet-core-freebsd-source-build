@@ -3,10 +3,10 @@
 SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/6.0.402/dotnet-sdk-6.0.402-freebsd-x64.tar.gz"
 SDKZIP="sdk.tgz"
 
-RUNTIMETAG="v6.0.11"
-ASPNETCORETAG="v6.0.11"
-INSTALLERTAG="v6.0.403"
-SDKTAG="v6.0.403"
+RUNTIMETAG="v6.0.12"
+ASPNETCORETAG="v6.0.12"
+INSTALLERTAG="v6.0.404"
+SDKTAG="v6.0.404"
 
 #needed for openjdk
 #mount -t fdescfs fdesc /dev/fd
@@ -36,15 +36,17 @@ if [ ! -d runtime ]; then
     ./bsd_dotnet_install.sh $SDKZIP runtime
 
     runtime/.dotnet/dotnet nuget add source ../nuget --name local --configfile runtime/NuGet.config
+    runtime/.dotnet/dotnet nuget add source 'https://sec.github.io/dotnet-freebsd-nuget-feed/v3/index.json' --name ghsec --configfile runtime/NuGet.config
 
     # either cherrypick + extra patch or one patch for all
     # 3633a7d0930abaca701385c1059b80ca157e98c6
     # 3e6d492bdf6fbf2d8af3871379f31dcc6e27716b
     # 3c63559029276fea97633ea6115bcb9acb2cffe2
 
-    patch -d runtime < patches/v6.0.0-rc.1.21451.13.runtime.patch
-    patch -d runtime < patches/runtime_disable_lttng.patch
-    patch -d runtime < patches/runtime_mono_configure.patch
+    #patch -d runtime < patches/v6.0.0-rc.1.21451.13.runtime.patch
+    #patch -d runtime < patches/runtime_disable_lttng.patch
+    #patch -d runtime < patches/runtime_mono_configure.patch
+    patch -d runtime < patches/runtime6.0.404.patch
 fi
 
 if [ ! -d aspnetcore ]; then
@@ -55,9 +57,11 @@ if [ ! -d aspnetcore ]; then
     ./bsd_dotnet_install.sh $SDKZIP aspnetcore
 
     aspnetcore/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local --configfile aspnetcore/NuGet.config
+    runtime/.dotnet/dotnet nuget add source 'https://sec.github.io/dotnet-freebsd-nuget-feed/v3/index.json' --name ghsec --configfile aspnetcore/NuGet.config
 
-    patch -d aspnetcore < patches/v6.0.0-rc.1.21452.15.aspnetcore.patch
-    patch -d aspnetcore < patches/6.0.4.aspnet.patch
+    #patch -d aspnetcore < patches/v6.0.0-rc.1.21452.15.aspnetcore.patch
+    #patch -d aspnetcore < patches/6.0.4.aspnet.patch
+    patch -d aspnetcore < patches/aspnet6.0.404.patch
 fi
 
 if [ ! -d installer ]; then

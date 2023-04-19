@@ -1,0 +1,128 @@
+diff --git a/eng/Dependencies.props b/eng/Dependencies.props
+index d39473508c..b0f4f294ba 100644
+--- a/eng/Dependencies.props
++++ b/eng/Dependencies.props
+@@ -95,6 +95,7 @@ and are generated based on the last package release.
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.linux-musl-x64" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.linux-musl-arm" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.linux-musl-arm64" />
++    <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.freebsd-x64" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Runtime.$(TargetRuntimeIdentifier)" Condition=" '$(PortableBuild)' == 'false' " />
+ 
+     <!-- Crossgen2 compiler -->
+@@ -110,6 +111,7 @@ and are generated based on the last package release.
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.win-x86" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.win-arm" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.win-arm64" />
++    <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.freebsd-x64" />
+     <LatestPackageReference Include="Microsoft.NETCore.App.Crossgen2.$(TargetRuntimeIdentifier)" Condition=" '$(PortableBuild)' == 'false' " />
+   </ItemGroup>
+ 
+diff --git a/src/Components/Web.JS/src/webpack.config.js b/src/Components/Web.JS/src/webpack.config.js
+index b0651fa75c..210ff6a433 100644
+--- a/src/Components/Web.JS/src/webpack.config.js
++++ b/src/Components/Web.JS/src/webpack.config.js
+@@ -18,7 +18,7 @@ module.exports = (env, args) => ({
+     },
+     output: { path: path.join(__dirname, '/..', '/dist', args.mode == 'development' ? '/Debug' : '/Release'), filename: '[name].js' },
+     performance: {
+-        maxAssetSize: 122880,
++        maxAssetSize: 245760,
+     },
+     optimization: {
+         sideEffects: true,
+diff --git a/src/Razor/perf/Microbenchmarks/Microsoft.AspNetCore.Razor.Microbenchmarks.csproj b/src/Razor/perf/Microbenchmarks/Microsoft.AspNetCore.Razor.Microbenchmarks.csproj
+index 75bf91f96d..3035cf61c3 100644
+--- a/src/Razor/perf/Microbenchmarks/Microsoft.AspNetCore.Razor.Microbenchmarks.csproj
++++ b/src/Razor/perf/Microbenchmarks/Microsoft.AspNetCore.Razor.Microbenchmarks.csproj
+@@ -1,7 +1,7 @@
+ <Project Sdk="Microsoft.NET.Sdk">
+ 
+   <PropertyGroup>
+-    <TargetFramework>netcoreapp2.1</TargetFramework>
++    <TargetFramework>net6.0</TargetFramework>
+     <OutputType>Exe</OutputType>
+     <ServerGarbageCollection>true</ServerGarbageCollection>
+     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+diff --git a/src/Razor/tools/RazorSyntaxGenerator/RazorSyntaxGenerator.csproj b/src/Razor/tools/RazorSyntaxGenerator/RazorSyntaxGenerator.csproj
+index c9ec56f8d8..214a7e37b4 100644
+--- a/src/Razor/tools/RazorSyntaxGenerator/RazorSyntaxGenerator.csproj
++++ b/src/Razor/tools/RazorSyntaxGenerator/RazorSyntaxGenerator.csproj
+@@ -2,7 +2,7 @@
+ 
+   <PropertyGroup>
+     <Description>Generates Razor syntax nodes from xml. For internal use only.</Description>
+-    <TargetFramework>netcoreapp2.1</TargetFramework>
++    <TargetFramework>net6.0</TargetFramework>
+     <AssemblyName>dotnet-razorsyntaxgenerator</AssemblyName>
+     <PackageId>RazorSyntaxGenerator</PackageId>
+     <OutputType>Exe</OutputType>
+diff --git a/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.csproj b/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.csproj
+index 2db57db253..adca7bcf76 100644
+--- a/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.csproj
++++ b/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.csproj
+@@ -3,7 +3,7 @@
+ 
+   <PropertyGroup>
+     <!-- Included primarily to ensure dotnet-getdocument and GetDocument.Insider can be referenced. -->
+-    <TargetFrameworks>netcoreapp2.1;$(DefaultNetCoreTargetFramework);$(DefaultNetFxTargetFramework)</TargetFrameworks>
++    <TargetFrameworks>$(DefaultNetCoreTargetFramework);$(DefaultNetFxTargetFramework)</TargetFrameworks>
+ 
+     <Description>MSBuild tasks and targets for build-time Swagger and OpenApi document generation</Description>
+     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+diff --git a/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.nuspec b/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.nuspec
+index bc8028564e..55d3d61742 100644
+--- a/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.nuspec
++++ b/src/Tools/Extensions.ApiDescription.Server/src/Microsoft.Extensions.ApiDescription.Server.nuspec
+@@ -8,10 +8,10 @@
+     $CommonFileElements$
+     <file src="build\*" target="build" />
+     <file src="buildMultiTargeting\*" target="buildMultiTargeting" />
+-    <file src="$artifactsBinDir$\dotnet-getdocument\$configuration$\netcoreapp2.1\publish\*.*" target="tools" />
++    <file src="$artifactsBinDir$\dotnet-getdocument\$configuration$\net6.0\publish\*.*" target="tools" />
+     <file src="$artifactsBinDir$\GetDocument.Insider\$configuration$\net461\*.*" target="tools\net461" />
+     <file src="$artifactsBinDir$\GetDocument.Insider\x86\$configuration$\net461\*.*" target="tools\net461-x86" />
+-    <file src="$artifactsBinDir$\GetDocument.Insider\$configuration$\netcoreapp2.1\publish\*.*" target="tools\netcoreapp2.1" />
++    <file src="$artifactsBinDir$\GetDocument.Insider\$configuration$\net6.0\*.*" target="tools\netcoreapp2.1" />
+     <file src="$artifactsBinDir$\GetDocument.Insider\$configuration$\net6.0\publish\*.*" target="tools\net6.0" />
+   </files>
+ </package>
+diff --git a/src/Tools/GetDocumentInsider/src/Commands/GetDocumentCommand.cs b/src/Tools/GetDocumentInsider/src/Commands/GetDocumentCommand.cs
+index dc3597bd28..2d846e1ed8 100644
+--- a/src/Tools/GetDocumentInsider/src/Commands/GetDocumentCommand.cs
++++ b/src/Tools/GetDocumentInsider/src/Commands/GetDocumentCommand.cs
+@@ -115,7 +115,7 @@ namespace Microsoft.Extensions.ApiDescription.Tool.Commands
+                 return Assembly.LoadFile(assemblyPath);
+             };
+ #else
+-#error Target frameworks need to be updated.
++
+ #endif
+ 
+             // Now safe to reference the application's code.
+diff --git a/src/Tools/GetDocumentInsider/src/GetDocument.Insider.csproj b/src/Tools/GetDocumentInsider/src/GetDocument.Insider.csproj
+index 01e9549aec..bf52b9d3fd 100644
+--- a/src/Tools/GetDocumentInsider/src/GetDocument.Insider.csproj
++++ b/src/Tools/GetDocumentInsider/src/GetDocument.Insider.csproj
+@@ -5,7 +5,7 @@
+     <IsPackable>false</IsPackable>
+     <OutputType>Exe</OutputType>
+     <RootNamespace>Microsoft.Extensions.ApiDescription.Tool</RootNamespace>
+-    <TargetFrameworks>netcoreapp2.1;$(DefaultNetCoreTargetFramework);$(DefaultNetFxTargetFramework)</TargetFrameworks>
++    <TargetFrameworks>$(DefaultNetCoreTargetFramework);$(DefaultNetFxTargetFramework)</TargetFrameworks>
+     <IsShippingPackage>false</IsShippingPackage>
+   </PropertyGroup>
+ 
+diff --git a/src/Tools/dotnet-getdocument/src/dotnet-getdocument.csproj b/src/Tools/dotnet-getdocument/src/dotnet-getdocument.csproj
+index 3b37a5ea78..d8e25cf297 100644
+--- a/src/Tools/dotnet-getdocument/src/dotnet-getdocument.csproj
++++ b/src/Tools/dotnet-getdocument/src/dotnet-getdocument.csproj
+@@ -5,7 +5,7 @@
+     <IsPackable>false</IsPackable>
+     <OutputType>Exe</OutputType>
+     <RootNamespace>Microsoft.Extensions.ApiDescription.Tool</RootNamespace>
+-    <TargetFrameworks>netcoreapp2.1;$(DefaultNetCoreTargetFramework)</TargetFrameworks>
++    <TargetFrameworks>$(DefaultNetCoreTargetFramework)</TargetFrameworks>
+     <UseAppHost>false</UseAppHost>
+     <IsShippingPackage>false</IsShippingPackage>
+   </PropertyGroup>

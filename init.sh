@@ -1,10 +1,10 @@
 #!/bin/sh
 
-SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/8.0.100-preview.1-x64-native/dotnet-sdk-8.0.100-preview.1.23115.2-freebsd-x64.tar.gz"
+SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/8.0.100-preview.3-x64-native/dotnet-sdk-8.0.100-preview.3.23178.7-freebsd-x64.tar.gz"
 SDKZIP="sdk.tgz"
 
 if [ `uname -m` = 'arm64' ]; then
-    SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/8.0.100-preview.1-arm64-native/dotnet-sdk-8.0.100-preview.1.23115.2-freebsd-arm64.tar.gz"
+    SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/8.0.100-preview.3-arm64-native/dotnet-sdk-8.0.100-preview.3.23178.7-freebsd-arm64.tar.gz"
 fi
 
 RUNTIMETAG=`cat runtime.tag`

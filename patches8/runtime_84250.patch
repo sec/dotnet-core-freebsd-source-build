@@ -1,0 +1,57 @@
+From e58d5fc1d9796c5e473781218fd0f1dc434624b9 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Szczepan=20=C4=86wikli=C5=84ski?= <sec@thinkcode.pl>
+Date: Mon, 3 Apr 2023 12:21:45 +0200
+Subject: [PATCH] Allow ResolveReadyToRunCompilers to be run under FreeBSD
+
+---
+ .../ResolveReadyToRunCompilers.cs               | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/src/tasks/Crossgen2Tasks/ResolveReadyToRunCompilers.cs b/src/tasks/Crossgen2Tasks/ResolveReadyToRunCompilers.cs
+index aac7b19ab7081..69e60b0b2ec48 100644
+--- a/src/tasks/Crossgen2Tasks/ResolveReadyToRunCompilers.cs
++++ b/src/tasks/Crossgen2Tasks/ResolveReadyToRunCompilers.cs
+@@ -149,6 +149,7 @@ private bool ValidateCrossgen2Support()
+                 "linux-musl" => "linux",
+                 "osx" => "osx",
+                 "win" => "windows",
++                "freebsd" => "freebsd",
+                 _ => null
+             };
+ 
+@@ -297,7 +298,7 @@ private bool GetCrossgenComponentsPaths()
+                     }
+                 }
+             }
+-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
++            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || IsFreeBSD())
+             {
+                 if (_targetArchitecture == Architecture.Arm || _targetArchitecture == Architecture.Arm64)
+                 {
+@@ -352,7 +353,7 @@ private bool GetCrossgen2ComponentsPaths(bool version5)
+                 toolFileName = "crossgen2.exe";
+                 v5_clrJitFileNamePattern = "clrjit-{0}.dll";
+             }
+-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
++            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || IsFreeBSD())
+             {
+                 toolFileName = "crossgen2";
+                 v5_clrJitFileNamePattern = "libclrjit-{0}.so";
+@@ -401,5 +402,17 @@ private static string ArchitectureToString(Architecture architecture)
+                 _ => null
+             };
+         }
++
++#if NETCOREAPP
++        private static bool IsFreeBSD() => RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD);
++#else
++        private static readonly OSPlatform s_freebsdOSPlatform = OSPlatform.Create("FREEBSD");
++
++        private static bool IsFreeBSD()
++        {
++            return RuntimeInformation.IsOSPlatform(s_freebsdOSPlatform);
++        }
++#endif
++
+     }
+ }

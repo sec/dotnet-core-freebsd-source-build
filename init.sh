@@ -36,6 +36,7 @@ if [ ! -d runtime ]; then
     fi
     
     patch -d runtime < patches8/runtime_preview2.patch
+    patch -d runtime < patches8/runtime_84250.patch
 fi
 
 if [ ! -d aspnetcore ]; then

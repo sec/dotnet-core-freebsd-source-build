@@ -1,10 +1,10 @@
 #!/bin/sh
 
-SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.200-x64-native/dotnet-sdk-7.0.200-freebsd-x64.tar.gz"
+SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.102-x64-native/dotnet-sdk-7.0.102-freebsd-x64.tar.gz"
 SDKZIP="sdk.tgz"
 
 if [ `uname -m` = 'arm64' ]; then
-    SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.200-arm64-native/dotnet-sdk-7.0.200-freebsd-arm64.tar.gz"
+    SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/7.0.102-arm64-native/dotnet-sdk-7.0.12-freebsd-arm64.tar.gz"
 fi
 
 RUNTIMETAG=`cat runtime.tag`

@@ -8,4 +8,5 @@ echo Extracting .NET Core SDK into $2...
 
 mkdir -p $2/.dotnet
 tar zxf $1 --directory $2/.dotnet
+elfctl -e +noaslr $2/.dotnet/dotnet
 echo 'exit 0' > $2/.dotnet/dotnet-install.sh

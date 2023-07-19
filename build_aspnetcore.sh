@@ -16,6 +16,7 @@ setenv PROTOBUF_PROTOC /usr/local/bin/protoc
 setenv PROTOBUF_TOOLS_CPU x64
 setenv PROTOBUF_TOOLS_OS linux
 setenv GRPC_PROTOC_PLUGIN /usr/local/bin/grpc_csharp_plugin
+setenv PUPPETEER_SKIP_CHROMIUM_DOWNLOAD 1
 
 service linux onestart
 

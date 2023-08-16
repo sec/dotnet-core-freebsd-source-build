@@ -62,7 +62,7 @@ if [ ! -d installer ]; then
     installer/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local1 --configfile installer/NuGet.config
     installer/.dotnet/dotnet nuget add source ../aspnetcore/artifacts/packages/Release/Shipping/ --name local2 --configfile installer/NuGet.config
 
-    patch -d installer < patches8/installer_preview1.patch
+    patch -d installer < patches8/installer_preview7.patch
 fi
 
 if [ ! -d sdk ]; then

@@ -1,0 +1,26 @@
+diff --git a/eng/Versions.props b/eng/Versions.props
+index ab7e7a5ff61..53805fc37a7 100644
+--- a/eng/Versions.props
++++ b/eng/Versions.props
+@@ -116,6 +116,8 @@
+     <runtimewinx64MicrosoftNETCoreRuntimeObjWriterVersion>16.0.5-alpha.1.23354.1</runtimewinx64MicrosoftNETCoreRuntimeObjWriterVersion>
+     <runtimeosxarm64MicrosoftNETCoreRuntimeObjWriterVersion>16.0.5-alpha.1.23354.1</runtimeosxarm64MicrosoftNETCoreRuntimeObjWriterVersion>
+     <runtimeosxx64MicrosoftNETCoreRuntimeObjWriterVersion>16.0.5-alpha.1.23354.1</runtimeosxx64MicrosoftNETCoreRuntimeObjWriterVersion>
++    <runtimefreebsdarm64MicrosoftNETCoreRuntimeObjWriterVersion>1.0.0-alpha.1.23073.1</runtimefreebsdarm64MicrosoftNETCoreRuntimeObjWriterVersion>
++    <runtimefreebsdx64MicrosoftNETCoreRuntimeObjWriterVersion>1.0.0-alpha.1.23073.1</runtimefreebsdx64MicrosoftNETCoreRuntimeObjWriterVersion>
+     <!-- Libraries dependencies -->
+     <MicrosoftBclAsyncInterfacesVersion>6.0.0</MicrosoftBclAsyncInterfacesVersion>
+     <MicrosoftBclHashCodeVersion>1.1.1</MicrosoftBclHashCodeVersion>
+diff --git a/eng/restore/optimizationData.targets b/eng/restore/optimizationData.targets
+index 4d6b773bf20..53767d25db7 100644
+--- a/eng/restore/optimizationData.targets
++++ b/eng/restore/optimizationData.targets
+@@ -44,7 +44,7 @@
+     <Copy SourceFiles="@(_optimizationMibcFile)"
+           DestinationFiles="@(_optimizationMibcDestinationFile)"
+           SkipUnchangedFiles="true"
+-          UseHardlinksIfPossible="true" />
++          UseHardlinksIfPossible="false" />
+ 
+   </Target>
+ </Project>

@@ -35,8 +35,7 @@ if [ ! -d runtime ]; then
         #git -C runtime cherry-pick -n b02f85fae696d3205277640c50b3c71257dcc951
     fi
     
-    patch -d runtime < patches8/runtime_preview2.patch
-    patch -d runtime < patches8/runtime_84250.patch
+    patch -d runtime < patches8/runtime_preview7.patch
 fi
 
 if [ ! -d aspnetcore ]; then

@@ -1,0 +1,15 @@
+diff --git a/src/coreclr/vm/jitinterface.cpp b/src/coreclr/vm/jitinterface.cpp
+index b7dcf9eacd8..a8d9c497bc7 100644
+--- a/src/coreclr/vm/jitinterface.cpp
++++ b/src/coreclr/vm/jitinterface.cpp
+@@ -1599,6 +1599,10 @@ void CEEInfo::getFieldInfo (CORINFO_RESOLVED_TOKEN * pResolvedToken,
+                 optimizeThreadStaticAccess = GetTlsIndexObjectAddress() != nullptr;
+ #endif // TARGET_UNIX && TARGET_AMD64
+ 
++#if defined(TARGET_ARM64) && defined(TARGET_FREEBSD)
++                optimizeThreadStaticAccess = false;
++#endif
++
+                 if (optimizeThreadStaticAccess)
+                 {
+                     // For windows x64/x86/arm64, linux x64/arm64/loongarch64:

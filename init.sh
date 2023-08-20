@@ -28,14 +28,9 @@ if [ ! -d runtime ]; then
     ./bsd_dotnet_install.sh $SDKZIP runtime
 
     runtime/.dotnet/dotnet nuget add source 'https://sec.github.io/dotnet-freebsd-nuget-feed/v3/index.json' --name ghsec --configfile runtime/NuGet.config
-
-    if [ `uname -m` = 'arm64' ]; then
-        #git -C runtime cherry-pick -n 8582762f5d19d88ee12ef9d61e3a3af3e1a44185
-        #git -C runtime cherry-pick -n e2a706e206ba620bffa94cc1c4959cfb82cb3638
-        #git -C runtime cherry-pick -n b02f85fae696d3205277640c50b3c71257dcc951
-    fi
-    
+   
     patch -d runtime < patches8/runtime_preview7.patch
+    patch -d runtime < patches8/runtime_preview7_tls.patch
 fi
 
 if [ ! -d aspnetcore ]; then

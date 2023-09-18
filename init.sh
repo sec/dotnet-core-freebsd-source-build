@@ -1,10 +1,10 @@
 #!/bin/sh
 
-SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/8.0.100-preview.6-x64-native/dotnet-sdk-8.0.100-preview.6.23330.14-freebsd-x64.tar.gz"
+SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/8.0.100-preview.7-x64-native/dotnet-sdk-8.0.100-preview.7.23376.3-freebsd-x64.tar.gz"
 SDKZIP="sdk.tgz"
 
 if [ `uname -m` = 'arm64' ]; then
-    SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/8.0.100-preview.6-arm64-native/dotnet-sdk-8.0.100-preview.6.23330.14-freebsd-arm64.tar.gz"
+    SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/8.0.100-preview.7-arm64-native/dotnet-sdk-8.0.100-preview.7.23376.3-freebsd-arm64.tar.gz"
 fi
 
 RUNTIMETAG=`cat runtime.tag`
@@ -27,7 +27,7 @@ if [ ! -d runtime ]; then
 
     ./bsd_dotnet_install.sh $SDKZIP runtime
 
-    runtime/.dotnet/dotnet nuget add source 'https://sec.github.io/dotnet-freebsd-nuget-feed/v3/index.json' --name ghsec --configfile runtime/NuGet.config
+    runtime/.dotnet/dotnet nuget add source 'https://fbsdnugetfeed.mooo.com//v3/index.json' --name ghsec --configfile runtime/NuGet.config
    
     patch -d runtime < patches8/runtime_preview7.patch
     patch -d runtime < patches8/runtime_preview7_tls.patch
@@ -41,7 +41,7 @@ if [ ! -d aspnetcore ]; then
     ./bsd_dotnet_install.sh $SDKZIP aspnetcore
 
     aspnetcore/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local --configfile aspnetcore/NuGet.config
-    runtime/.dotnet/dotnet nuget add source 'https://sec.github.io/dotnet-freebsd-nuget-feed/v3/index.json' --name ghsec --configfile aspnetcore/NuGet.config
+    runtime/.dotnet/dotnet nuget add source 'https://fbsdnugetfeed.mooo.com//v3/index.json' --name ghsec --configfile aspnetcore/NuGet.config
     
     patch -d aspnetcore < patches8/aspnetcore_preview1.patch
 
@@ -68,5 +68,5 @@ if [ ! -d sdk ]; then
 
     patch -d sdk < patches8/sdk_preview1.patch
 
-    sdk/.dotnet/dotnet nuget add source 'https://sec.github.io/dotnet-freebsd-nuget-feed/v3/index.json' --name ghsec --configfile sdk/NuGet.config
+    sdk/.dotnet/dotnet nuget add source 'https://fbsdnugetfeed.mooo.com//v3/index.json' --name ghsec --configfile sdk/NuGet.config
 fi

@@ -27,7 +27,7 @@ if [ ! -d runtime ]; then
 
     ./bsd_dotnet_install.sh $SDKZIP runtime
 
-    runtime/.dotnet/dotnet nuget add source 'https://sec.github.io/dotnet-freebsd-nuget-feed/v3/index.json' --name ghsec --configfile runtime/NuGet.config
+    runtime/.dotnet/dotnet nuget add source 'https://fbsdnugetfeed.mooo.com//v3/index.json' --name ghsec --configfile runtime/NuGet.config
 
     patch -d runtime < patches/runtime.patch
 fi
@@ -40,7 +40,7 @@ if [ ! -d aspnetcore ]; then
     ./bsd_dotnet_install.sh $SDKZIP aspnetcore
 
     aspnetcore/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local --configfile aspnetcore/NuGet.config
-    runtime/.dotnet/dotnet nuget add source 'https://sec.github.io/dotnet-freebsd-nuget-feed/v3/index.json' --name ghsec --configfile aspnetcore/NuGet.config
+    runtime/.dotnet/dotnet nuget add source 'https://fbsdnugetfeed.mooo.com//v3/index.json' --name ghsec --configfile aspnetcore/NuGet.config
     
     patch -d aspnetcore < patches/aspnetcore.patch
 

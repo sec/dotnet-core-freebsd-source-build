@@ -3,6 +3,7 @@
 - Just a collection of script and patches put up into one place, to help getting automated builds.
 - For other versions, check proper tag with that name.
 - For common errors, look below.
+- For my private nuget feed, check [dotnet-freebsd-nuget-feed](https://github.com/sec/dotnet-freebsd-nuget-feed)
 
 ## Usage
 

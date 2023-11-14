@@ -5,3 +5,4 @@ installer/
 nuget/
 output/
 sdk.tgz
+local.nuget

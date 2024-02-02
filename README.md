@@ -39,7 +39,7 @@ NB: you can use output SDK as seed (instead of the one that was crosscompiled), 
 ## Support
 
 - x64 - [read](https://github.com/dotnet/runtime/issues/14537)
-- arm64 - [read]()
+- arm64 - [read](https://github.com/dotnet/runtime/issues/71338)
 
 ## Ready builds, credits, etc
 

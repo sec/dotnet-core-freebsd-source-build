@@ -1,8 +1,15 @@
-# Build .NET Core 8 (preview atm) under FreeBSD
+# Build .NET <strike>Core</strike> 8 under FreeBSD
+
+# New News (2024)
+- We how have official port under [FreeBSD ports](https://github.com/freebsd/freebsd-ports/tree/main/lang/dotnet) for x64/amd64
+- `/usr/ports/lang/dotnet/make install` or `pkg install` will get you up and running
+- to speed up port build, use `install_tools.sh` first, unless you like everything from source
+- For arm64/aarch64, I have [fork ready](https://github.com/sec/freebsd-ports/tree/lang-dotnet-arm64/lang/dotnet) which I hope will be upstreamed soon
+
+# Old news (out-dated, but still some valid points)
 
 - Just a collection of script and patches put up into one place, to help getting automated builds.
-- For other versions, check proper tag with that name.
-- For common errors, look below.
+- For other versions, check proper tag with that name (mostly out-dated and not updated).
 - For my private nuget feed, check [dotnet-freebsd-nuget-feed](https://github.com/sec/dotnet-freebsd-nuget-feed)
 
 ## Usage
@@ -22,16 +29,6 @@ NB: you can use output SDK as seed (instead of the one that was crosscompiled), 
 
 ## Errors
 
-If you get error like `The author primary signature validity period has expired` or `The repository countersignature validity period has expired`, this should fix it (run as root):
-```
-mv /usr/share/certs/blacklisted/VeriSign_Universal_Root_Certification_Authority.pem /usr/share/certs/trusted
-certctl rehash
-```
-
-*Don't do this on your production machine!*
-
-More info about this [here](https://bugzilla.mozilla.org/show_bug.cgi?id=1686854)
-
 ## Requirments
 
 1. Working SDK for FreeBSD - at the moment it's using binaries from `https://github.com/Thefrank/dotnet-freebsd-crossbuild` created during crosscompile under Linux
@@ -41,8 +38,8 @@ More info about this [here](https://bugzilla.mozilla.org/show_bug.cgi?id=1686854
 
 ## Support
 
-- Go and [read](https://github.com/dotnet/runtime/issues/14537)
-- List of cherry picked changes needed [listed here](https://github.com/dotnet/runtime/issues/14537#issuecomment-926352045)
+- x64 - [read](https://github.com/dotnet/runtime/issues/14537)
+- arm64 - [read]()
 
 ## Ready builds, credits, etc
 

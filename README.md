@@ -1,7 +1,7 @@
 # Build .NET <strike>Core</strike> 8 under FreeBSD
 
 # New News (2024)
-- We how have official port under [FreeBSD ports](https://github.com/freebsd/freebsd-ports/tree/main/lang/dotnet) for x64/amd64
+- We how have **community made** port under [FreeBSD ports](https://github.com/freebsd/freebsd-ports/tree/main/lang/dotnet) for x64/amd64
 - `/usr/ports/lang/dotnet/make install` or `pkg install` will get you up and running
 - to speed up port build, use `install_tools.sh` first, unless you like everything from source
 - For arm64/aarch64, I have [fork ready](https://github.com/sec/freebsd-ports/tree/lang-dotnet-arm64/lang/dotnet) which I hope will be upstreamed soon
@@ -26,8 +26,6 @@
 1. `gather_output.sh` to tar artifacts into one big file, for future use (doesn't make sense to compress this, as it contains compressed files already)
 
 NB: you can use output SDK as seed (instead of the one that was crosscompiled), move it here and rename to `sdk.tgz`
-
-## Errors
 
 ## Requirments
 

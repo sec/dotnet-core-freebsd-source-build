@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# PROVIDE: service
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name=service
+
+rcvar="${name}_enable"
+pidfile="/var/run/${name}.pid"
+service_chdir="/service/bin/Release/net8.0/publish/"
+service_env="DOTNET_ROOT=/usr/local/dotnet"
+
+load_rc_config $name
+
+: ${service_port="12345"}
+
+command="/usr/sbin/daemon"
+command_args="-t ${name} -S -f -r -P ${pidfile} ./${name} --urls=http://127.0.0.1:${service_port}"
+
+load_rc_config $name
+run_rc_command "$1"

@@ -18,9 +18,9 @@
 1. `build_runtime.sh` - add `-v d` inside if it will fail with SEHExceptions...
 1. `build_aspnetcore.sh`
 1. `build_installer.sh` - this one can fail with downloaing some things, copy URL and try to manualy fetch it into `installer/artifacts/obj/redist/Release/downloads/`
-1. Get and use `installer/artifacts/packages/Release/Shipping/dotnet-sdk-*-freebsd-x64.tar.gz`
+1. Check `installer/artifacts/packages/Release/Shipping/` or
+1. `gather_output.sh` will create one archive with everything you should need on target system
 1. `clean.sh` if you want to save disk space after use
-1. `gather_output.sh` will create one archive with everything you should need
 
 ### Extra info
 - some steps can fail, some patches can fail to apply, mostly due to numbers, this needs to be handed by hand, as I don't update all the patches with every release
@@ -29,7 +29,7 @@
 
 ## Requirments
 
-1. Working SDK for FreeBSD - at the moment it's using binaries from `https://github.com/Thefrank/dotnet-freebsd-crossbuild` created during crosscompile under Linux
+1. Working SDK for FreeBSD
 1. Tested under FreeBSD 13 and 14
 1. 8GB+ of RAM recommended (with 4GB I saw some parts crashing)
 1. To run SDK and/or apps `pkg install libunwind icu libinotify` should be enough on another box, maybe `openssl` too

@@ -33,6 +33,7 @@
 1. Tested under FreeBSD 13 and 14
 1. 8GB+ of RAM recommended (with 4GB I saw some parts crashing)
 1. To run SDK and/or apps `pkg install libunwind icu libinotify` should be enough on another box, maybe `openssl` too
+1. Under `14` also `pkg install misc/compat13x` might be needed if using builds directly
 
 ## Support
 

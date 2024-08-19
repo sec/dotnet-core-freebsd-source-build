@@ -1,0 +1,13 @@
+diff --git a/src/Installer/redist-installer/targets/GetRuntimeInformation.targets b/src/Installer/redist-installer/targets/GetRuntimeInformation.targets
+index db1510b166..e83d12d946 100644
+--- a/src/Installer/redist-installer/targets/GetRuntimeInformation.targets
++++ b/src/Installer/redist-installer/targets/GetRuntimeInformation.targets
+@@ -7,7 +7,7 @@
+       <HostRid Condition="'$(HostRid)' == '' and '$(MSBuildRuntimeType)' == 'core'">$([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier)</HostRid>
+       <HostRid Condition="'$(HostRid)' == '' and '$(MSBuildRuntimeType)' != 'core'">win-$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLowerInvariant)</HostRid>
+ 
+-      <IsLinux Condition = " $([MSBuild]::IsOSPlatform('LINUX')) ">True</IsLinux>
++      <IsLinux Condition = " $([MSBuild]::IsOSPlatform('LINUX')) AND ('$(OSName)' == '' OR '$(OSName)' == 'linux') ">True</IsLinux>
+       <HostOSName Condition=" '$(HostOSName)' == '' AND $([MSBuild]::IsOSPlatform('WINDOWS')) ">win</HostOSName>
+       <HostOSName Condition=" '$(HostOSName)' == '' AND $([MSBuild]::IsOSPlatform('OSX')) ">osx</HostOSName>
+       <HostOSName Condition=" '$(HostOSName)' == '' AND $([MSBuild]::IsOSPlatform('FREEBSD')) ">freebsd</HostOSName>

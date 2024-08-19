@@ -9,12 +9,7 @@ fi
 
 RUNTIMETAG=`cat runtime.tag`
 ASPNETCORETAG=`cat aspnetcore.tag`
-INSTALLERTAG=`cat installer.tag`
 SDKTAG=`cat sdk.tag`
-
-#needed for openjdk
-#mount -t fdescfs fdesc /dev/fd
-#mount -t procfs proc /proc
 
 if [ ! -f $SDKZIP ]; then
     echo "Downloading SDK for FreeBSD"
@@ -31,8 +26,6 @@ if [ ! -d runtime ]; then
     if [ -f local.nuget ]; then
         runtime/.dotnet/dotnet nuget add source `cat local.nuget` --name localdir --configfile runtime/NuGet.config
     fi
-   
-    patch -d runtime < patches8/runtime_8.0.0.patch
 fi
 
 if [ ! -d aspnetcore ]; then
@@ -45,24 +38,9 @@ if [ ! -d aspnetcore ]; then
     aspnetcore/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local --configfile aspnetcore/NuGet.config
     aspnetcore/.dotnet/dotnet nuget add source 'https://fbsdnugetfeed.mooo.com/v3/index.json' --name ghsec --configfile aspnetcore/NuGet.config
     
-    patch -d aspnetcore < patches8/aspnetcore_preview1.patch
-
-    cp patches/aspnet.editorconfig aspnetcore/src/.editorconfig
     if [ -f local.nuget ]; then
         aspnetcore/.dotnet/dotnet nuget add source `cat local.nuget` --name localdir --configfile aspnetcore/NuGet.config
     fi
-fi
-
-if [ ! -d installer ]; then
-    git clone https://github.com/dotnet/installer.git
-    git -C installer checkout $INSTALLERTAG
-
-    ./bsd_dotnet_install.sh $SDKZIP installer
-
-    installer/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local1 --configfile installer/NuGet.config
-    installer/.dotnet/dotnet nuget add source ../aspnetcore/artifacts/packages/Release/Shipping/ --name local2 --configfile installer/NuGet.config
-
-    patch -d installer < patches8/installer_preview7.patch
 fi
 
 if [ ! -d sdk ]; then
@@ -71,7 +49,10 @@ if [ ! -d sdk ]; then
 
     ./bsd_dotnet_install.sh $SDKZIP sdk
 
-    patch -d sdk < patches8/sdk_preview1.patch
+    sdk/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local1 --configfile installer/NuGet.config
+    sdk/.dotnet/dotnet nuget add source ../aspnetcore/artifacts/packages/Release/Shipping/ --name local2 --configfile installer/NuGet.config
+
+    patch -d sdk < patches9/patch_sdk_net9p5.patch
 
     sdk/.dotnet/dotnet nuget add source 'https://fbsdnugetfeed.mooo.com/v3/index.json' --name ghsec --configfile sdk/NuGet.config
 fi

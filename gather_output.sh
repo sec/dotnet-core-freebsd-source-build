@@ -11,7 +11,7 @@ rm -rf output
 mkdir output
 find runtime/artifacts/packages/Release -name '*freebsd*.nupkg' -exec cp '{}' output/ \;
 find aspnetcore/artifacts/packages/Release -name '*freebsd*.nupkg' -exec cp '{}' output/ \;
-cp installer/artifacts/packages/Release/Shipping/* output/
+cp sdk/artifacts/packages/Release/Shipping/* output/
 
 rm output/*.symbols.nupkg
 

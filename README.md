@@ -1,4 +1,20 @@
-# Build .NET <strike>Core</strike> 8 under FreeBSD
+# Build .NET <strike>Core</strike> 9 under FreeBSD
+
+# Hacky way for native build, tested with v9.preview.7
+- for cross build sdk, patch needed for runtime to output proper ilc - https://patch-diff.githubusercontent.com/raw/dotnet/runtime/pull/105004.patch
+- also this one might be needed https://github.com/dotnet/runtime/pull/105587.patch
+- ---
+- aspnet runtime nuget with 6.0.32
+- app host both runtime and aspnet with 6.0.32
+- I use some old v6 versions and repack them with new version, scripts in repo, maybe there's better way for that
+- eng/Versions.props, line 217 with MicrosoftDotNetILCompilerVersion, put 9.0.0-preview.7.24405.7 or the one you have with SDK
+- add nuget source for SDK nuget's your compile with
+- adjust global.json versions to SDK version
+- for runtime, app host error could happen - this need sed linux-arch to freebsd-arc - TODO for later
+- ---
+- build runtime (ILC can/will fail due to missing symbols, copy from crossbuild, but final SDK/nuget will also be broken)
+- build aspnet
+- build sdk
 
 # New News (2024)
 - We how have **community made** port under [FreeBSD ports](https://github.com/freebsd/freebsd-ports/tree/main/lang/dotnet) for x64/amd64 and aarch64

@@ -1,0 +1,62 @@
+diff --git a/NuGet.config b/NuGet.config
+index c9f91b53273..428ef0ee928 100644
+--- a/NuGet.config
++++ b/NuGet.config
+@@ -1,4 +1,4 @@
+-<?xml version="1.0" encoding="utf-8"?>
++﻿<?xml version="1.0" encoding="utf-8"?>
+ <configuration>
+   <!-- Don't use any higher level config files.
+        Our builds need to be isolated from user/machine state -->
+@@ -20,6 +20,8 @@
+     <add key="dotnet-libraries-transport" value="https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-libraries-transport/nuget/v3/index.json" />
+     <add key="dotnet9" value="https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet9/nuget/v3/index.json" />
+     <add key="dotnet9-transport" value="https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet9-transport/nuget/v3/index.json" />
++    <add key="ghsec" value="https://fbsdnugetfeed.mooo.com/v3/index.json" />
++    <add key="local" value="/usr/home/sec/9p7" />
+   </packageSources>
+   <disabledPackageSources>
+     <clear />
+diff --git a/eng/Versions.props b/eng/Versions.props
+index 519664a91b7..bc84073d732 100644
+--- a/eng/Versions.props
++++ b/eng/Versions.props
+@@ -214,7 +214,7 @@
+     <!-- Mono Cecil -->
+     <MicrosoftDotNetCecilVersion>0.11.5-alpha.24365.1</MicrosoftDotNetCecilVersion>
+     <!-- ILCompiler -->
+-    <MicrosoftDotNetILCompilerVersion>9.0.0-preview.7.24371.6</MicrosoftDotNetILCompilerVersion>
++    <MicrosoftDotNetILCompilerVersion>9.0.0-preview.7.24405.7</MicrosoftDotNetILCompilerVersion>
+     <!-- ICU -->
+     <MicrosoftNETCoreRuntimeICUTransportVersion>9.0.0-preview.7.24373.2</MicrosoftNETCoreRuntimeICUTransportVersion>
+     <!-- MsQuic -->
+diff --git a/global.json b/global.json
+index a6ce18c69df..d4b6664f1e7 100644
+--- a/global.json
++++ b/global.json
+@@ -1,11 +1,11 @@
+ {
+   "sdk": {
+-    "version": "9.0.100-preview.5.24307.3",
++    "version": "9.0.100-preview.7.24407.12",
+     "allowPrerelease": true,
+     "rollForward": "major"
+   },
+   "tools": {
+-    "dotnet": "9.0.100-preview.5.24307.3"
++    "dotnet": "9.0.100-preview.7.24407.12"
+   },
+   "msbuild-sdks": {
+     "Microsoft.DotNet.Arcade.Sdk": "9.0.0-beta.24360.4",
+diff --git a/src/coreclr/nativeaot/BuildIntegration/Microsoft.NETCore.Native.targets b/src/coreclr/nativeaot/BuildIntegration/Microsoft.NETCore.Native.targets
+index 9f210a00880..b89c23085f1 100644
+--- a/src/coreclr/nativeaot/BuildIntegration/Microsoft.NETCore.Native.targets
++++ b/src/coreclr/nativeaot/BuildIntegration/Microsoft.NETCore.Native.targets
+@@ -244,6 +244,7 @@ The .NET Foundation licenses this file to you under the MIT license.
+       <IlcArg Condition="'$(ExportsFile)' != ''" Include="--exportsfile:$(ExportsFile)" />
+       <IlcArg Condition="'$(_targetOS)' == 'win' and '$(DebuggerSupport)' != 'false'" Include="--export-dynamic-symbol:DotNetRuntimeDebugHeader,DATA" />
+       <IlcArg Condition="'$(_targetOS)' != 'win' and '$(DebuggerSupport)' != 'false'" Include="--export-dynamic-symbol:DotNetRuntimeDebugHeader" />
++      <IlcArg Condition="'$(_targetOS)' == 'freebsd' and '$(IsNativeExecutable)' == 'true'" Include="--export-dynamic-symbol:__progname;--export-dynamic-symbol:environ" />
+       <IlcArg Condition="'$(IlcExportUnmanagedEntrypoints)' == 'true'" Include="--export-unmanaged-entrypoints" />
+       <IlcArg Include="@(AutoInitializedAssemblies->'--initassembly:%(Identity)')" />
+       <IlcArg Include="@(DirectPInvoke->'--directpinvoke:%(Identity)')" />

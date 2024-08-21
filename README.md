@@ -13,7 +13,7 @@
 - for runtime, app host error could happen - this need sed linux-arch to freebsd-arc - TODO for later
 - ---
 - build runtime (ILC can/will fail due to missing symbols, copy from crossbuild, but final SDK/nuget will also be broken)
-- build aspnet
+- build aspnet (do not build with node/npm installed)
 - build sdk
 
 # New News (2024)

@@ -8,7 +8,7 @@ strip_tag()
 echo Compiled under `uname -r -s -m -i`
 echo
 
-strip_tag installer
+strip_tag sdk
 echo SDK $VER
 
 strip_tag runtime

@@ -16,6 +16,6 @@ else
     setenv ARCH x64
 endif
 
-sed -i '' -e 's/linux-$ARCH/freebsd-$ARCH/g' $2/.dotnet/sdk/9.0.100-preview.7.24407.12/Microsoft.NETCoreSdk.BundledVersions.props
+sed -i '' -e "s/linux-$ARCH/freebsd-$ARCH/g" $2/.dotnet/sdk/9.0.100-preview.7.24407.12/Microsoft.NETCoreSdk.BundledVersions.props
 
 echo 'exit 0' > $2/.dotnet/dotnet-install.sh

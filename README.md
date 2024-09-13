@@ -3,6 +3,7 @@
 # Hacky way for native build, tested with v9.preview.7
 - for cross build sdk, patch needed for runtime to output proper ilc - https://patch-diff.githubusercontent.com/raw/dotnet/runtime/pull/105004.patch
 - also this one might be needed https://github.com/dotnet/runtime/pull/105587.patch
+- if sdk will fail with missing runtime, extract freshly built runtime from artifacts into sdk/.dotnet dir
 - ---
 - aspnet runtime nuget with 6.0.32
 - app host both runtime and aspnet with 6.0.32

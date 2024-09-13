@@ -10,7 +10,7 @@
 - eng/Versions.props, line 217 with MicrosoftDotNetILCompilerVersion, put 9.0.0-preview.7.24405.7 or the one you have with SDK
 - add nuget source for SDK nuget's your compile with
 - adjust global.json versions to SDK version
-- for runtime, app host error could happen - this need sed linux-arch to freebsd-arc - TODO for later
+- for runtime, app host error could happen - this need sed linux-arch to freebsd-arc - ex. `sed -i '' -e 's/linux-arm64/freebsd-arm64/g' runtime/.dotnet/sdk/9.0.100-preview.7.24407.12/Microsoft.NETCoreSdk.BundledVersions.props`
 - ---
 - build runtime (ILC can/will fail due to missing symbols, copy from crossbuild, but final SDK/nuget will also be broken)
 - build aspnet (do not build with node/npm installed)

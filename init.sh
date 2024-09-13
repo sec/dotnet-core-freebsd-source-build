@@ -1,10 +1,10 @@
 #!/bin/sh
 
-SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/8.0.100-x64-native/dotnet-sdk-8.0.100-freebsd-x64.tar.gz"
+SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/9.0.100-preview.7-native/dotnet-sdk-9.0.100-preview.7.24407.12-freebsd-x64.tar.gz"
 SDKZIP="sdk.tgz"
 
 if [ `uname -m` = 'arm64' ]; then
-    SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/8.0.100-arm64-native/dotnet-sdk-8.0.100-freebsd-arm64.tar.gz"
+    SDKBIN="https://github.com/sec/dotnet-core-freebsd-source-build/releases/download/9.0.100-preview.7-native/dotnet-sdk-9.0.100-preview.7.24407.12-freebsd-arm64.tar.gz"
 fi
 
 RUNTIMETAG=`cat runtime.tag`
@@ -49,8 +49,8 @@ if [ ! -d sdk ]; then
 
     ./bsd_dotnet_install.sh $SDKZIP sdk
 
-    sdk/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local1 --configfile installer/NuGet.config
-    sdk/.dotnet/dotnet nuget add source ../aspnetcore/artifacts/packages/Release/Shipping/ --name local2 --configfile installer/NuGet.config
+    sdk/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local1 --configfile sdk/NuGet.config
+    sdk/.dotnet/dotnet nuget add source ../aspnetcore/artifacts/packages/Release/Shipping/ --name local2 --configfile sdk/NuGet.config
 
     patch -d sdk < patches9/patch_sdk_net9p5.patch
 

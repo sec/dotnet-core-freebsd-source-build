@@ -22,3 +22,16 @@ index f7d9f35069..fe9e8301e2 100644
    </PropertyGroup>
  
    <ItemGroup>
+diff --git a/eng/common/build.sh b/eng/common/build.sh
+index ac1ee8620c..06c3b1aa2d 100755
+--- a/eng/common/build.sh
++++ b/eng/common/build.sh
+@@ -74,7 +74,7 @@ public=false
+ ci=false
+ clean=false
+ 
+-warn_as_error=true
++warn_as_error=false
+ node_reuse=true
+ binary_log=false
+ exclude_ci_binary_log=false

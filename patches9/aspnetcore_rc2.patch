@@ -34,3 +34,29 @@ index 6656919a79..d57f5d5762 100644
    </PropertyGroup>
  
    <Import Project="$(RepoRoot)eng\TrimmableProjects.props" />
+diff --git a/eng/common/tools.sh b/eng/common/tools.sh
+index 00473c9f91..25467a18f4 100755
+--- a/eng/common/tools.sh
++++ b/eng/common/tools.sh
+@@ -47,7 +47,7 @@ else
+ fi
+ 
+ # Configures warning treatment in msbuild.
+-warn_as_error=${warn_as_error:-true}
++warn_as_error=false
+ 
+ # True to attempt using .NET Core already that meets requirements specified in global.json
+ # installed on the machine instead of downloading one.
+diff --git a/eng/common/build.sh b/eng/common/build.sh
+index ac1ee8620c..06c3b1aa2d 100755
+--- a/eng/common/build.sh
++++ b/eng/common/build.sh
+@@ -74,7 +74,7 @@ public=false
+ ci=false
+ clean=false
+ 
+-warn_as_error=true
++warn_as_error=false
+ node_reuse=true
+ binary_log=false
+ exclude_ci_binary_log=false

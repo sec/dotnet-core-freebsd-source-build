@@ -38,8 +38,9 @@ if [ ! -d aspnetcore ]; then
     ./bsd_dotnet_install.sh $SDKZIP aspnetcore
 
     aspnetcore/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local --configfile aspnetcore/NuGet.config
-    aspnetcore/.dotnet/dotnet nuget add source 'https://fbsdnugetfeed.mooo.com/v3/index.json' --name ghsec --configfile aspnetcore/NuGet.config
-    
+    aspnetcore/.dotnet/dotnet nuget add source 'https://fbsdnugetfeed.mooo.com/v3/index.json' --name ghsec --configfile aspnetcore/NuGet.config    
+    aspnetcore/.dotnet/dotnet nuget add source 'https://nuget.org/v3/index.json' --name nugetnet --configfile aspnetcore/NuGet.config
+
     if [ -f local.nuget ]; then
         aspnetcore/.dotnet/dotnet nuget add source `cat local.nuget` --name localdir --configfile aspnetcore/NuGet.config
     fi

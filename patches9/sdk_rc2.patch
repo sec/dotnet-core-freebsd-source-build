@@ -1,0 +1,24 @@
+diff --git a/src/Containers/Microsoft.NET.Build.Containers/Microsoft.NET.Build.Containers.csproj b/src/Containers/Microsoft.NET.Build.Containers/Microsoft.NET.Build.Containers.csproj
+index 0e65dc462f..e108a43a12 100644
+--- a/src/Containers/Microsoft.NET.Build.Containers/Microsoft.NET.Build.Containers.csproj
++++ b/src/Containers/Microsoft.NET.Build.Containers/Microsoft.NET.Build.Containers.csproj
+@@ -23,6 +23,7 @@
+ 
+     <!-- Avoid https://github.com/dotnet/arcade/issues/9305 -->
+     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
++    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+   </PropertyGroup>
+ 
+   <ItemGroup>
+diff --git a/test/dotnet-format.Tests/tests/dotnet-format.UnitTests.csproj b/test/dotnet-format.Tests/tests/dotnet-format.UnitTests.csproj
+index f7d9f35069..fe9e8301e2 100644
+--- a/test/dotnet-format.Tests/tests/dotnet-format.UnitTests.csproj
++++ b/test/dotnet-format.Tests/tests/dotnet-format.UnitTests.csproj
+@@ -9,6 +9,7 @@
+     <ExcludeFromSourceBuild>true</ExcludeFromSourceBuild>
+     <DefaultExcludesInProjectFolder>$(DefaultExcludesInProjectFolder);binaries\**;projects\**</DefaultExcludesInProjectFolder>
+     <OutputType>Exe</OutputType>
++    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+   </PropertyGroup>
+ 
+   <ItemGroup>

@@ -1,0 +1,22 @@
+diff --git a/eng/Versions.props b/eng/Versions.props
+index 3a88fcaebf4..20a37da6ccb 100644
+--- a/eng/Versions.props
++++ b/eng/Versions.props
+@@ -107,7 +107,7 @@
+     <MicrosoftNETCoreAppRuntimewinx64Version>9.0.0-rc.2.24463.7</MicrosoftNETCoreAppRuntimewinx64Version>
+     <MicrosoftExtensionsDependencyModelVersion>6.0.0</MicrosoftExtensionsDependencyModelVersion>
+     <!-- ILAsm dependencies -->
+-    <MicrosoftNETCoreILAsmVersion>9.0.0-rc.2.24463.7</MicrosoftNETCoreILAsmVersion>
++    <MicrosoftNETCoreILAsmVersion>9.0.0-rc.1.24431.7</MicrosoftNETCoreILAsmVersion>
+     <!-- Libraries dependencies -->
+     <MicrosoftBclAsyncInterfacesVersion>6.0.0</MicrosoftBclAsyncInterfacesVersion>
+     <MicrosoftBclHashCodeVersion>1.1.1</MicrosoftBclHashCodeVersion>
+@@ -212,7 +212,7 @@
+     <!-- Mono Cecil -->
+     <MicrosoftDotNetCecilVersion>0.11.5-alpha.24460.1</MicrosoftDotNetCecilVersion>
+     <!-- ILCompiler -->
+-    <MicrosoftDotNetILCompilerVersion>9.0.0-rc.2.24463.7</MicrosoftDotNetILCompilerVersion>
++    <MicrosoftDotNetILCompilerVersion>9.0.0-rc.1.24431.7</MicrosoftDotNetILCompilerVersion>
+     <!-- ICU -->
+     <MicrosoftNETCoreRuntimeICUTransportVersion>9.0.0-rc.2.24467.2</MicrosoftNETCoreRuntimeICUTransportVersion>
+     <!-- MsQuic -->

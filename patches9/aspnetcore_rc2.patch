@@ -1,0 +1,36 @@
+diff --git a/src/SignalR/clients/csharp/Client/src/Microsoft.AspNetCore.SignalR.Client.csproj b/src/SignalR/clients/csharp/Client/src/Microsoft.AspNetCore.SignalR.Client.csproj
+index de0d7377e2..2f3e32db12 100644
+--- a/src/SignalR/clients/csharp/Client/src/Microsoft.AspNetCore.SignalR.Client.csproj
++++ b/src/SignalR/clients/csharp/Client/src/Microsoft.AspNetCore.SignalR.Client.csproj
+@@ -5,6 +5,7 @@
+     <TargetFrameworks>$(DefaultNetCoreTargetFramework);$(DefaultNetFxTargetFramework);netstandard2.0</TargetFrameworks>
+     <Nullable>enable</Nullable>
+     <IsTrimmable>true</IsTrimmable>
++    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+   </PropertyGroup>
+ 
+   <ItemGroup>
+diff --git a/src/SignalR/clients/csharp/Http.Connections.Client/src/Microsoft.AspNetCore.Http.Connections.Client.csproj b/src/SignalR/clients/csharp/Http.Connections.Client/src/Microsoft.AspNetCore.Http.Connections.Client.csproj
+index 7c9977be80..3d6add6c39 100644
+--- a/src/SignalR/clients/csharp/Http.Connections.Client/src/Microsoft.AspNetCore.Http.Connections.Client.csproj
++++ b/src/SignalR/clients/csharp/Http.Connections.Client/src/Microsoft.AspNetCore.Http.Connections.Client.csproj
+@@ -5,6 +5,7 @@
+     <TargetFrameworks>$(DefaultNetCoreTargetFramework);$(DefaultNetFxTargetFramework);netstandard2.0;netstandard2.1</TargetFrameworks>
+     <Nullable>enable</Nullable>
+     <IsTrimmable>true</IsTrimmable>
++    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+   </PropertyGroup>
+ 
+   <ItemGroup>
+diff --git a/src/Tools/LinkabilityChecker/LinkabilityChecker.csproj b/src/Tools/LinkabilityChecker/LinkabilityChecker.csproj
+index 6656919a79..d57f5d5762 100644
+--- a/src/Tools/LinkabilityChecker/LinkabilityChecker.csproj
++++ b/src/Tools/LinkabilityChecker/LinkabilityChecker.csproj
+@@ -4,6 +4,7 @@
+     <IsPackable>false</IsPackable>
+     <OutputType>Exe</OutputType>
+     <PublishTrimmed>true</PublishTrimmed>
++    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+   </PropertyGroup>
+ 
+   <Import Project="$(RepoRoot)eng\TrimmableProjects.props" />

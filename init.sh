@@ -39,7 +39,7 @@ if [ ! -d aspnetcore ]; then
 
     aspnetcore/.dotnet/dotnet nuget add source ../runtime/artifacts/packages/Release/Shipping/ --name local --configfile aspnetcore/NuGet.config
     aspnetcore/.dotnet/dotnet nuget add source 'https://fbsdnugetfeed.mooo.com/v3/index.json' --name ghsec --configfile aspnetcore/NuGet.config    
-    aspnetcore/.dotnet/dotnet nuget add source 'https://nuget.org/v3/index.json' --name nugetnet --configfile aspnetcore/NuGet.config
+    aspnetcore/.dotnet/dotnet nuget add source 'https://api.nuget.org/v3/index.json' --name nugetnet --configfile aspnetcore/NuGet.config
 
     if [ -f local.nuget ]; then
         aspnetcore/.dotnet/dotnet nuget add source `cat local.nuget` --name localdir --configfile aspnetcore/NuGet.config
@@ -61,5 +61,5 @@ if [ ! -d sdk ]; then
     patch -d sdk < patches9/sdk_rc2.patch
 
     sdk/.dotnet/dotnet nuget add source 'https://fbsdnugetfeed.mooo.com/v3/index.json' --name ghsec --configfile sdk/NuGet.config
-    sdk/.dotnet/dotnet nuget add source 'https://nuget.org/v3/index.json' --name nugetnet --configfile sdk/NuGet.config
+    sdk/.dotnet/dotnet nuget add source 'https://api.nuget.org/v3/index.json' --name nugetnet --configfile sdk/NuGet.config
 fi

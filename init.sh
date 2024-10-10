@@ -26,6 +26,8 @@ if [ ! -d runtime ]; then
     if [ -f local.nuget ]; then
         runtime/.dotnet/dotnet nuget add source `cat local.nuget` --name localdir --configfile runtime/NuGet.config
     fi
+
+    patch -d runtime < patches9/runtime_rc2.patch
 fi
 
 if [ ! -d aspnetcore ]; then

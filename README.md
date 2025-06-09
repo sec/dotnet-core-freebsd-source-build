@@ -1,6 +1,10 @@
 # Build .NET <strike>Core</strike> 9 under FreeBSD
 
-# Hacky way for native build, tested with v9.preview.7
+# 2025
+- TODO v10
+- some steps I always forget [how to bootstrap](https://github.com/dotnet/runtime/issues/14537#issuecomment-1958400639)
+
+# Hacky way for native build, tested with v9.preview.7, old, use ports
 - for cross build sdk, patch needed for runtime to output proper ilc - https://patch-diff.githubusercontent.com/raw/dotnet/runtime/pull/105004.patch
 - also this one might be needed https://github.com/dotnet/runtime/pull/105587.patch
 - if sdk will fail with missing runtime, extract freshly built runtime from artifacts into sdk/.dotnet dir
@@ -19,7 +23,7 @@
 - build aspnet (do not build with node/npm installed)
 - build sdk
 
-# New News (2024)
+# Old New News (2024)
 - We how have **community made** port under [FreeBSD ports](https://github.com/freebsd/freebsd-ports/tree/main/lang/dotnet) for x64/amd64 and aarch64
 - `/usr/ports/lang/dotnet/make install` or `pkg install` will get you up and running
 - to speed up port build, use `install_tools.sh` first, unless you like everything from source
